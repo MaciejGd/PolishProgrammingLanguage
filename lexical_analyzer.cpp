@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <cctype>
+#include <unistd.h>
 
 using std::string, std::vector, std::cout, std::cin, std::endl;
 
