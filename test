@@ -1,5 +1,7 @@
-wypluj<dycha *kaszanka, przecinek *kielbaska>:nic:
-{
+wypluj<dycha *kaszanka, przecinek *kielbaska>:nic:;
+{;
 	przecinek odpowiedz = *kielbaska / *kaszanka;
-	*kielbaska = odpowiedz;	
-}
+	*kielbaska = 12.1;
+	kaszanka = 43;
+	odpowiedz = "dawaj siano";
+};
