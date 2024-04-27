@@ -43,29 +43,17 @@ string typeToString(TYPE type)
 	}
 }
 
-class Token {
-	TYPE type;	
+struct Token {
+	TYPE type;
 	string value;
-public:
-	Token(TYPE _type):type(_type){}
-	Token(TYPE _type, string val):type(_type),value(val){}
-	virtual void printToken() const
+	Token(TYPE _type, string val):type(_type), value(val){}
+	void printToken() const 
 	{
-		cout << "[ " << typeToString(type) << ", " << value << " ]" << endl;
+		cout << "[ " << typeToString(type) << " ," << value << " ]\n";
 	}
-	TYPE getType() const { return type; }
 };
 
-template<typename T>
-class Con : public Token {
-	T value;
-public:
-	Con (TYPE _type, T val):Token(_type), value(val){}
-	void printToken() const override
-	{
-		cout << "[ " << typeToString(getType())<< ", " << value << " ]" << endl;
-	}
-};
+
 
 //function for checking if lexem is constant integer or float if return value is equal to 2 it is a float, if it returns 1 it is integer and when 0 it is not
 int isConstant(string lexem)
@@ -90,35 +78,37 @@ int isConstant(string lexem)
 
 //function to create tokens from created previously lexemes
 //have to add checking for closing the parenthesses
-void createToken(vector<string>& lexemes, vector<Token*>& tokens)
+void createToken(vector<string>& lexemes, vector<Token>& tokens)
 {
+	TYPE lexeme_type;
 	for (int i = 0; i < lexemes.size(); i++)
 	{
 		if (lexemes[i].length()==1)
 		{
-			if (find(operators.begin(), operators.end(),lexemes[i].at(0))!=operators.end())		
-				tokens.push_back(new Token(TYPE::Op, lexemes[i]));
+			if (find(operators.begin(), operators.end(),lexemes[i].at(0))!=operators.end())	
+				lexeme_type = TYPE::Op;
 			else if (find(separators.begin(), separators.end(),lexemes[i].at(0))!=separators.end())	
-				tokens.push_back(new Token(TYPE::Sep, lexemes[i]));
+				lexeme_type = TYPE::Sep;
 		}
 		else 
 		{
 			int is_constant_state;
 			if (find(keywords.begin(), keywords.end(), lexemes[i])!=keywords.end())		
-				tokens.push_back(new Token(TYPE::Key, lexemes[i]));
+				lexeme_type = TYPE::Key;
 			else if (lexemes[i].at(0)=='"' && lexemes[i].at(lexemes[i].length()-1)=='"')
 			{
 				lexemes[i].erase(lexemes[i].end()-1);
 				lexemes[i].erase(lexemes[i].begin());
-				tokens.push_back(new Con(TYPE::Str, lexemes[i]));
+				lexeme_type = TYPE::Str;
 			}
 			else if ((is_constant_state=isConstant(lexemes[i]))==1)
-				tokens.push_back(new Con(TYPE::Int, std::stoi(lexemes[i])));
+				lexeme_type = TYPE::Int;
 			else if (is_constant_state==2)
-				tokens.push_back(new Con(TYPE::Float, std::stof(lexemes[i])));
+				lexeme_type = TYPE::Float;
 			else 
-				tokens.push_back(new Token(TYPE::Id, lexemes[i]));
+				lexeme_type = TYPE::Id;
 		}
+		tokens.push_back(Token{lexeme_type, lexemes[i]});
 	}
 }
 
@@ -188,10 +178,35 @@ void divideToWords(int line_counter, string line, vector<string> &words)
 	}
 }
 
+void loadTokensToFile(const vector<Token>& tokens)
+{
+	std::ofstream tokens_file("tokens");
+	if (tokens_file.fail())
+	{
+		cout << "Failed to create tokens file" << endl;
+		exit(1);
+	}
+	int counter = 0;
+	string token_line="[ ";
+	while (counter < tokens.size())
+	{
+		token_line+=typeToString(tokens[counter].type);
+		token_line+=" , ";
+		token_line+=tokens[counter].value;
+		token_line+=" ]\n";
+		tokens_file << token_line;
+		token_line="[";
+		counter++;
+	}	
+	tokens_file.close();
+}
+
+
+
 int main(int argc, char **argv)
 {
 	vector<string> words;
-	vector<Token*> tokens;
+	vector<Token> tokens;
 	//input file loading
 	std::ifstream input_file;
 	if (argc < 2) input_file.open("test");
@@ -215,16 +230,8 @@ int main(int argc, char **argv)
 			divideToWords(line_counter, line, words);
 		line_counter++;		
 	}	
-	for (int i = 0; i < words.size(); i++)
-	{
-		cout << words[i] << "\n";
-	}
-
 	createToken(words, tokens);
-	for (int i = 0; i < tokens.size(); i++)
-	{
-		tokens[i]->printToken();
-	}
+	loadTokensToFile(tokens);
 
 	return 0;
 }
