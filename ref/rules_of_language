@@ -1,0 +1,37 @@
+Polish Programming Language:
+
+Keywords translated to Polish, simple procedural programming language.
+
+
+Syntax would be:
+
+for function
+
+name(type arguments):type:
+{
+		
+}
+
+above function would be
+wypluj<dycha *kaszanka, przecinek *kielbaska>:nic:
+{
+	przecinek odpowiedz = *kielbaska / *kaszanka;
+	*kielbaska = odpowiedz;	
+}
+
+initialization of fixed length array
+lista dycha arr(10);
+
+example of random access to an array
+arr(1) = 2;
+
+struct creation
+liga Nowa
+{
+	dycha member;  
+}
+
+struct object initialization and putting a value to a member
+Nowa struktura;
+struktura[member] = coś;
+
