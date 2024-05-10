@@ -1,0 +1,36 @@
+
+epsilon = endoffile | end char
+
+grammar
+
+LogicalExpr -> Term LogOp Term | Factor
+
+//pattern for variable declaration
+VarDecl -> DataType id | DataType id = Expression
+DataType -> "tekst"
+DataType -> "dycha"
+DataType -> "przecinek"
+
+ParamDecl
+
+//pattern for func decl
+FuncDecl -> "funkcja" id < Args >: DataType :
+Args -> VarDecl | eof
+
+Condition = E LogOp E 
+
+LogOp -> "==" | "!=" | ">" | "<" | "=>" | "<="
+AddOp -> "+" | "-" 
+MulOp -> "*" | "/"
+
+Expression = Term ExpressionNew
+ExpressionNew = AddOp Term ExpressionNew
+ExpressionNew = epsilon
+
+expression T = T*F|F without left recursion
+Term = Factor TermNew
+TermNew = MulOp Factor TermNew
+TermNew = epsilon
+
+Factor -> id | const
+

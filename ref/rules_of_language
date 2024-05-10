@@ -7,7 +7,7 @@ Syntax would be:
 
 for function
 
-name(type arguments):type:
+funkcja name(type arguments):type:
 {
 		
 }

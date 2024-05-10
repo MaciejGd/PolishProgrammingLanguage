@@ -31,7 +31,7 @@ TYPE stringToType(string key)
 
 void loadTokenList(vector<Token>& tokens)
 {
-	std::ifstream token_file("tokens");
+	std::ifstream token_file("../ref/tokens");
 	if (token_file.fail())
 	{
 		cout << "Failed to open a file containing tokens" << endl;
@@ -69,7 +69,7 @@ void Node::printNode() const
 
 Add::Add(Token _token, Node* _left, Node* _right):Node(_token),left(std::move(_left)),right(std::move(_right)){}
 
-Node* Add:eval() override
+Node* Add::eval()
 {
 	return left->eval() + right->eval();
 }

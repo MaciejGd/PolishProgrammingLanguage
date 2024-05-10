@@ -159,7 +159,7 @@ void divideToWords(int line_counter, string line, vector<string> &words)
 
 void loadTokensToFile(const vector<Token>& tokens)
 {
-	std::ofstream tokens_file("tokens");
+	std::ofstream tokens_file("../ref/tokens");
 	if (tokens_file.fail())
 	{
 		cout << "Failed to create tokens file" << endl;
