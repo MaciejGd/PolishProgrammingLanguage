@@ -1,36 +1,77 @@
+GRAMMAR:
 
-epsilon = endoffile | end char
-
-grammar
+ε = endoffile
 
 LogicalExpr -> Term LogOp Term | Factor
 
-//pattern for variable declaration
-VarDecl -> DataType id | DataType id = Expression
+//grammar for variable declaration
+VarDecl -> DataType id
 DataType -> "tekst"
 DataType -> "dycha"
 DataType -> "przecinek"
 
-ParamDecl
+//Function declaration grammar
+Function = "funkcja" id ParamList : DataType : { Statements }
+ParamList = ( ParamDecls )
+ParamDecls = VarDecl ParamDeclsNew
+ParamDecls = ε
+ParamDeclsNew = ,VarDecl ParamDeclsNew
+ParamDeclsNew = ε 
 
-//pattern for func decl
-FuncDecl -> "funkcja" id < Args >: DataType :
-Args -> VarDecl | eof
+Statements = Statement StatementsNew
+StatementsNew = ; Statement StatementsNew
+StatementsNew = ε
 
+//Statement as assigning value to a variable
+Statement = id = Expression
+Statement = VarDecl = Expression
+
+//Statement of calling a function
+Statement = id ArgsList
+ArgList = ( FuncArgs )
+FuncArgs = FuncArgument FuncArgsNew
+FuncArgs = ε
+FuncArgsNew = , FuncArgument FuncArgsNew
+FuncArgument = id;
+FuncArgs = const;
+FuncArgs = ε
+
+//structure of while loop in custom grammar
+Statement = "dopoki" Condition : { Statements }
+
+//structure of for loop in custom grammar
+Statement = "dla" id "do" int : { Statements }
+Statement = "dla" VarDecl "do" int : { Statements }
+
+//structure of if in custom grammar 
+Statement = "jesli" Condition : { Statements } ElseIfClause 
+
+ElseIfClause = "inaczej" "jeśli" Condition : { Statements } ElseIfClause
+ElseIfClause = ElseClause
+
+ElseClause = inaczej : { Statements }
+ElseClause = ε
+
+//logical condition utilizing logical operators
 Condition = E LogOp E 
 
+//operators listed
 LogOp -> "==" | "!=" | ">" | "<" | "=>" | "<="
 AddOp -> "+" | "-" 
 MulOp -> "*" | "/"
 
+//arithmetic operations on ids and consts
 Expression = Term ExpressionNew
 ExpressionNew = AddOp Term ExpressionNew
-ExpressionNew = epsilon
+ExpressionNew = ε
 
-expression T = T*F|F without left recursion
 Term = Factor TermNew
 TermNew = MulOp Factor TermNew
-TermNew = epsilon
+TermNew = ε
 
-Factor -> id | const
+Factor = id
+Factor = const 
+Factor = string
+Factor = int 
+Factor = float
 
