@@ -28,6 +28,8 @@ Statement = VarDecl = Expression
 
 //Statement of calling a function
 Statement = id ArgsList
+//grammar rule added in a back of first set
+Statement = ε
 ArgList = ( FuncArgs )
 FuncArgs = FuncArgument FuncArgsNew
 FuncArgs = ε

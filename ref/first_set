@@ -5,19 +5,19 @@ FIRST[4] = {FIRST[1]}
 FIRST[5] = {FOLLOW[5] = FOLLOW[ParamDecls]}
 FIRST[6] = {","}
 FIRST[7] = {FOLLOW[7] = FOLLOW[ParamDeclsNew]}
-FIRST[8] = {}  
+FIRST[8] = {FIRST[11] | FIRST[12] | FIRST[13] | FIRST[21] | FIRST[22] | FIRST[23] | FIRST[24] | FOLLOW[Statement]=FOLLOW[40]}  
 FIRST[9] = {";"}
 FIRST[10] = {FOLLOW[10] = FOLLOW[StatementsNew]}
 FRIST[11] = {id}
 FIRST[12] = {FIRST[1] = FIRST[DataType]}
 FIRST[13] = {id}
 FIRST[14] = {"("}
-FIRST[15] = {id}
-FIRST[16] = {FOLLLOW[16] = FOLLOW[FuncArgs]}
+FIRST[15] = {id, const}
+FIRST[16] = {FOLLOW[16] = FOLLOW[FuncArgs]}
 FIRST[17] = {","}
-FIRST[18] = {id}
+FIRST[18] = {FOLLOW[18] = FOLLOW[FuncArgsNew]}
 FRIST[19] = {const}
-FIRST[20] = {FOLLOW[20] = FOLLOW[FuncArgs]}
+FIRST[20] = {id}
 FIRST[21] = {"dopoki"}
 FIRST[22] = {"dla"}
 FIRST[23] = {"dla"}
@@ -26,14 +26,15 @@ FIRST[25] = {"inaczej"}
 FIRST[26] = {FIRST[27] = FIRST[ElseClause]}
 FRIST[27] = {"inaczej"}
 FIRST[28] = {FOLLOW[28] = FOLLOW[ElseClause]}
-FIRST[29] = {FIRST[33] = FIRST[Expression]}
+FIRST[29] = {FIRST[33]=FIRST[Expression] | FIRST[36]=FIRST[Term] || FIRST[39]=FIRST[Factor]}
 FIRST[30] = {"==", "!=", ">", "<" , ">=", "<="}
 FIRST[31] = {"+" , "-"}
 FIRST[32] = {"*" , "/"}
-FIRST[33] = {FIRST[36] = FIRST[Term]} 
+FIRST[33] = {FIRST[36] = FIRST[Term] => FIRST[39] = FIRST[Factor]} 
 FIRST[34] = {FRIST[31] = FIRST[AddOp]}
 FIRST[35] = {FOLLOW[35] = FOLLOW[ExpressionNew]}
 FIRST[36] = {FIRST[37] = FIRST[Factor]}
 FIRST[37] = {FIRST[32] = FIRST[MulOp]}
 FIRST[38] = {FOLLOW[38] = FOLLOW[TermNew]}
-FIRST[39] = {id, const}
+FIRST[39] = {id, const, (}
+FIRST[40] = {FOLLOW[40] = FOLLOW[Statement]}
