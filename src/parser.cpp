@@ -67,12 +67,6 @@ void Node::printNode() const
 	token.printToken();
 }
 
-Add::Add(Token _token, Node* _left, Node* _right):Node(_token),left(std::move(_left)),right(std::move(_right)){}
-
-Node* Add::eval()
-{
-	return left->eval() + right->eval();
-}
 
 
 

@@ -3,11 +3,10 @@
 using std::string, std::vector, std::cout, std::cin, std::endl;
 
 //operators and separators list
-vector<char> operators = {'=','+','-','*','/','&','|','>','<'};
+vector<char> operators = {'=','+','-','*','/','&','|','>','<', '!'};
 vector<char> separators = {';','[',']','{','}',':','(',')',','};
 //corresponding keywords in cpp: void, int, float, bool, const, break, continue, if, while, for, struct, return
-vector<string> keywords = {"nic","dycha", "przecinek", "binarna", "stała", "przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do"};
-
+vector<string> keywords = {"funkcja" ,"nic","dycha", "przecinek", "binarna", "stała", "przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do"};
 
 string typeToString(TYPE type)
 {
@@ -69,6 +68,8 @@ void createToken(vector<string>& lexemes, vector<Token>& tokens)
 			else if (find(separators.begin(), separators.end(),lexemes[i].at(0))!=separators.end())	
 				lexeme_type = TYPE::Sep;
 		}
+		else if (lexemes[i] == "==" || lexemes[i]=="<=" || lexemes[i]==">=" || lexemes[i]=="!=")
+			lexeme_type = TYPE::Op;
 		else 
 		{
 			int is_constant_state;
@@ -87,6 +88,7 @@ void createToken(vector<string>& lexemes, vector<Token>& tokens)
 			else 
 				lexeme_type = TYPE::Id;
 		}
+
 		tokens.push_back(Token{lexeme_type, lexemes[i]});
 	}
 }
@@ -124,9 +126,15 @@ void divideToWords(int line_counter, string line, vector<string> &words)
 		//checking for mathematical, logical operators and separators using std::find for finding special sign in vector initialized earlier
 		else if (!string_const && (find(operators.begin(), operators.end(), char_at)!=operators.end() || find(separators.begin(), separators.end(), char_at)!=separators.end()))
 		{
-			if (!actual_word.empty()) words.push_back(actual_word);
+			if (!actual_word.empty()) 
+				words.push_back(actual_word);
 			actual_word = "";
-			actual_word+=char_at;
+			actual_word+=char_at;	
+			if (char_at == '=' || char_at == '<' || char_at == '>' || char_at == '!')
+			{
+				if (line.at(i+1)=='=')
+					actual_word+=line.at(++i);
+			}
 			words.push_back(actual_word);
 			actual_word="";
 		}

@@ -12,30 +12,31 @@ FOLLOW[11] = {";"}
 FOLLOW[12] = {";"}
 FOLLOW[13] = {";"}
 FOLLOW[14] = {")"}
-FOLLOW[15] = {FOLLOW[18]}
-FOLLOW[16] = {")"}
+FOLLOW[15] = {";","}"}
+FOLLOW[16] = {FOLLOW[18]}
 FOLLOW[17] = {")"}
 FOLLOW[18] = {")"}
-FOLLOW[19] = {id} ???
-FOLLOW[20] = {const} ???
-FOLLOW[21] = {"}"}
+FOLLOW[19] = {")"}
+FOLLOW[20] = {id} ???
+FOLLOW[21] = {const} ???
 FOLLOW[22] = {"}"}
 FOLLOW[23] = {"}"}
-FOLLOW[24] = {FOLLOW[26] = FOLLOW[ElseIfClause] => FOLLOW[28] = FOLLOW[ElseClause] = "}"}
-FOLLOW[25] = {"}"}
+FOLLOW[24] = {"}"}
+FOLLOW[25] = {FOLLOW[26] = FOLLOW[ElseIfClause] => FOLLOW[28] = FOLLOW[ElseClause] = "}"}
 FOLLOW[26] = {"}"}
 FOLLOW[27] = {"}"}
 FOLLOW[28] = {"}"}
-FOLLOW[29] = {FOLLOW[33] = FOLLOW[Expression] = ";"}
-FOLLOW[30] = {FIRST[30]} -> starts and ends with only one sign/string
-FOLLOW[31] = {FIRST[31]} -> same as above
-FOLLOW[32] = {FIRST[32]} -> same as above
-FOLLOW[33] = {FOLLOW[35] = FOLLOW[ExpressionNew]}
+FOLLOW[29] = {"}"}
+FOLLOW[30] = {FOLLOW[33] = FOLLOW[Expression] = ";"}
+FOLLOW[31] = {FIRST[30]} -> starts and ends with only one sign/string
+FOLLOW[32] = {FIRST[31]} -> same as above
+FOLLOW[33] = {FIRST[32]} -> same as above
 FOLLOW[34] = {FOLLOW[35] = FOLLOW[ExpressionNew]}
-FOLLOW[35] = {";" ")", ":"}
-FOLLOW[36] = {FOLLOW[38] = FOLLOW[TermNew]}
+FOLLOW[35] = {FOLLOW[35] = FOLLOW[ExpressionNew]}
+FOLLOW[36] = {";" ")", ":"}
 FOLLOW[37] = {FOLLOW[38] = FOLLOW[TermNew]}
-FOLLOW[38] = {"+", ";", ")",":"}
-FOLLOW[39] = {id, const, ")"} 
-FOLLOW[40] = {";"}
+FOLLOW[38] = {FOLLOW[38] = FOLLOW[TermNew]}
+FOLLOW[39] = {"+", ";", ")",":"}
+FOLLOW[40] = {id, const, ")"} 
+
 
