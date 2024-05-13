@@ -4,9 +4,9 @@ FIRST[3] = {"przecinek"}
 FIRST[4] = {"tekst"}
 FIRST[5] = {"("}
 FIRST[6] = {FIRST[1]}
-FIRST[7] = {FOLLOW[5] = FOLLOW[ParamDecls]}
+FIRST[7] = {FOLLOW[7] = FOLLOW[ParamDecls]}
 FIRST[8] = {","}
-FIRST[9] = {FOLLOW[7] = FOLLOW[ParamDeclsNew]}
+FIRST[9] = {FOLLOW[9] = FOLLOW[ParamDeclsNew]}
 FIRST[10] = {FIRST[11] | FIRST[12] | FIRST[13] | FIRST[21] | FIRST[22] | FIRST[23] | FIRST[24] | FOLLOW[Statement]=FOLLOW[40]}  
 FIRST[11] = {";"}
 FIRST[12] = {FOLLOW[10] = FOLLOW[StatementsNew]}

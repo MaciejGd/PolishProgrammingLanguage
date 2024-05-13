@@ -6,7 +6,7 @@ using std::string, std::vector, std::cout, std::cin, std::endl;
 vector<char> operators = {'=','+','-','*','/','&','|','>','<', '!'};
 vector<char> separators = {';','[',']','{','}',':','(',')',','};
 //corresponding keywords in cpp: void, int, float, bool, const, break, continue, if, while, for, struct, return
-vector<string> keywords = {"funkcja" ,"nic","dycha", "przecinek", "binarna", "stała", "przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do"};
+vector<string> keywords = {"funkcja" ,"nic","dycha", "przecinek", "przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do"};
 
 string typeToString(TYPE type)
 {

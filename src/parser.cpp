@@ -3,6 +3,8 @@
 //have to use some kind of data socket to pass created tokens into a parser
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
+vector<int> vec1 = {1,2,3};
+
 TYPE stringToType(string key)
 {
 	TYPE ret_val;
