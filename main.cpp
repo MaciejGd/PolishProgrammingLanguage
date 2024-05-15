@@ -1,6 +1,7 @@
 #include "inc/lex.h"
 #include "inc/parser.h"
 #include "inc/parsing_table.h"
+#include <stack>
 
 using std::vector;
 
