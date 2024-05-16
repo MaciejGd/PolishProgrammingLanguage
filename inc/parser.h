@@ -8,6 +8,8 @@ using std::unique_ptr;
 TYPE stringToType(string key);
 void loadTokenList(vector<Token>& tokens);
 
+int getElement(vector<vector<int>>& prod);
+
 
 
 class Node {

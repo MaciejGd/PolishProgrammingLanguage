@@ -1,6 +1,5 @@
 #include "../inc/parser.h"
 
-//have to use some kind of data socket to pass created tokens into a parser
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
 vector<int> vec1 = {1,2,3};
@@ -61,6 +60,21 @@ void loadTokenList(vector<Token>& tokens)
 	}
 	token_file.close();
 }
+
+int getElement(vector<vector<int>>& prod, vector<string> token_types, Token* curr_token)
+{
+	string token_val;
+	if (curr_token->type == TYPE::Id)
+		token_val = "id";
+	else if (curr_token->type == TYPE::Str || curr_token->type == TYPE::Int || curr_token->type == TYPE::Float)
+		token_val = "const";
+	else 
+		token_val = curr_token->value;
+	auto index = std::find(token_types.begin(), token_types.end(), token_val);
+	return 0;	
+}
+
+
 
 Node::Node(Token _token):token(_token){}
 
