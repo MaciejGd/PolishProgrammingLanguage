@@ -1,73 +1,83 @@
 #include "lex.h"
 #include <memory>
+#include <unordered_map>
 #include "parsing_table.h"
 #include "parser.h"
 
 enum Symbol {
-	VarDecl,
-	DataType,
-	FunctionDeclaration,
-	ParamList,
-	ParamDecls,
-	ParamDeclsNew,
-	FuncType,
-	Body,
-	Statements,
-	Statement,
-	VarInit,
-	ForRange,
-	ForRangeNew,
-	ArgList,
-	FuncArgs,
-	FuncArgsNew,
-	ElseClause,
-	Else,
-	Condition,
-	ConditionNew,
-	LogOp,
-	AddOp,
-	MulOp,
-	Expression,
-	ExpressionNew,
-	Term,
-	TermNew,
-	Factor,
-	dycha,
-	przecinek,
-	tekst,
-	nic,
-	funkcja,
-	identifier,
-	constant ,
-	opening_round,
-	closing_round,
-	coma,
-	colon,
-	semicolon,
-	opening_curly,
-	closing_curly,
-	przestan,
-	dalej ,
-	zwroc,
-	wywolaj,
-	dopoki,
-	dla,
-	jesli,
-	assign,
-	inaczej,
-	double_equal,
-	not_equal,
-	more,
-	less,
-	more_equal,
-	less_equal,
-	and_op,
-	or_op,
-	plus,
-	minus,
-	multiply,
-	divide
+	ERROR,
+	EPSILON,
+	VARDECL,
+	DATATYPE,
+	FUNCTIONDECLARATION,
+	PARAMLIST,
+	PARAMDECLS,
+	PARAMDECLSNEW,
+	FUNCTYPE,
+	BODY,
+	STATEMENTS,
+	STATEMENT,
+	VARINIT,
+	FORRANGE,
+	FORRANGENEW,
+	ARGLIST,
+	FUNCARGS,
+	FUNCARGSNEW,
+	ELSECLAUSE,
+	ELSE,
+	CONDITION,
+	CONDITIONNEW,
+	LOGOP,
+	ADDOP,
+	MULOP,
+	EXPRESSION,
+	EXPRESSIONNEW,
+	TERM,
+	TERMNEW,
+	FACTOR,
+	ZAKRES,
+	DYCHA,
+	PRZECINEK,
+	TEKST,
+	NIC,
+	FUNKCJA,
+	IDENTIFIER,
+	CONSTANT ,
+	OPENING_ROUND,
+	CLOSING_ROUND,
+	COMA,
+	COLON,
+	SEMICOLON,
+	OPENING_CURLY,
+	CLOSING_CURLY,
+	OPENING_SQUARE,
+	CLOSING_SQUARE,
+	PRZESTAN,
+	DALEJ ,
+	ZWROC,
+	WYWOLAJ,
+	DOPOKI,
+	DLA,
+	JESLI,
+	ASSIGN,
+	INACZEJ,
+	DOUBLE_EQUAL,
+	NOT_EQUAL,
+	MORE,
+	LESS,
+	MORE_EQUAL,
+	LESS_EQUAL,
+	AND_OP,
+	OR_OP,
+	PLUS,
+	MINUS,
+	MULTIPLY,
+	DIVIDE
 };
+
+extern std::unordered_map<std::string, Symbol> terminals;
+
+Symbol translateTokenToSymbol(const Token& token);
 
 struct Production 
 {
@@ -76,18 +86,5 @@ struct Production
 };
 
 //grammar as vector
-vector<Production> grammar = {
-	{VarDecl, {DataType, identifier}},
-	{}
-
-
-
-};
-
-
-
-
-
-
-
+extern vector<Production> grammar;
 
