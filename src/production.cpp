@@ -1,6 +1,6 @@
 #include "../inc/production.h"
 
-std::unordered_map<string, Symbol> terminals = {
+std::unordered_map<string, Symbol> terminals_map = {
 	{"zakres", ZAKRES},
 	{"dycha", DYCHA},
 	{"przecinek", PRZECINEK},
@@ -57,13 +57,13 @@ Symbol translateTokenToSymbol(const Token& token)
 			return CONSTANT;
 			break;
 		default:
-			return terminals[token.value];
+			return terminals_map[token.value];
 			break;
 	}
 	return ERROR;
 }
 
-vector<Production> grammar = {	
+std::vector<Production> grammar = {	
 	{VARDECL, {DATATYPE, IDENTIFIER}},
 	{DATATYPE, {DYCHA}},
 	{DATATYPE, {PRZECINEK}},
@@ -127,6 +127,9 @@ vector<Production> grammar = {
 	{FACTOR, {IDENTIFIER}},
 	{FACTOR, {CONSTANT}},
 	{FACTOR, {OPENING_ROUND, EXPRESSION, CLOSING_ROUND}},
-	{FACTOR, {WYWOLAJ, IDENTIFIER, ARGLIST}}
+	{FACTOR, {WYWOLAJ, IDENTIFIER, ARGLIST}},
+	{START, {FUNCTION}},
+	{FUNCTION, {FUNCTIONDECLARATION, BODY}},
+	{FUNCTION, {EPSILON}}
 };
 

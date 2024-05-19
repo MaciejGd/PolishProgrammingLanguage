@@ -210,6 +210,7 @@ vector<Token> tokensScan(string file_name)
 		line_counter++;		
 	}	
 	createToken(words, tokens);
-	
+	//pushing back end of file token after scanning all file -> necessary for parsing tre
+	tokens.push_back(Token(TYPE::Sep, "$"));	
 	return tokens;
 }

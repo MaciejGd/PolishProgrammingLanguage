@@ -1,3 +1,4 @@
+#pragma once
 #include "lex.h"
 #include <memory>
 #include <unordered_map>
@@ -5,8 +6,11 @@
 #include "parser.h"
 
 enum Symbol {
+	END,
 	ERROR,
 	EPSILON,
+	START,
+	FUNCTION,
 	VARDECL,
 	DATATYPE,
 	FUNCTIONDECLARATION,
@@ -75,14 +79,14 @@ enum Symbol {
 	DIVIDE
 };
 
-extern std::unordered_map<std::string, Symbol> terminals;
+extern std::unordered_map<std::string, Symbol> terminals_map;
 
 Symbol translateTokenToSymbol(const Token& token);
 
 struct Production 
 {
 	Symbol lhs;
-	vector<Symbol> rhs;
+	std::vector<Symbol> rhs;
 };
 
 //grammar as vector
