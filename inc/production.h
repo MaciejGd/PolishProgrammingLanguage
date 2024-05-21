@@ -80,7 +80,7 @@ enum Symbol {
 };
 
 extern std::unordered_map<std::string, Symbol> terminals_map;
-
+extern std::vector<std::string> terminals;
 Symbol translateTokenToSymbol(const Token& token);
 
 struct Production 

@@ -36,9 +36,12 @@ std::unordered_map<string, Symbol> terminals_map = {
 	{"+", PLUS},
 	{"- ", MINUS},
 	{"*", MULTIPLY},
-	{"/", DIVIDE}
-
+	{"/", DIVIDE},
+	{"$", END}
 };
+
+vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","- ","*","/", "$"};
+
 
 Symbol translateTokenToSymbol(const Token& token)
 {

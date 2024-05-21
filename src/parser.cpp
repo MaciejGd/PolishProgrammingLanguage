@@ -74,13 +74,16 @@ int getElement(vector<vector<int>>& prod, vector<string> token_types, Token* cur
 	return 0;	
 }
 
-
-
-Node::Node(Token _token):token(_token){}
-
-void Node::printNode() const
+void parse(vector<Token>& tokens)
 {
-	token.printToken();
+	int counter = 0;
+	std::stack<Symbol> statement_stack;
+	statement_stack.push(END);
+	statement_stack.push(START);
+	while (!statement_stack.empty())
+	{
+			
+	}
 }
 
 
