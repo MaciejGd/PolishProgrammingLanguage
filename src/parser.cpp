@@ -2,8 +2,6 @@
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
-vector<int> vec1 = {1,2,3};
-
 TYPE stringToType(string key)
 {
 	TYPE ret_val;
@@ -82,35 +80,38 @@ void parse(vector<Token>& tokens)
 	statement_stack.push(START);
 	while (!statement_stack.empty())
 	{
-			
+		Symbol parse_symbol = statement_stack.top();
+		cout << "Parsing symbol: " << symbols_map[parse_symbol];		
+		statement_stack.pop();
+		if (isTerminal(parse_symbol))
+		{
+			if (parse_symbol == translateTokenToSymbol(tokens[counter]))
+				counter++;
+			cout << " this symbol is terminal";
+		}	
+		else if (parse_symbol == EPSILON)
+		{
+			continue;
+		}
+		else 
+		{
+			//get from parsing table wanted expression
+			int terminal_index = std::find(terminals.begin(), terminals.end(), tokens[counter].value) - terminals.begin();
+			int statement_index = parsing_table[parse_symbol][terminal_index];
+			if (statement_index == 0)
+			{
+				cout << " Error while parsing";
+			}
+			else {
+				//pushing on stack Symbols in reverse order
+				Production prod = grammar[statement_index-1];
+				for (int i = prod.rhs.size()-1; i >= 0; i--)
+				{
+					statement_stack.push(prod.rhs[i]);
+				}
+			}
+		}
+		cout << "\n";
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

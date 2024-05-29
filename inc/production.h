@@ -6,9 +6,6 @@
 #include "parser.h"
 
 enum Symbol {
-	END,
-	ERROR,
-	EPSILON,
 	START,
 	FUNCTION,
 	VARDECL,
@@ -76,12 +73,17 @@ enum Symbol {
 	PLUS,
 	MINUS,
 	MULTIPLY,
-	DIVIDE
+	DIVIDE,
+	END,
+	ERROR,
+	EPSILON
 };
 
+extern std::unordered_map<Symbol, string> symbols_map;
 extern std::unordered_map<std::string, Symbol> terminals_map;
 extern std::vector<std::string> terminals;
 Symbol translateTokenToSymbol(const Token& token);
+bool isTerminal(Symbol symbol);
 
 struct Production 
 {
@@ -91,4 +93,3 @@ struct Production
 
 //grammar as vector
 extern vector<Production> grammar;
-

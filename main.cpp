@@ -1,9 +1,6 @@
 #include "inc/lex.h"
 #include "inc/parser.h"
 #include "inc/parsing_table.h"
-#include "inc/production.h"
-#include "inc/parsing_table.h"
-#include <stack>
 
 using std::vector;
 
@@ -15,6 +12,6 @@ int main()
 	for (int i = 0; i < vec.size(); i++)
 		vec[i].printToken();
 
-	std::cout << grammar.size() << std::endl;
+	parse(vec);
 	return 0;
 }

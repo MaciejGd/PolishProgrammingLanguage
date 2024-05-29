@@ -1,5 +1,80 @@
 #include "../inc/production.h"
 
+std::unordered_map<Symbol, string> symbols_map = {
+	{START,"START"},
+	{FUNCTION,"FUNCTION"},
+	{VARDECL,"VARDECL"},
+	{DATATYPE,"DATATYPE"},
+	{FUNCTIONDECLARATION,"FUNCTIONDECLARATION"},
+	{PARAMLIST,"PARAMLIST"},
+	{PARAMDECLS,"PARAMDECLS"},
+	{PARAMDECLSNEW,"PARAMDECLSNEW"},
+	{FUNCTYPE,"FUNCTYPE"},
+	{BODY,"BODY"},
+	{STATEMENTS,"STATEMENTS"},
+	{STATEMENT,"STATEMENT"},
+	{VARINIT,"VARINIT"},
+	{FORRANGE,"FORRANGE"},
+	{FORRANGENEW,"FORRANGENEW"},
+	{ARGLIST,"ARGLIST"},
+	{FUNCARGS,"FUNCARGS"},
+	{FUNCARGSNEW,"FUNCARGSNEW"},
+	{ELSECLAUSE,"ELSECLAUSE"},
+	{ELSE,"ELSE"},
+	{CONDITION,"CONDITION"},
+	{CONDITIONNEW,"CONDITIONNEW"},
+	{LOGOP,"LOGOP"},
+	{ADDOP,"ADDOP"},
+	{MULOP,"MULOP"},
+	{EXPRESSION,"EXPRESSION"},
+	{EXPRESSIONNEW,"EXPRESSIONNEW"},
+	{TERM,"TERM"},
+	{TERMNEW,"TERMNEW"},
+	{FACTOR,"FACTOR"},
+	{ZAKRES,"ZAKRES"},
+	{DYCHA,"DYCHA"},
+	{PRZECINEK,"PRZECINEK"},
+	{TEKST,"TEKST"},
+	{NIC,"NIC"},
+	{FUNKCJA,"FUNKCJA"},
+	{IDENTIFIER,"IDENTIFIER"},
+	{CONSTANT,"CONSTANT"},
+	{OPENING_ROUND,"OPENING_ROUND"},
+	{CLOSING_ROUND,"CLOSING_ROUND"},
+	{COMA,"COMA"},
+	{COLON,"COLON"},
+	{SEMICOLON,"SEMICOLON"},
+	{OPENING_CURLY,"OPENING_CURLY"},
+	{CLOSING_CURLY,"CLOSING_CURLY"},
+	{OPENING_SQUARE,"OPENING_SQUARE"},
+	{CLOSING_SQUARE,"CLOSING_SQUARE"},
+	{PRZESTAN,"PRZESTAN"},
+	{DALEJ,"DALEJ"},
+	{ZWROC,"ZWROC"},
+	{WYWOLAJ,"WYWOLAJ"},
+	{DOPOKI,"DOPOKI"},
+	{DLA,"DLA"},
+	{JESLI,"JESLI"},
+	{ASSIGN,"ASSIGN"},
+	{INACZEJ,"INACZEJ"},
+	{DOUBLE_EQUAL,"DOUBLE_EQUAL"},
+	{NOT_EQUAL,"NOT_EQUAL"},
+	{MORE,"MORE"},
+	{LESS,"LESS"},
+	{MORE_EQUAL,"MORE_EQUAL"},
+	{LESS_EQUAL,"LESS_EQUAL"},
+	{AND_OP,"AND_OP"},
+	{OR_OP,"OR_OP"},
+	{PLUS,"PLUS"},
+	{MINUS,"MINUS"},
+	{MULTIPLY,"MULTIPLY"},
+	{DIVIDE,"DIVIDE"},
+	{END,"END"},
+	{ERROR,"ERROR"},
+	{EPSILON,"EPSILON"}
+};
+
+
 std::unordered_map<string, Symbol> terminals_map = {
 	{"zakres", ZAKRES},
 	{"dycha", DYCHA},
@@ -40,7 +115,7 @@ std::unordered_map<string, Symbol> terminals_map = {
 	{"$", END}
 };
 
-vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","- ","*","/", "$"};
+vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","- ","*","/", "$", "zakres"};
 
 
 Symbol translateTokenToSymbol(const Token& token)
@@ -64,6 +139,11 @@ Symbol translateTokenToSymbol(const Token& token)
 			break;
 	}
 	return ERROR;
+}
+
+bool isTerminal(Symbol symbol)
+{
+	return (symbol > 12);
 }
 
 std::vector<Production> grammar = {	
