@@ -81,13 +81,11 @@ void parse(vector<Token>& tokens)
 	while (!statement_stack.empty())
 	{
 		Symbol parse_symbol = statement_stack.top();
-		cout << "Parsing symbol: " << symbols_map[parse_symbol];		
 		statement_stack.pop();
 		if (isTerminal(parse_symbol))
 		{
 			if (parse_symbol == translateTokenToSymbol(tokens[counter]))
 				counter++;
-			cout << " this symbol is terminal";
 		}	
 		else if (parse_symbol == EPSILON)
 		{
@@ -96,11 +94,18 @@ void parse(vector<Token>& tokens)
 		else 
 		{
 			//get from parsing table wanted expression
-			int terminal_index = std::find(terminals.begin(), terminals.end(), tokens[counter].value) - terminals.begin();
+			int terminal_index;
+			if (tokens[counter].type == TYPE::Id)
+				terminal_index = 5;
+			else if (tokens[counter].type == TYPE::Str || tokens[counter].type == TYPE::Int || tokens[counter].type == TYPE::Float)
+				terminal_index = 6;
+			else 
+				terminal_index = std::find(terminals.begin(), terminals.end(), tokens[counter].value) - terminals.begin();
 			int statement_index = parsing_table[parse_symbol][terminal_index];
+			
 			if (statement_index == 0)
 			{
-				cout << " Error while parsing";
+				cout << " Error while parsing non-terminal: " << symbols_map[parse_symbol] << " in token: " << tokens[counter].value << "\n";
 			}
 			else {
 				//pushing on stack Symbols in reverse order
@@ -111,7 +116,6 @@ void parse(vector<Token>& tokens)
 				}
 			}
 		}
-		cout << "\n";
 	}
 }
 

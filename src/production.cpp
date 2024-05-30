@@ -143,7 +143,7 @@ Symbol translateTokenToSymbol(const Token& token)
 
 bool isTerminal(Symbol symbol)
 {
-	return (symbol > 12);
+	return (symbol > 29);
 }
 
 std::vector<Production> grammar = {	
@@ -152,7 +152,7 @@ std::vector<Production> grammar = {
 	{DATATYPE, {PRZECINEK}},
 	{DATATYPE, {TEKST}},
 	{DATATYPE, {NIC}},
-	{FUNCTIONDECLARATION, {FUNKCJA, IDENTIFIER, PARAMLIST, FUNCTYPE, BODY}},
+	{FUNCTIONDECLARATION, {FUNKCJA, IDENTIFIER, PARAMLIST, FUNCTYPE}},
 	{PARAMLIST, {OPENING_ROUND, PARAMDECLS, CLOSING_ROUND}},
 	{PARAMDECLS, {VARDECL, PARAMDECLSNEW}},
 	{PARAMDECLS, {EPSILON}},
