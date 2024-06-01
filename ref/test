@@ -9,10 +9,7 @@ przecinek nowa;
 
 funkcja test_1 (dycha first_var, przecinek test_var):nic:
 {
-	dycha odpowiedz = test_var / first_var;
-	test_var = 12.1;
-	first_var = 43;
-	odpowiedz = "New York City";
+	dycha oddawaj = "dawjaid";
 }
 
 funkcja test_2 (dycha first_var, przecinek test_var):nic:

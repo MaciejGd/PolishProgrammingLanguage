@@ -132,6 +132,9 @@ void divideToWords(int line_counter, string line, vector<string> &words)
 	while (line.at(i)==' ' || line.at(i)=='\t' || line.at(i)=='\v' || line.at(i)=='\r')
 	{
 		i++;	
+		//ensures skipping empty lines with whitespaces only
+		if (i==line.length())
+			return;
 	}
 	//iterate over chars in lines to form the words
 	bool string_const = false;
