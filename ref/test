@@ -1,8 +1,38 @@
-funkcja wypluj <dycha kaszanka, przecinek kielbaska>:nic:
+dodaj nowa
+dodaj nowa2
+
+globalne {
+dycha kaska = 12;
+przecinek nowa;
+}
+
+
+funkcja test_1 (dycha first_var, przecinek test_var):nic:
 {
-	binarna odpowiedz = kielbaska / kaszanka;
-	kielbaska = 12.1;
-	kaszanka = 43;
-	odpowiedz = "dawaj siano";
+	dycha odpowiedz = test_var / first_var;
+	test_var = 12.1;
+	first_var = 43;
+	odpowiedz = "New York City";
+}
+
+funkcja test_2 (dycha first_var, przecinek test_var):nic:
+{
+	jesli 2 > 3:
+	{
+		test_var = 12.2;
+	}
+	inaczej jesli 4 > 2: 
+	{
+		test_var = 32;
+	}
+	inaczej jesli 2 > 4:
+	{
+		test_var = 123;
+	}
+	inaczej
+	{
+		test_var = 23;
+	}
+	dycha dwanascie = 123;
 }
 

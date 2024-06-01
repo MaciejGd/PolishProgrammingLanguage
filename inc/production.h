@@ -1,11 +1,12 @@
 #pragma once
-#include "lex.h"
-#include <memory>
 #include <unordered_map>
-#include "parsing_table.h"
-#include "parser.h"
+#include "lex.h"
+
 
 enum Symbol {
+	INCLUDE,
+	GLOBAL,
+	GLOBALVAR,
 	START,
 	FUNCTION,
 	VARDECL,
@@ -76,14 +77,10 @@ enum Symbol {
 	DIVIDE,
 	END,
 	ERROR,
-	EPSILON
+	EPSILON,
+	GLOBALNE,
+	DODAJ
 };
-
-extern std::unordered_map<Symbol, string> symbols_map;
-extern std::unordered_map<std::string, Symbol> terminals_map;
-extern std::vector<std::string> terminals;
-Symbol translateTokenToSymbol(const Token& token);
-bool isTerminal(Symbol symbol);
 
 struct Production 
 {
@@ -91,5 +88,13 @@ struct Production
 	std::vector<Symbol> rhs;
 };
 
+//symbols map for debugging
+extern std::unordered_map<Symbol, string> symbols_map;
+extern std::unordered_map<std::string, Symbol> terminals_map;
+extern std::vector<std::string> terminals;
 //grammar as vector
 extern vector<Production> grammar;
+extern vector<vector<int>> parsing_table;
+//necessery funcions
+Symbol translateTokenToSymbol(const Token& token);
+bool isTerminal(Symbol symbol);

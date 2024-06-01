@@ -28,37 +28,6 @@ TYPE stringToType(string key)
 	return ret_val;
 }
 
-void loadTokenList(vector<Token>& tokens)
-{
-	std::ifstream token_file("../ref/tokens");
-	if (token_file.fail())
-	{
-		cout << "Failed to open a file containing tokens" << endl;
-		exit(1);
-	}
-	string line;
-	bool desc = true;
-	string descriptor;
-	string value;
-	while (getline(token_file, line))
-	{
-		for (int i = 0; i < line.length(); i++)
-		{
-			if (desc && line.at(i)=='$')
-				desc = false;
-			else if (desc)
-				descriptor+=line.at(i);
-			else if (!desc)
-				value+=line.at(i);
-		}
-		tokens.push_back(Token{stringToType(descriptor), value});	
-		descriptor="";
-		value="";
-		desc = true;
-	}
-	token_file.close();
-}
-
 int getElement(vector<vector<int>>& prod, vector<string> token_types, Token* curr_token)
 {
 	string token_val;

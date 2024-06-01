@@ -1,6 +1,9 @@
 #include "../inc/production.h"
 
 std::unordered_map<Symbol, string> symbols_map = {
+	{INCLUDE, "INCLUDE"},
+	{GLOBAL, "GLOBAL"},
+	{GLOBALVAR, "GLOBALVAR"},
 	{START,"START"},
 	{FUNCTION,"FUNCTION"},
 	{VARDECL,"VARDECL"},
@@ -71,7 +74,9 @@ std::unordered_map<Symbol, string> symbols_map = {
 	{DIVIDE,"DIVIDE"},
 	{END,"END"},
 	{ERROR,"ERROR"},
-	{EPSILON,"EPSILON"}
+	{EPSILON,"EPSILON"},
+	{GLOBALNE, "GLOBALNE"},
+	{DODAJ, "DODAJ"}
 };
 
 
@@ -112,39 +117,12 @@ std::unordered_map<string, Symbol> terminals_map = {
 	{"- ", MINUS},
 	{"*", MULTIPLY},
 	{"/", DIVIDE},
-	{"$", END}
+	{"$", END},
+	{"dodaj", DODAJ},
+	{"globalne", GLOBALNE}
 };
 
-vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","- ","*","/", "$", "zakres"};
-
-
-Symbol translateTokenToSymbol(const Token& token)
-{
-	switch(token.type)
-	{
-		case TYPE::Id:
-			return IDENTIFIER;
-			break;
-		case TYPE::Str:
-			return CONSTANT;
-			break;
-		case TYPE::Int:
-			return CONSTANT;
-			break;
-		case TYPE::Float:
-			return CONSTANT;
-			break;
-		default:
-			return terminals_map[token.value];
-			break;
-	}
-	return ERROR;
-}
-
-bool isTerminal(Symbol symbol)
-{
-	return (symbol > 29);
-}
+vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","- ","*","/", "$", "zakres","dodaj","globalne"};
 
 std::vector<Production> grammar = {	
 	{VARDECL, {DATATYPE, IDENTIFIER}},
@@ -211,8 +189,79 @@ std::vector<Production> grammar = {
 	{FACTOR, {CONSTANT}},
 	{FACTOR, {OPENING_ROUND, EXPRESSION, CLOSING_ROUND}},
 	{FACTOR, {WYWOLAJ, IDENTIFIER, ARGLIST}},
-	{START, {FUNCTION}},
-	{FUNCTION, {FUNCTIONDECLARATION, BODY}},
-	{FUNCTION, {EPSILON}}
+	{START, {INCLUDE, GLOBAL, FUNCTION}},
+	{FUNCTION, {FUNCTIONDECLARATION, BODY, FUNCTION}},
+	{FUNCTION, {EPSILON}},
+	{INCLUDE, {DODAJ, IDENTIFIER, INCLUDE}},
+	{INCLUDE, {EPSILON}},
+	{GLOBAL, {GLOBALNE, OPENING_CURLY, GLOBALVAR, CLOSING_CURLY}},
+	{GLOBAL, {EPSILON}},
+	{GLOBALVAR, {VARDECL, VARINIT, SEMICOLON, GLOBALVAR}},
+	{GLOBALVAR, {EPSILON}}
 };
 
+vector<vector<int>> parsing_table = {
+					/* { 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39}*/ 				
+	
+/*INCLUDE*/            { 0, 0, 0, 0,69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,68,69},
+/*GLOBAL*/             { 0, 0, 0, 0,71, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,70},
+/*GLOBALVAR*/          {72,72,72,72, 0, 0, 0, 0, 0, 0, 0, 0, 0,73, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+/*START*/              { 0, 0, 0, 0,65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,65,65},
+/*Function*/           { 0, 0, 0, 0,66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,67, 0, 0, 0},
+/*VarDecl*/            { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*DataType*/           { 2, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*FunctionDeclaration*/{ 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ParamList*/          { 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ParamDecls*/         { 8, 8, 8, 8, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ParamDeclsNew*/      { 0, 0, 0, 0, 0, 0, 0, 0,11,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*FuncType*/           { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*Body*/               { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*Statements*/         {14,14,14,14, 0,14, 0, 0, 0, 0, 0, 0, 0,15,14,14,14,14,14,14,14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*Statement*/          {19,19,19,19, 0,20, 0, 0, 0, 0, 0, 0, 0,21,16,17,18,22,23,24,25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*VarInit*/            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,27, 0, 0, 0, 0, 0, 0, 0, 0, 0,26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ForRange*/           { 0, 0, 0, 0, 0,28,28,28, 0, 0, 0, 0, 0, 0, 0, 0, 0,28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ForRangeNew*/        { 0, 0, 0, 0, 0, 0, 0, 0,30,29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ArgList*/            { 0, 0, 0, 0, 0, 0, 0,31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*FuncArgs*/           { 0, 0, 0, 0, 0,32,32,32,33, 0, 0, 0, 0, 0, 0, 0, 0,32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*FuncArgsNew*/        { 0, 0, 0, 0, 0, 0, 0, 0,35,34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ElseClause*/         {37,37,37,37, 0,37, 0, 0, 0, 0, 0, 0, 0, 0,37,37,37,37,37,37,37, 0,36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*Else*/               { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,39, 0, 0, 0, 0, 0, 0, 0,38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*Condition*/          { 0, 0, 0, 0, 0,40,40,40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ConditionNew*/       { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,41,41,41,41,41,41,41,41, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*LogOp*/              { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,43,44,45,46,47,48,49,50, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*AddOp*/              { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,51,52, 0, 0, 0, 0, 0, 0}, 
+/*MulOp*/              { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,53,54, 0, 0, 0, 0}, 
+/*Expression*/         { 0, 0, 0, 0, 0,55,55,55, 0, 0, 0, 0, 0, 0, 0, 0, 0,55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*ExpressionNew*/      { 0, 0, 0, 0, 0, 0, 0, 0,57,57,57,57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,57,57,57,57,57,57,57,57,56,56, 0, 0, 0, 0, 0, 0}, 
+/*Term*/               { 0, 0, 0, 0, 0,58,58,58, 0, 0, 0, 0, 0, 0, 0, 0, 0,58, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*TermNew*/            { 0, 0, 0, 0, 0, 0, 0, 0,60,60,60,60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,60,60,60,60,60,60,60,60,60,60,59,59, 0, 0, 0, 0}, 
+/*Factor*/             { 0, 0, 0, 0, 0,61,62,63, 0, 0, 0, 0, 0, 0, 0, 0, 0,64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+};
+
+Symbol translateTokenToSymbol(const Token& token)
+{
+	switch(token.type)
+	{
+		case TYPE::Id:
+			return IDENTIFIER;
+			break;
+		case TYPE::Str:
+			return CONSTANT;
+			break;
+		case TYPE::Int:
+			return CONSTANT;
+			break;
+		case TYPE::Float:
+			return CONSTANT;
+			break;
+		default:
+			return terminals_map[token.value];
+			break;
+	}
+	return ERROR;
+}
+
+bool isTerminal(Symbol symbol)
+{
+	return (symbol >= ZAKRES);
+}
