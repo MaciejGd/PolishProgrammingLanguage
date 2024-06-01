@@ -6,7 +6,7 @@ using std::string, std::vector, std::cout, std::cin, std::endl;
 vector<char> operators = {'=','+','-','*','/','&','|','>','<', '!'};
 vector<char> separators = {';','[',']','{','}',':','(',')',','};
 //corresponding keywords in cpp: void, int, float, bool, const, break, continue, if, while, for, struct, return
-vector<string> keywords = {"funkcja" ,"nic","dycha", "przecinek", "przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do", "dodaj", "globalne"};
+vector<string> keywords = {"funkcja" ,"nic","dycha", "przecinek", "tekst","wywolaj", "przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do", "zakres", "dodaj", "globalne"};
 
 string typeToString(TYPE type)
 {
@@ -84,43 +84,6 @@ void createToken(vector<string>& lexemes, vector<Token>& tokens)
 		tokens.push_back(Token{lexeme_type, lexemes[i]});
 	}
 }
-
-//void createToken(vector<string>& lexemes, vector<Token>& tokens)
-//{
-//	TYPE lexeme_type;
-//	for (int i = 0; i < lexemes.size(); i++)
-//	{
-//		if (lexemes[i].length()==1)
-//		{
-//			if (find(operators.begin(), operators.end(),lexemes[i].at(0))!=operators.end())	
-//				lexeme_type = TYPE::Op;
-//			else if (find(separators.begin(), separators.end(),lexemes[i].at(0))!=separators.end())	
-//				lexeme_type = TYPE::Sep;
-//		}
-//		else if (lexemes[i] == "==" || lexemes[i]=="<=" || lexemes[i]==">=" || lexemes[i]=="!=")
-//			lexeme_type = TYPE::Op;
-//		else 
-//		{
-//			int is_constant_state;
-//			if (find(keywords.begin(), keywords.end(), lexemes[i])!=keywords.end())		
-//				lexeme_type = TYPE::Key;
-//			else if (lexemes[i].at(0)=='"' && lexemes[i].at(lexemes[i].length()-1)=='"')
-//			{
-//				lexemes[i].erase(lexemes[i].end()-1);
-//				lexemes[i].erase(lexemes[i].begin());
-//				lexeme_type = TYPE::Str;
-//			}
-//			else if ((is_constant_state=isConstant(lexemes[i]))==1)
-//				lexeme_type = TYPE::Int;
-//			else if (is_constant_state==2)
-//				lexeme_type = TYPE::Float;
-//			else 
-//				lexeme_type = TYPE::Id;
-//		}
-//
-//		tokens.push_back(Token{lexeme_type, lexemes[i]});
-//	}
-//}
 
 //function to divide processed line to words to be turned to a tokens 
 void divideToWords(int line_counter, string line, vector<string> &words)
@@ -217,9 +180,6 @@ vector<Token> tokensScan(string file_name)
 			divideToWords(line_counter, line, words);
 		line_counter++;		
 	}	
-	for (const auto& x: words)
-		cout << x << " , ";
-	cout << "\n";
 	createToken(words, tokens);
 	//pushing back end of file token after scanning all file -> necessary for parsing tre
 	tokens.push_back(Token(TYPE::Sep, "$"));	
