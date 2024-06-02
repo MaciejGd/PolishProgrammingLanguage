@@ -5,6 +5,8 @@ using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 void parse(vector<Token>& tokens)
 {
 	int counter = 0;
+	std::vector<Identifier> global_ids;
+	std::vector<Identifier> local_ids;
 	std::stack<Symbol> statement_stack;
 	statement_stack.push(END);
 	statement_stack.push(START);

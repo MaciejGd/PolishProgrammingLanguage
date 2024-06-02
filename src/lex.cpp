@@ -62,13 +62,13 @@ void createToken(vector<string>& lexemes, vector<Token>& tokens)
 			lexeme_type = TYPE::Int;
 		else if (is_constant_state==2)
 			lexeme_type = TYPE::Float; 
-		else if (compareLexeme(keywords, lexemes[i]))
+		else if (vector_search(keywords, lexemes[i]))
 			lexeme_type = TYPE::Key;
 		else if (lexemes[i].length() == 1)
 		{
-			if (compareLexeme(separators, lexemes[i].at(0)))
+			if (vector_search(separators, lexemes[i].at(0)))
 				lexeme_type = TYPE::Sep;
-			else if (compareLexeme(operators, lexemes[i].at(0)))
+			else if (vector_search(operators, lexemes[i].at(0)))
 				lexeme_type = TYPE::Op;
 		}
 		else if (lexemes[i] == "==" || lexemes[i] == "<=" || lexemes[i] == ">=" || lexemes[i] == "!=")
