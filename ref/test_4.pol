@@ -1,0 +1,12 @@
+funkcja nowa ():nic:
+{
+	dla nowa zakres (1,2):
+	{
+		nowa = nowa+1;
+		jesli 4 > 2:
+		{
+			nowa = 12;
+		}
+	}
+
+}

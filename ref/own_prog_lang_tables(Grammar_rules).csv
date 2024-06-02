@@ -1,0 +1,69 @@
+description;number;grammar rule;number;FIRST_SET;FOLLOW_SET
+variable creation ;1;VarDecl = DataType id;1;"FIRST[2],FIRST[3],FIRST[4],FIRST[5] = FIRST[DataType] = {""dycha"",""przecinek"",""tekst"",""nic""}";FIRST[9] = FIRST[ParamDeclsNew]
+int type data;2;"DataType = ""dycha"" ";2;dycha;"id, "":"""
+float type data;3;"DataType = ""przecinek"" ";3;przecinek;"id, "":"""
+string type data;4;"DataType = ""tekst""";4;tekst;"id, "":"""
+void data type;5;"DataType = ""nic""";5;nic;"id, "":"""
+FunctionDeclaration rule;6;"FunctionDeclaration = ""funkcja"" id ParamList FuncType Body";6;funkcja;
+list of parameters to func;7;ParamList = ( ParamDecls );7;(;:
+parameters of function;8;ParamDecls = VarDecl ParamDeclsNew;8;FIRST[1] = FIRST[DataType];)
+end of non terminal;9;ParamDecls = ?;9;FOLLOW[9] = FOLLOW[ParamDecls] = );)
+new argument after coma;10;ParamDeclsNew = ,VarDecl ParamDeclsNew;10;,;)
+end of non terminal;11;ParamDeclsNew = ? ;11;FOLLOW[11] = FOLLOW[ParamDeclsNew] = );)
+return type of function;12;FuncType = :DataType:;12;:;
+Structure of code block;13;Body = {Statements};13;{;
+block of statements;14;Statements = Statement Statements;14;FIRST[17] = FIRST[18] = FIRST[19] = FIRST[20] = FIRST[21] = FIRST[22] =FIRST[23] =FIRST[24] = FIRST[25] = {przestan, dalej, zwroc, FIRST[DataType], id, };}
+end of non-terminal;15;Statements = ?;15;FOLLOW[16] = FOLLOW[StatementsNew];}
+break;16;"Statement  = ""przestan"";";16;przestan;none
+continue;17;"Statement = ""dalej"";";17;dalej;none
+return value;18;"Statement = ""zwroc"" Factor;";18;zwroc;none
+notinitialized var;19;"Statement = VarDecl VarInit;";19;"FIRST[1] = FIRST[DataType] = {""dycha"",""przecinek"",""tekst"", ""nic""}";none
+assigning val to id;20;"Statement = id VarInit;";20;id;none
+end of non-terminal;21;Statement = ?;21;FOLLOW[22] = FOLLOW[Statement];"przestan, dalej, zwroc, dycha, przecinek, tekst, nic, 
+wywolaj,  dopoki, jesli, dla"
+function call;22;"Statement = ""wywo?aj"" id ArgsList";22;"""wywolaj""";
+while loop;23;"Statement = ""dopoki"" Condition: Body";23;"""dopoki""";
+for loop with id as iterator;24;"Statement = ""dla"" id zakres (ForRange): Body";24;"""dla""";
+if coditional statement;25;"Statement = ""jesli"" Condition: Body ElseClause ";25;"""jesli""";
+initializing var;26;VarInit = = Expression;26;=;
+initializing var;27;VarInit = ?;27;FOLLOW[27] = FOLLOW[VarInit];";"
+range for a for loop;28;ForRange = Expression ForRangeNew;28;"FIRST[55] = {id, const, ""wywolaj"" (}";
+second arg to range;29;ForRangeNew = , Expression;29;,;
+end of non-terminal;30;ForRangeNew = ?;30;FIRST[31] = FOLLOW[31];)
+arguments list;31;ArgList = ( FuncArgs );31;(;
+expand of arguments;32;FuncArgs = Expression FuncArgsNew;32;"FIRST[54] = FIRST[Expression] = {id, const, ""wywolaj"" (}";
+end of non-terminal;33;FuncArgs = ?;33;;)
+new args after coma;34;FuncArgsNew = , Expression FuncArgsNew;34;,;
+end of non-terminal;35;FuncArgsNew = ?;35;FOLLOW[35] = FOLLOW[FuncArgsNew];, )
+else if clause;36;"ElseClause = ""inaczej"" Else";36;"""inaczej'";
+else clause jump;37;ElseClause = ?;37;FOLLOW[37] = FOLLOW[ElseClause];FOLLOW[ElseClause] = }
+else clause;38;"Else=""je?li"" Condition: Body ElseClause";38;"""jesli""";}
+end of non-terminal;39;Else = Body;39;{;FOLLOW[Else] = }
+Conditional statement;40;Condition = Expression ConditionNew;40;"{id, const, ""wywolaj"" (}";:
+New clause for adding statements added;41; ConditionNew = LogOp Expression ConditionNew;41;"{""=="",""!="","">"",""<"","">="",""""<=""}";FOLLOW[ConditionNew] = :
+end of non-terminal;42;ConditionNew = ?;42;FOLLOW[42] = FOLLOW[ConditionNew];FOLLOW[ConditionNew] = :
+Logical operators;43;"LogOp -> ""=="" ";43;;
+;44;"LogOp -> ""!="" ";44;;
+;45;"LogOp -> "">"" ";45;;
+;46;"LogOp -> ""<"" ";46;;
+;47;"LogOp -> "">=""";47;;
+;48;"LogOp -> ""<=""";48;;
+;49;"LogOp -> ""&""";49;;
+;50;"LogOp -> ""|""";50;;
+Add operators;51;"AddOp -> ""+"" ";51;;
+;52;"AddOp -> ""-"" ";52;;
+MulOperators;53;"MulOp -> ""*""";53;;
+;54;"MulOp -> ""/""";54;;
+Expression;55;Expression = Term ExpressionNew;55;"{id, const, ""wywolaj"" (}";"FOLLOW[Expression] = {LogOps, :, "","",),;}"
+Expression without left recursion;56;ExpressionNew = AddOp Term ExpressionNew;56;"{""+"", ""-""}";
+end of non terminal;57;ExpressionNew = ?;57; ;FOLLOW[ExpressionNew] = FOLLOW[Expression]
+Term;58;Term = Factor TermNew;58;"{id, const, ""wywolaj"" (}";"FOLLOW[Term] = {+, -, LogOps, :, "","",  ), ;}"
+Term without left recursion;59;TermNew = MulOp Factor TermNew;59;"{""*"", ""/""}";
+end of non-terminal;60;TermNew = ?;60;FOLLOW[60] = FOLLOW[TermNew];FOLLOW[TermNew] = FOLLOW[Term]
+Factor as id, const, or expr in ();61;Factor = {id};61;id;
+;62;Factor = {const};62;const;
+;63;Factor = {( Expression )};63;(;
+;64;"Factor = ""wywolaj"" id ArgList";64;wywolaj;
+;65;Start = Function;65;;
+;66;Function = FunctionDeclaration Block Function;66;;
+;67;Function = epsilon;67;;
