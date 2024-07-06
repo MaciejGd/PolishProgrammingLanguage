@@ -1,0 +1,18 @@
+first things first
+how to verify correctness of parsing process, when it comes to syntax everything is fine but in terms of logical analysis i did not provide any check.
+
+checks for correctness what is available now.
+
+error("Cannot convert string to int")
+[] -> dycha nowa = "diawjdiajw woakdoa"; -> wrong data type passed
+error("Warning implicit conversion from float to int")
+[] -> dycha nowa = 12.2;
+[] -> usage of identifier that has not been declared
+[] -> usage of variable identifier as function call
+[] ->
+[] ->
+[] ->
+
+
+first idea -> some kind of table for storing the identifiers with proper information attached
+

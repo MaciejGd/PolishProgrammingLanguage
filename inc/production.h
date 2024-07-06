@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "lex.h"
 
+//values of enum in order in which it is placed in parsing table, changing places strictly forbidden
 enum Symbol {
 	INCLUDE,
 	GLOBAL,
@@ -36,6 +37,7 @@ enum Symbol {
 	TERM,
 	TERMNEW,
 	FACTOR,
+	EPSILON,
 	ZAKRES,
 	DYCHA,
 	PRZECINEK,
@@ -76,7 +78,7 @@ enum Symbol {
 	DIVIDE,
 	END,
 	ERROR,
-	EPSILON,
+	// EPSILON,
 	GLOBALNE,
 	DODAJ
 };

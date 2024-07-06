@@ -5,5 +5,5 @@
 #include "production.h"
 #include "transpiler.h"
 
-
-void parse(vector<Token>& tokens);
+int analyze_identifier(Symbol previous, Symbol id);
+int parse(const vector<Token>& tokens);

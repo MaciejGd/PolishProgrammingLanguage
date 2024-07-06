@@ -21,15 +21,9 @@ const std::string Identifier::getName() const
 	return name;
 }
 
+//no need for this function, can use function called vector_search from lex.h
 bool id_Status(const vector<Identifier>& vec, const Identifier& id)
 {
 	return (std::find(vec.begin(), vec.end(), id)!=vec.end());
 }
 
-//bool is_Status(const vector<Identifier>& vec, const Identifier& id)
-//{
-//	return (std::find_if(vec.begin(), vec.end(), [&](const auto x)
-//				{
-//					return 	id.getName() == x.getName();
-//				})!=vec.end());
-//}

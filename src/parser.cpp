@@ -2,27 +2,39 @@
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
-void parse(vector<Token>& tokens)
+int analyze_identifier()
+{
+	return 0;
+}
+
+
+int parse(const vector<Token>& tokens)
 {
 	int counter = 0;
+	int error = 0;
+
 	std::vector<Identifier> global_ids;
 	std::vector<Identifier> local_ids;
+	Symbol prev_sym;
 	std::stack<Symbol> statement_stack;
 	statement_stack.push(END);
 	statement_stack.push(START);
 	while (!statement_stack.empty())
 	{
 		Symbol parse_symbol = statement_stack.top();
+		//debug purpose only
+		std::stack<Symbol> temp = statement_stack;
 		statement_stack.pop();
-		if (isTerminal(parse_symbol))
-		{
-			if (parse_symbol == translateTokenToSymbol(tokens[counter]))
-				counter++;
-		}	
-		else if (parse_symbol == EPSILON)
+		if (parse_symbol == EPSILON)
 		{
 			continue;
 		}
+		else if (isTerminal(parse_symbol) && (parse_symbol))
+		{
+			//if (terminals_map[tokens[counter]]==parse_symbol)
+			//need to check for a logic in checking
+			counter++;
+		}	
 		else 
 		{
 			//count x and y coordinates from parsing table
@@ -38,6 +50,9 @@ void parse(vector<Token>& tokens)
 			if (statement_index == 0)
 			{
 				cout << " Error while parsing non-terminal: " << symbols_map[parse_symbol] << " in token: " << tokens[counter].value << "\n";
+				cout << "Parsing table indexes: " << parse_symbol << ":" << terminal_index << "\n";
+				//errror indicator
+				error = 1;
 			}
 			else {
 				//pushing on stack Symbols in reverse order
@@ -49,5 +64,6 @@ void parse(vector<Token>& tokens)
 			}
 		}
 	}
+	return error;
 }
 
