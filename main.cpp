@@ -5,6 +5,7 @@
 
 namespace fs = std::filesystem;
 
+//have to consider moving test functions to another file and then just link it
 int runTests()
 {
 	const char *test_path = "./tests/";
@@ -64,8 +65,12 @@ int main(int argc, char **argv)
 	{
 		std::string path_to_test = "./tests/" + std::string(argv[i]);
 		std::vector<Token> token_list = tokensScan(path_to_test);
-		if (parse(token_list))
+		int error_code;
+		if (!(error_code = parse(token_list)))
 			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
+		else {
+			std::cout << "File: " << argv[i] << "could not be parsed!!! Error code: " << error_code << "\n";
+		}
 	}
 	//debug purpose all files checking at once
 	//check for path being regular file

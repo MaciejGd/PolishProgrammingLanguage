@@ -32,7 +32,7 @@ void Token::printToken() const
 }
 
 //function for checking if lexem is constant integer or float if return value is equal to 2 it is a float, if it returns 1 it is integer and when 0 it is not
-int isConstant(string lexem)
+int isConstant(const string& lexem)
 {
 	bool dot = false;
 	for (int i = 0; i < lexem.length(); i++)
@@ -44,6 +44,9 @@ int isConstant(string lexem)
 			else
 				return 0;
 		}
+		//have to make some changes to a lexer to properly create token from a minus number
+		else if (lexem.at(0)=='-')
+			continue;
 		else if (!std::isdigit(lexem.at(i)))
 			return 0;			
 	}
@@ -86,7 +89,7 @@ void createToken(vector<string>& lexemes, vector<Token>& tokens)
 }
 
 //function to divide processed line to words to be turned to a tokens 
-void divideToWords(int line_counter, string line, vector<string> &words)
+void divideToWords(int line_counter, const string& line, vector<string> &words)
 {
 	
 	string actual_word;
@@ -156,12 +159,12 @@ void divideToWords(int line_counter, string line, vector<string> &words)
 		words.push_back(actual_word);
 	if (string_const)
 	{
-		cout << "Problem detected in line:" << ++line_counter << " ->no ending quotation mark \" detected" << endl;
+		cout << "[ERROR]No closing quotation mark spotted in line" << ++line_counter << endl;
 		exit(1);
 	}
 }
 
-vector<Token> tokensScan(string file_name)
+vector<Token> tokensScan(const string& file_name)
 {
 	vector<string> words;
 	vector<Token> tokens;

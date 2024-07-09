@@ -1,0 +1,6 @@
+dodaj nowa
+
+funkcja main (przecinek nowa1, dycha nowa2):tekst:
+{
+  zwroc nowa1+nowa2;
+}

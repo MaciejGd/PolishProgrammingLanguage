@@ -29,11 +29,16 @@ int parse(const vector<Token>& tokens)
 		{
 			continue;
 		}
-		else if (isTerminal(parse_symbol) && (parse_symbol))
+		else if (isTerminal(parse_symbol))
 		{
-			//if (terminals_map[tokens[counter]]==parse_symbol)
-			//need to check for a logic in checking
+			Symbol current_token = translateTokenToSymbol(tokens[counter]);
+			if (current_token != parse_symbol)
+			{
+				std::cout << "[PARSING_ERROR][WRONG_TERMINAL_USED] Used terminal: " << symbols_map[translateTokenToSymbol(tokens[counter])] << " should be used: " << symbols_map[parse_symbol]<<"\n";	
+				error = 1;
+			}
 			counter++;
+
 		}	
 		else 
 		{

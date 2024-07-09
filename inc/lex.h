@@ -28,7 +28,7 @@ struct Token {
 	void printToken() const;
 };
 
-int isConstant(string lexem);
+int isConstant(const string& lexem);
 
 template<typename T>
 bool vector_search(const vector<T>& compare_set, T lexeme)
@@ -37,6 +37,6 @@ bool vector_search(const vector<T>& compare_set, T lexeme)
 }
 
 void createToken(const vector<string>& lexemes, vector<Token>& tokens);
-void divideToWords(int line_counter, string line, vector<string> &words);
-vector<Token> tokensScan(string file_name);
+void divideToWords(int line_counter, const string& line, vector<string> &words);
+vector<Token> tokensScan(const string& file_name);
 

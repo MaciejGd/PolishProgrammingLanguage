@@ -1,0 +1,31 @@
+dodaj nowa2
+dodaj nowa3
+
+globalne {
+  
+}
+
+funkcja test1 ():nic: 
+{
+  jesli 2 > 3:
+  {
+    jesli 3 < 2:
+    {
+      var = 23;
+    }
+    inaczej jesli 12 == 32:
+    {
+      jesli 12 != 43:
+      {
+
+      }
+      inaczej
+      {
+        dla nowa zakres (32,1):
+        {
+          test_var=test_var+1;
+        }
+      }
+    }
+  }
+}
