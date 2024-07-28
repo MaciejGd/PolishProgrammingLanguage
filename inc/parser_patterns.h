@@ -4,7 +4,6 @@
 #include "lex.h"
 
 //non-terminals
-class VarDecl;
 class Include;
 class Global;
 class GlobalVar;
@@ -509,12 +508,5 @@ public:
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 //*** END OF TERMINALS ***
-
-class SymbolFactory {
-public:
-  Symbol* getSymbol(const Token& token){
-    //here need to add implementation of turning token to a symbol class
-  }
-};
 
 #endif
