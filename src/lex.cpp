@@ -45,8 +45,9 @@ int isConstant(const string& lexem)
 				return 0;
 		}
 		//have to make some changes to a lexer to properly create token from a minus number
-		else if (lexem.at(0)=='-')
-			continue;
+		//this snippet brings more errors for now on 
+		// else if (lexem.at(0)=='-')
+		// 	continue;
 		else if (!std::isdigit(lexem.at(i)))
 			return 0;			
 	}
@@ -58,6 +59,7 @@ int isConstant(const string& lexem)
 void createToken(vector<string>& lexemes, vector<Token>& tokens)
 {
 	TYPE lexeme_type;
+	//here need to add some logic responsible for proper processing of minus values
 	for (int i = 0; i < lexemes.size(); i++)
 	{
 		int is_constant_state = isConstant(lexemes[i]);
@@ -87,7 +89,7 @@ void createToken(vector<string>& lexemes, vector<Token>& tokens)
 		tokens.push_back(Token{lexeme_type, lexemes[i]});
 	}
 }
-
+//have to reconsider merging createToken with divideToWords functions
 //function to divide processed line to words to be turned to a tokens 
 void divideToWords(int line_counter, const string& line, vector<string> &words)
 {

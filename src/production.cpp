@@ -115,15 +115,16 @@ std::unordered_map<string, Symbol> terminals_map = {
 	{"&", AND_OP},
 	{"|", OR_OP},
 	{"+", PLUS},
-	{"- ", MINUS},
+	{"-", MINUS},
 	{"*", MULTIPLY},
 	{"/", DIVIDE},
 	{"$", END},
 	{"dodaj", DODAJ},
 	{"globalne", GLOBALNE}
 };
-
-vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","- ","*","/", "$", "zakres","dodaj","globalne"};
+//debug purposes
+                                /*   1  ,     2     ,   3   ,  4  ,    5    ,  6 ,   7   , 8 , 9 , 10, 11, 12, 13, 14,    15    ,   16  ,  17   ,    18   ,   19   , 20  ,   21  , 22,   23    , 24 , 25 , 26, 27, 28 , 30 , 31, 32, 33, 34, 35, 36,  37,   38    ,  40   ,   41     */
+vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","-","*","/", "$", "zakres","dodaj","globalne"};
 
 std::vector<Production> grammar = {	
 /* 1*/{VARDECL, {DATATYPE, IDENTIFIER}},
@@ -198,11 +199,18 @@ std::vector<Production> grammar = {
 /*70*/{GLOBAL, {GLOBALNE, OPENING_CURLY, GLOBALVAR, CLOSING_CURLY}},
 /*71*/{GLOBAL, {EPSILON}},
 /*72*/{GLOBALVAR, {VARDECL, VARINIT, SEMICOLON, GLOBALVAR}},
-/*73*/{GLOBALVAR, {EPSILON}}
+/*73*/{GLOBALVAR, {EPSILON}},
+//for testing purposes 
+/*74*/{EXPRESSION, {ADDOP, TERM, EXPRESSIONNEW}}
 };
 
+//debug purposes
+                                  /*   1  ,     2     ,   3   ,  4  ,    5    ,  6 ,   7   , 8 , 9 , 10, 11, 12, 13, 14,    15    ,   16  ,  17   ,    18   ,   19   , 20  ,   21  , 22,   23    , 24 , 25 , 26, 27, 28 , 29 , 30, 31, 32, 33, 34, 35,  36,   37    ,  38   ,   39     */
+//vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","-","*","/", "$", "zakres","dodaj","globalne"};
+
+//here also added into an expression
 vector<vector<int>> parsing_table = {
-					/* { 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39}*/ 				
+										/* { 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39}*/ 				
 	
 /*INCLUDE*/            { 0, 0, 0, 0,69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,68,69},
 /*GLOBAL*/             { 0, 0, 0, 0,71, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,70},
@@ -232,7 +240,7 @@ vector<vector<int>> parsing_table = {
 /*LogOp*/              { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,43,44,45,46,47,48,49,50, 0, 0, 0, 0, 0, 0, 0, 0}, 
 /*AddOp*/              { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,51,52, 0, 0, 0, 0, 0, 0}, 
 /*MulOp*/              { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,53,54, 0, 0, 0, 0}, 
-/*Expression*/         { 0, 0, 0, 0, 0,55,55,55, 0, 0, 0, 0, 0, 0, 0, 0, 0,55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+/*Expression*/         { 0, 0, 0, 0, 0,55,55,55, 0, 0, 0, 0, 0, 0, 0, 0, 0,55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,73, 0, 0, 0, 0, 0}, 
 /*ExpressionNew*/      { 0, 0, 0, 0, 0, 0, 0, 0,57,57,57,57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,57,57,57,57,57,57,57,57,56,56, 0, 0, 0, 0, 0, 0}, 
 /*Term*/               { 0, 0, 0, 0, 0,58,58,58, 0, 0, 0, 0, 0, 0, 0, 0, 0,58, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
 /*TermNew*/            { 0, 0, 0, 0, 0, 0, 0, 0,60,60,60,60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,60,60,60,60,60,60,60,60,60,60,59,59, 0, 0, 0, 0}, 

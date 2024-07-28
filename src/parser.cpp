@@ -2,12 +2,6 @@
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
-int analyze_identifier()
-{
-	return 0;
-}
-
-
 int parse(const vector<Token>& tokens)
 {
 	int counter = 0;
@@ -36,6 +30,11 @@ int parse(const vector<Token>& tokens)
 			{
 				std::cout << "[PARSING_ERROR][WRONG_TERMINAL_USED] Used terminal: " << symbols_map[translateTokenToSymbol(tokens[counter])] << " should be used: " << symbols_map[parse_symbol]<<"\n";	
 				error = 1;
+				for (int i = statement_stack.size()-1; i >= 0; i--)
+				{
+					std::cout << "Stack symbol at index: " << i << " -> " << symbols_map[statement_stack.top()] << std::endl;
+					statement_stack.pop();
+				}
 			}
 			counter++;
 

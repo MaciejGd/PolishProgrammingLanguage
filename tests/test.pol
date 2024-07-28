@@ -1,12 +1,10 @@
 dodaj nowa
 dodaj nowa2
 
-globalne 
-funkcja
-	dycha kaska = 12;
-	przecinek nowa;
+globalne {
+dycha kaska = 12;
+przecinek nowa;
 }
-
 
 funkcja test_1 (dycha first_var, przecinek test_var):nic:
 {

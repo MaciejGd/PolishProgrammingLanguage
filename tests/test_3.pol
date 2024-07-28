@@ -1,4 +1,5 @@
-jesli 2 > 3:
+funkcja main():nic:
 {
-
+  jesli 2 > 3:
+  {}
 }

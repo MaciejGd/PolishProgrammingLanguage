@@ -21,9 +21,9 @@ funkcja test1 ():nic:
       }
       inaczej
       {
-        dla nowa zakres (32,1):
+        dla nowa zakres (-32,1):
         {
-          test_var=test_var+1;
+          test_var=12-1;
         }
       }
     }

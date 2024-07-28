@@ -69,7 +69,7 @@ int main(int argc, char **argv)
 		if (!(error_code = parse(token_list)))
 			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
 		else {
-			std::cout << "File: " << argv[i] << "could not be parsed!!! Error code: " << error_code << "\n";
+			std::cout << "File: " << argv[i] << " could not be parsed!!! Error code: " << error_code << "\n";
 		}
 	}
 	//debug purpose all files checking at once
