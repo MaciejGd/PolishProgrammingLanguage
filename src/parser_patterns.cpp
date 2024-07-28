@@ -7,9 +7,9 @@ const std::string Symbol::getName() const
 }
 
 //*** NON-TERMINALS ***
-int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  if (token=="dycha" || token=="przecinek" || token=="tekst" || token=="nic")
+  if (token.value=="dycha" || token.value=="przecinek" || token.value=="tekst" || token.value=="nic")
   {
     sym_stack.push_back(new DataType{});
     sym_stack.push_back(new Identifier{});
@@ -19,13 +19,13 @@ int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token
   return 1;
 }
 
-int Include::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Include::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  if (token == "funkcja" || token == "globalne")
+  if (token.value == "funkcja" || token.value == "globalne")
   {
     sym_stack.push_back(new Epsilon{});
   }
-  else if (token == "dodaj")
+  else if (token.value == "dodaj")
   {
     sym_stack.push_back(new Include{});
     sym_stack.push_back(new Identifier{});
@@ -37,13 +37,13 @@ int Include::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token
   return 0;
 }
 
-int Global::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Global::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  if (token == "funkcja")
+  if (token.value == "funkcja")
   {
     sym_stack.push_back(new Epsilon{});
   }
-  else if (token == "globalne")
+  else if (token.value == "globalne")
   {
     sym_stack.push_back(new Globalne{});
     sym_stack.push_back(new OpeningCurly{});
@@ -56,380 +56,381 @@ int Global::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
   return 0;
 }
 
-int GlobalVar::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int GlobalVar::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+{
+  if (token.value == "dycha" | token.value == "przecinek" || token.value == "")
+  return 0;
+}
+
+int Start::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Start::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Function::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Function::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int DataType::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int DataType::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int FunctionDeclaration::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int FunctionDeclaration::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ParamList::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ParamList::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ParamDecls::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ParamDecls::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ParamDeclsNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ParamDeclsNew::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int FuncType::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int FuncType::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Body::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Body::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Statements::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Statements::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Statement::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Statement::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int VarInit::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int VarInit::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ForRange::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ForRange::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ForRangeNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ForRangeNew::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ArgList::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ArgList::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int FuncArgs::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int FuncArgs::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int FuncArgsNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int FuncArgsNew::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ElseClause::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ElseClause::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Else::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Else::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Condition::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Condition::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ConditionNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ConditionNew::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int LogOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int LogOp::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int AddOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int AddOp::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int MulOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int MulOp::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Expression::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Expression::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ExpressionNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ExpressionNew::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Term::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Term::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int TermNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int TermNew::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
-{
-  return 0;
-}
-
-int Factor::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Factor::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
 //*** TERMINALS ***
-int Zakres::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Zakres::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Dycha::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Dycha::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Przecinek::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Przecinek::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Tekst::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Tekst::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Nic::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Nic::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Funkcja::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Funkcja::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Identifier::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Identifier::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Constant::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Constant::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int OpeningRound::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int OpeningRound::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ClosingRound::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ClosingRound::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Coma::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Coma::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Colon::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Colon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Semicolon::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Semicolon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int OpeningCurly::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int OpeningCurly::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ClosingCurly::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ClosingCurly::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int OpeningSquare::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int OpeningSquare::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int ClosingSquare::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int ClosingSquare::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Przestan::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Przestan::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Dalej::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Dalej::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Zwroc::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Zwroc::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Wywolaj::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Wywolaj::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Dopoki::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Dopoki::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Dla::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Dla::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Jesli::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Jesli::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Assign::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Assign::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Inaczej::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Inaczej::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int DoubleEqual::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int DoubleEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int NotEqual::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int NotEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int More::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int More::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Less::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Less::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int MoreEqual::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int MoreEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int LessEqual::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int LessEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int AndOp::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int AndOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int OrOp::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int OrOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Plus::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Plus::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Minus::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Minus::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Multiply::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Multiply::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Divide::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Divide::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int End::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int End::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Error::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Error::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Epsilon::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Epsilon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Globalne::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Globalne::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
-int Dodaj::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int Dodaj::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
 
 
 
-int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const std::string &token)
+int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   return 0;
 }
