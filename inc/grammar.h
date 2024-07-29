@@ -2,6 +2,22 @@
 #define PARSER
 
 #include "lex.h"
+#include <memory>
+
+class Symbol;
+
+//Node of AST(Abstract Syntax Tree)
+//structure of node class and implementation needs further investigation
+// class AST_Node {
+//   Symbol* value;
+//   std::vector<Symbol*> children;
+// public:
+//   AST_Node();
+//   void addChild();
+//   //acessors
+//   const Symbol* getValue() const;
+//   const std::vector<std::shared_ptr<Symbol*>> getChildren() const;
+// };
 
 //non-terminals
 class Include;
@@ -85,6 +101,7 @@ class Dodaj;
 //end of terminals
 
 class Symbol {
+protected:
   std::vector<Symbol*> rhs;
   std::string name;
 public:
@@ -93,418 +110,460 @@ public:
 };
 
 class VarDecl : public Symbol {
-  std::string name = "VarDecl";
 public:
+  VarDecl();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 //start of non-terminal
 class Include : public Symbol {
-  std::string name = "Include";
 public:
+  Include();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Global : public Symbol {
-  std::string name = "Global";
 public:
+  Global();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class GlobalVar : public Symbol {
-  std::string name = "GlobalVar";
 public:
+  GlobalVar();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Start : public Symbol {
-  std::string name = "Start";
 public:
+  Start();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Function : public Symbol {
-  std::string name = "Function";
 public:
+  Function();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class DataType : public Symbol {
-  std::string name = "DataType";
 public:
+  DataType();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class FunctionDeclaration : public Symbol {
-  std::string name = "FunctionDeclaration";
 public:
+  FunctionDeclaration();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ParamList : public Symbol {
-  std::string name = "ParamList";
 public:
+  ParamList();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ParamDecls : public Symbol {
-  std::string name = "ParamDecls";
 public:
+  ParamDecls();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ParamDeclsNew : public Symbol {
-  std::string name = "ParamDeclsNew";
 public:
+  ParamDeclsNew();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class FuncType : public Symbol {
-  std::string name = "FuncType";
 public:
+  FuncType();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Body : public Symbol {
-  std::string name = "Body";
 public:
+  Body();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Statements : public Symbol {
-  std::string name = "Satements";
 public:
+  Statements();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Statement : public Symbol {
-  std::string name = "Statement";
 public:
+  Statement();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class VarInit : public Symbol {
-  std::string name = "VarInit";
 public:
+  VarInit();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ForRange : public Symbol {
-  std::string name = "ForRange";
 public:
+  ForRange();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ForRangeNew : public Symbol {
-  std::string name = "ForRangeNew";
 public:
+  ForRangeNew();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ArgList : public Symbol {
-  std::string name = "ArgList";
 public:
+  ArgList();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class FuncArgs : public Symbol {
-  std::string name = "FuncArgs";
 public:
+  FuncArgs();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class FuncArgsNew : public Symbol {
-  std::string name = "FuncArgsNew";
 public:
+  FuncArgsNew();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ElseClause : public Symbol {
-  std::string name = "ElseClause";
 public:
+  ElseClause();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Else : public Symbol {
-  std::string name = "Else";
 public:
+  Else();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Condition : public Symbol {
-  std::string name = "Condition";
 public:
+  Condition();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ConditionNew : public Symbol {
-  std::string name = "ConditionNew";
 public:
+  ConditionNew();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class LogOp : public Symbol {
-  std::string name = "LogOp";
 public:
+  LogOp();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class AddOp : public Symbol {
-  std::string name = "AddOp";
 public:
+  AddOp();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class MulOp : public Symbol {
-  std::string name = "MulOp";
 public:
+  MulOp();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Expression : public Symbol {
-  std::string name = "Expression";
 public:
+  Expression();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class ExpressionNew : public Symbol {
-  std::string name = "ExpressionNew";
 public:
+  ExpressionNew();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Term : public Symbol {
-  std::string name = "Term";
 public:
+  Term();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class TermNew : public Symbol {
-  std::string name = "TermNew";
 public:
+  TermNew();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 
 class Factor : public Symbol {
-  std::string name = "Factor";
 public:
+  Factor();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 //end of non terminals
 //*** TERMINALS ***
 class Zakres : public Symbol {
-  std::string name = "Zakres";
 public:
+  Zakres();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Dycha : public Symbol {
-  std::string name = "Dycha";
 public:
+  Dycha();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Przecinek : public Symbol {
-  std::string name = "Przecinek";
 public:
+  Przecinek();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Tekst : public Symbol {
-  std::string name = "Tekst";
 public:
+  Tekst();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Nic : public Symbol {
-  std::string name = "Nic";
 public:
+  Nic();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Funkcja : public Symbol {
-  std::string name = "Funkcja";
 public:
+  Funkcja();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Identifier : public Symbol {
-  std::string name = "Identifier";
 public:
+  Identifier();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Constant : public Symbol {
-  std::string name = "Constant";
 public:
+  Constant();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class OpeningRound : public Symbol {
-  std::string name = "OpeningRound";
 public:
+  OpeningRound();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class ClosingRound : public Symbol {
-  std::string name = "ClosingRound";
 public:
+  ClosingRound();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Coma : public Symbol {
-  std::string name = "Coma";
 public:
+  Coma();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Colon : public Symbol {
-  std::string name = "Colon";
 public:
+  Colon();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Semicolon : public Symbol {
-  std::string name = "Semicolon";
 public:
+  Semicolon();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class OpeningCurly : public Symbol {
-  std::string name = "OpeningCurly";
 public:
+  OpeningCurly();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class ClosingCurly : public Symbol {
-  std::string name = "ClosingCurly";
 public:
+  ClosingCurly();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class OpeningSquare : public Symbol {
-  std::string name = "OpeningSquare";
 public:
+  OpeningSquare();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class ClosingSquare : public Symbol {
-  std::string name = "ClosingSquare";
 public:
+  ClosingSquare();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Przestan : public Symbol {
-  std::string name = "Przestan";
 public:
+  Przestan();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Dalej : public Symbol {
-  std::string name = "Dalej";
 public:
+  Dalej();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Zwroc : public Symbol {
-  std::string name = "Zwroc";
 public:
+  Zwroc();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Wywolaj : public Symbol {
-  std::string name = "Wywolaj";
 public:
+  Wywolaj();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Dopoki : public Symbol {
-  std::string name = "Dopoki";
 public:
+  Dopoki();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Dla : public Symbol {
-  std::string name = "Dla";
 public:
+  Dla();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Jesli : public Symbol {
-  std::string name = "Jesli";
 public:
+  Jesli();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Assign : public Symbol {
-  std::string name = "Assign";
 public:
+  Assign();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Inaczej : public Symbol {
-  std::string name = "Inaczej";
 public:
+  Inaczej();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class DoubleEqual : public Symbol {
-  std::string name = "DoubleEqual";
 public:
+  DoubleEqual();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class NotEqual : public Symbol {
-  std::string name = "NotEqual";
 public:
+  NotEqual();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class More : public Symbol {
-  std::string name = "More";
 public:
+  More();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Less : public Symbol {
-  std::string name = "Less";
 public:
+  Less();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class MoreEqual : public Symbol {
-  std::string name = "MoreEqual";
 public:
+  MoreEqual();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class LessEqual : public Symbol {
-  std::string name = "LessEqual";
 public:
+  LessEqual();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class AndOp : public Symbol {
-  std::string name = "AndOp";
 public:
+  AndOp();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class OrOp : public Symbol {
-  std::string name = "OrOp";
 public:
+  OrOp();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Plus : public Symbol {
-  std::string name = "Plus";
 public:
+  Plus();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Minus : public Symbol {
-  std::string name = "Minus";
 public:
+  Minus();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Multiply : public Symbol {
-  std::string name = "Multiply";
 public:
+  Multiply();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Divide : public Symbol {
-  std::string name = "Divide";
 public:
+  Divide();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class End : public Symbol {
-  std::string name = "End";
 public:
+  End();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Error : public Symbol {
-  std::string name = "Error";
 public:
+  Error();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Epsilon : public Symbol {
-  std::string name = "Epsilon";
 public:
+  Epsilon();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Globalne : public Symbol {
-  std::string name = "Globalne";
 public:
+  Globalne();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
+
 class Dodaj : public Symbol {
-  std::string name = "Symbol";
 public:
+  Dodaj();
   int evaluate(std::vector<Symbol*>& sym_stack, const Token& token) override;
 };
 //*** END OF TERMINALS ***

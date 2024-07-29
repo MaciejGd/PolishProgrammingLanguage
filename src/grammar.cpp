@@ -1,9 +1,329 @@
-#include "../inc/parser_patterns.h"
+#include "../inc/grammar.h"
 
 const std::string Symbol::getName() const
 {
   return name;
 }
+
+//Non terminal constructors:
+Include::Include()
+{
+  name = "Include";
+}
+Global::Global()
+{
+  name = "Global";
+}
+GlobalVar::GlobalVar()
+{
+  name = "GlobalVar";
+}
+Start::Start()
+{
+  name = "Start";
+}
+Function::Function()
+{
+  name = "Function";
+}
+VarDecl::VarDecl()
+{
+  name = "VarDecl";
+}
+DataType::DataType()
+{
+  name = "DataType";
+}
+FunctionDeclaration::FunctionDeclaration()
+{
+  name = "FunctionDeclarati";
+}
+ParamList::ParamList()
+{
+  name = "ParamList";
+}
+ParamDecls::ParamDecls()
+{
+  name = "ParamDecls";
+}
+ParamDeclsNew::ParamDeclsNew()
+{
+  name = "ParamDeclsNew";
+}
+FuncType::FuncType()
+{
+  name = "FuncType";
+}
+Body::Body()
+{
+  name = "Body";
+}
+Statements::Statements()
+{
+  name = "Statements";
+}
+Statement::Statement()
+{
+  name = "Statement";
+}
+VarInit::VarInit()
+{
+  name = "VarInit";
+}
+ForRange::ForRange()
+{
+  name = "ForRange";
+}
+ForRangeNew::ForRangeNew()
+{
+  name = "ForRangeNew";
+}
+ArgList::ArgList()
+{
+  name = "ArgList";
+}
+FuncArgs::FuncArgs()
+{
+  name = "FuncArgs";
+}
+FuncArgsNew::FuncArgsNew()
+{
+  name = "FuncArgsNew";
+}
+ElseClause::ElseClause()
+{
+  name = "ElseClause";
+}
+Else::Else()
+{
+  name = "Else";
+}
+Condition::Condition()
+{
+  name = "Condition";
+}
+ConditionNew::ConditionNew()
+{
+  name = "ConditionNew";
+}
+LogOp::LogOp()
+{
+  name = "LogOp";
+}
+AddOp::AddOp()
+{
+  name = "AddOp";
+}
+MulOp::MulOp()
+{
+  name = "MulOp";
+}
+Expression::Expression()
+{
+  name = "Expression";
+}
+ExpressionNew::ExpressionNew()
+{
+  name = "ExpressionNew";
+}
+Term::Term()
+{
+  name = "Term";
+}
+TermNew::TermNew()
+{
+  name = "TermNew";
+}
+Factor::Factor()
+{
+  name = "Factor";
+}
+
+//terminals constructors:
+Zakres::Zakres()
+{
+  name = "Zakres";
+};
+Dycha::Dycha()
+{
+  name = "Dycha";
+};
+Przecinek::Przecinek()
+{
+  name = "Przecinek";
+};
+Tekst::Tekst()
+{
+  name = "Tekst";
+};
+Nic::Nic()
+{
+  name = "Nic";
+};
+Funkcja::Funkcja()
+{
+  name = "Funkcja";
+};
+Identifier::Identifier()
+{
+  name = "Identifier";
+};
+Constant::Constant()
+{
+  name = "Constant";
+};
+OpeningRound::OpeningRound()
+{
+  name = "OpeningRound";
+};
+ClosingRound::ClosingRound()
+{
+  name = "ClosingRound";
+};
+Coma::Coma()
+{
+  name = "Coma";
+};
+Colon::Colon()
+{
+  name = "Colon";
+};
+Semicolon::Semicolon()
+{
+  name = "Semicolon";
+};
+OpeningCurly::OpeningCurly()
+{
+  name = "OpeningCurly";
+};
+ClosingCurly::ClosingCurly()
+{
+  name = "ClosingCurly";
+};
+OpeningSquare::OpeningSquare()
+{
+  name = "OpeningSquare";
+};
+ClosingSquare::ClosingSquare()
+{
+  name = "ClosingSquare";
+};
+Przestan::Przestan()
+{
+  name = "Przestan";
+};
+Dalej::Dalej()
+{
+  name = "Dalej";
+};
+Zwroc::Zwroc()
+{
+  name = "Zwroc";
+};
+Wywolaj::Wywolaj()
+{
+  name = "Wywolaj";
+};
+Dopoki::Dopoki()
+{
+  name = "Dopoki";
+};
+Dla::Dla()
+{
+  name = "Dla";
+};
+Jesli::Jesli()
+{
+  name = "Jesli";
+};
+Assign::Assign()
+{
+  name = "Assign";
+};
+Inaczej::Inaczej()
+{
+  name = "Inaczej";
+};
+DoubleEqual::DoubleEqual()
+{
+  name = "DoubleEqual";
+};
+NotEqual::NotEqual()
+{
+  name = "NotEqual";
+};
+More::More()
+{
+  name = "More";
+};
+Less::Less()
+{
+  name = "Less";
+};
+MoreEqual::MoreEqual()
+{
+  name = "MoreEqual";
+};
+LessEqual::LessEqual()
+{
+  name = "LessEqual";
+};
+AndOp::AndOp()
+{
+  name = "AndOp";
+};
+OrOp::OrOp()
+{
+  name = "OrOp";
+};
+Plus::Plus()
+{
+  name = "Plus";
+};
+Minus::Minus()
+{
+  name = "Minus";
+};
+Multiply::Multiply()
+{
+  name = "Multiply";
+};
+Divide::Divide()
+{
+  name = "Divide";
+};
+End::End()
+{
+  name = "End";
+};
+Error::Error()
+{
+  name = "Error";
+};
+Epsilon::Epsilon()
+{
+  name = "Epsilon";
+};
+Globalne::Globalne()
+{
+  name = "Globalne";
+};
+Dodaj::Dodaj()
+{
+  name = "Dodaj";
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 //*** NON-TERMINALS ***
 
@@ -141,7 +461,7 @@ int FunctionDeclaration::evaluate(std::vector<Symbol *> &sym_stack, const Token&
 
 int ParamList::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  if (token.type == TYPE::Int || token.type == TYPE::Float || token.type == TYPE::Str)
+  if (token.value == "(")
   {
     sym_stack.push_back(new ClosingRound{});
     sym_stack.push_back(new ParamDecls{});
@@ -223,6 +543,9 @@ int Statements::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   {
     sym_stack.push_back(new Epsilon{});
   }
+  else {
+    return 1;
+  }
   return 0;
 }
 
@@ -240,7 +563,7 @@ int Statement::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
     sym_stack.push_back(new VarInit{});
     sym_stack.push_back(new Identifier{});
   }
-  else if ("}")
+  else if (token.value == "}")
   {
     sym_stack.push_back(new Epsilon{});
   }
@@ -319,7 +642,7 @@ int VarInit::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 int ForRange::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
   if (token.value == "(" || token.type==TYPE::Int || token.type==TYPE::Float ||
-       token.type==TYPE::Str || token.type==TYPE::Id || token.value == "wywolaj")
+       token.type==TYPE::Str || token.type==TYPE::Id || token.value == "wywolaj" || token.value == "-")
   {
     sym_stack.push_back(new ForRangeNew{});
     sym_stack.push_back(new Expression{});
@@ -516,7 +839,7 @@ int Expression::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
     sym_stack.push_back(new ExpressionNew{});
     sym_stack.push_back(new Term{});
   }
-  //todo -> needs a fix
+  //needed to enable minus constant values
   else if (token.value == "-")
   {
     sym_stack.push_back(new ExpressionNew{});
@@ -609,217 +932,472 @@ int Factor::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 //*** TERMINALS ***
 int Zakres::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "zakres")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Dycha::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "dycha")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Przecinek::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "przecinek")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Tekst::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "tekst")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Nic::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "nic")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Funkcja::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "funkcja")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Identifier::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.type == TYPE::Id)
+  {
+    ////delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Constant::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.type == TYPE::Int || token.type == TYPE::Float || token.type == TYPE::Str)
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int OpeningRound::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "(")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int ClosingRound::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == ")")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Coma::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == ",")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Colon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == ":")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Semicolon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == ";")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int OpeningCurly::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "{")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int ClosingCurly::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "}")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int OpeningSquare::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "[")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int ClosingSquare::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "]")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Przestan::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "przestan")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Dalej::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "dalej")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Zwroc::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "zwroc")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Wywolaj::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "wywolaj")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Dopoki::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "dopoki")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Dla::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "dla")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Jesli::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "jesli")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Assign::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "=")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Inaczej::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "inaczej")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int DoubleEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "==")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int NotEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "!=")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int More::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == ">")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Less::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "<")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int MoreEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == ">=")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int LessEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "<=")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int AndOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "&")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int OrOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "|")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Plus::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "+")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Minus::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "-")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Multiply::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "*")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Divide::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "/")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int End::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "$")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
+//todo -> do I even need this symbol???
 int Error::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "zakres")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Epsilon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
+  //delete sym_stack.back();
+  //sym_stack.pop_back();
   return 0;
 }
 
 int Globalne::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "globalne")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 int Dodaj::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
 {
-  return 0;
+  if (token.value == "dodaj")
+  {
+    //delete sym_stack.back();
+    //sym_stack.pop_back();
+    return 2;
+  }
+  return 1;
 }
 
 
