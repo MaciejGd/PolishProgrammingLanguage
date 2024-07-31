@@ -42,6 +42,7 @@ int runTests()
 		else {
 			std::cout << "Successfully parsed file: " << entry.path() <<"\n";
 			std::cout << "Head node -> " << result->getName() << "\n\n";
+			chopTree(result);
 		}
 	}
 	return 0;
@@ -69,7 +70,12 @@ int main(int argc, char **argv)
 		std::vector<Token> token_list = tokensScan(path_to_test);
 		Symbol* error_code;
 		if ((error_code = parse(token_list)))
+		{
+			printAST(argv[i], error_code);
+			chopTree(error_code);
 			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
+			
+		}
 		else {
 			std::cout << "File: " << argv[i] << " could not be parsed!!! Error code: " << error_code << "\n";
 		}

@@ -1,5 +1,7 @@
-//#include "../inc/parser.h"
+#include "../inc/parser.h"
 #include "../inc/grammar.h"
+#include <fstream>
+#include <sstream>
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
@@ -49,6 +51,60 @@ Symbol* parse(const vector<Token>& tokens)
 	}
 	return nullptr;
 }
+
+//recursive function used in printing AST to a file
+void printRec(std::ostringstream& ss, Symbol* head, int incantation)
+{
+	std::string inc_string(incantation, ' ');
+	if (!head)
+		return;
+	
+	ss << inc_string;
+	ss << head->getName();
+	ss << ":\n" ;
+	ss << inc_string;
+	ss << "{\n";
+	incantation+=2;
+	for (int i = head->getRhsSize()-1; i >= 0; i--)
+	{
+		printRec(ss, head->getRhsNode(i), incantation);
+	}
+	ss << inc_string;
+	ss << "}\n";
+}
+//printing AST to a file in debug purposes
+void printAST(const char* file_arg, Symbol* head)
+{
+	std::ostringstream ss;
+	printRec(ss, head, 0);
+	//std::cout << ss.str();
+	std::string file_name = file_arg;
+	file_name = "./AST/" + file_name + ".AST";
+	std::ofstream file(file_name);
+	if (file.fail())
+	{
+		std::cout << "[ERROR]Opening file " << file_name << " for printing AST failed!";
+		return;
+	}
+	file << ss.str();
+	file.close();
+	//file handling (redirecting stringstream to a textfile)
+}
+
+
+void chopTree(Symbol *head)
+{
+	if (head->getRhsSize()==0)
+	{
+		delete head;
+		return;
+	}
+	for (int i = 0; i < head->getRhsSize(); i++)
+	{
+		chopTree(head->getRhsNode(i));
+	}
+	delete head;
+} 
 
 // int parse(const vector<Token>& tokens)
 // {
