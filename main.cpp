@@ -1,5 +1,6 @@
 #include "inc/lex.h"
 #include "inc/parser.h"
+#include "inc/grammar.h"
 #include <string.h>
 #include <filesystem>
 
@@ -32,14 +33,15 @@ int runTests()
 	{
 		std::cout << "Parsing file: " << entry.path().filename() << "...\n";
 		std::vector<Token> file_tokens = tokensScan(entry.path());
-		int result;
-		if (result = parse(file_tokens))
+		Symbol *result;
+		if (!(result = parse(file_tokens)))
 		{
 			std::cout << "Parsing file: " << entry.path() << " failed\n";
-			std::cout << "Return status code: " << result << "\n\n";
+			std::cout << "Return status code: 1\n\n";
 		}
 		else {
-			std::cout << "Successfully parsed file: " << entry.path() <<"\n\n";
+			std::cout << "Successfully parsed file: " << entry.path() <<"\n";
+			std::cout << "Head node -> " << result->getName() << "\n\n";
 		}
 	}
 	return 0;
@@ -65,8 +67,8 @@ int main(int argc, char **argv)
 	{
 		std::string path_to_test = "./tests/" + std::string(argv[i]);
 		std::vector<Token> token_list = tokensScan(path_to_test);
-		int error_code;
-		if (!(error_code = parse(token_list)))
+		Symbol* error_code;
+		if ((error_code = parse(token_list)))
 			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
 		else {
 			std::cout << "File: " << argv[i] << " could not be parsed!!! Error code: " << error_code << "\n";

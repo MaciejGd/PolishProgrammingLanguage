@@ -5,7 +5,16 @@ const std::string Symbol::getName() const
   return name;
 }
 
-//Non terminal constructors:
+const size_t Symbol::getRhsSize() const
+{
+  return rhs.size();
+}
+
+Symbol *Symbol::getRhsNode(size_t index) const
+{
+  return rhs[index];
+}
+// Non terminal constructors:
 Include::Include()
 {
   name = "Include";
@@ -327,17 +336,17 @@ Dodaj::Dodaj()
 
 //*** NON-TERMINALS ***
 
-int Include::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Include::evaluate(const Token& token)
 {
   if (token.value == "funkcja" || token.value == "globalne")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "dodaj")
   {
-    sym_stack.push_back(new Include{});
-    sym_stack.push_back(new Identifier{});
-    sym_stack.push_back(new Dodaj{});
+    rhs.push_back(new Include{});
+    rhs.push_back(new Identifier{});
+    rhs.push_back(new Dodaj{});
   }
   else {
     return 1;
@@ -345,18 +354,18 @@ int Include::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int Global::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Global::evaluate(const Token& token)
 {
   if (token.value == "funkcja")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "globalne")
   {
-    sym_stack.push_back(new ClosingCurly{});
-    sym_stack.push_back(new GlobalVar{});
-    sym_stack.push_back(new OpeningCurly{});
-    sym_stack.push_back(new Globalne{});
+    rhs.push_back(new ClosingCurly{});
+    rhs.push_back(new GlobalVar{});
+    rhs.push_back(new OpeningCurly{});
+    rhs.push_back(new Globalne{});
   }
   else {
     return 1;
@@ -364,18 +373,18 @@ int Global::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int GlobalVar::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int GlobalVar::evaluate(const Token& token)
 {
   if (token.value == "dycha" | token.value == "przecinek" || token.value == "nic" || token.value == "tekst")
   {
-    sym_stack.push_back(new GlobalVar{});
-    sym_stack.push_back(new Semicolon{});
-    sym_stack.push_back(new VarInit{});
-    sym_stack.push_back(new VarDecl{});
+    rhs.push_back(new GlobalVar{});
+    rhs.push_back(new Semicolon{});
+    rhs.push_back(new VarInit{});
+    rhs.push_back(new VarDecl{});
   }
   else if (token.value == "}")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else {
     return 1;
@@ -383,62 +392,63 @@ int GlobalVar::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int Start::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Start::evaluate(const Token& token)
 {
   if (token.value=="funkcja" || token.value=="dodaj" || token.value == "globalne")
   {
-    sym_stack.push_back(new Function{});
-    sym_stack.push_back(new Global{});
-    sym_stack.push_back(new Include{});
+    rhs.push_back(new End{});
+    rhs.push_back(new Function{});
+    rhs.push_back(new Global{});
+    rhs.push_back(new Include{});
     return 0;
   }
   return 1;
 }
 
-int Function::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Function::evaluate(const Token& token)
 {
   if (token.value == "funkcja")
   {
-    sym_stack.push_back(new Function{});
-    sym_stack.push_back(new Body{});
-    sym_stack.push_back(new FunctionDeclaration{});
+    rhs.push_back(new Function{});
+    rhs.push_back(new Body{});
+    rhs.push_back(new FunctionDeclaration{});
   }
   else if (token.value == "$")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   return 0;
 }
 
-int VarDecl::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int VarDecl::evaluate(const Token& token)
 {
   if (token.value=="dycha" || token.value=="przecinek" || token.value=="tekst" || token.value=="nic")
   {
-    sym_stack.push_back(new Identifier{});
-    sym_stack.push_back(new DataType{});
+    rhs.push_back(new Identifier{});
+    rhs.push_back(new DataType{});
     return 0;
   }
-  //std::cout << "[ERROR]Failed to parse symbol: " << sym_stack.back()->getName() << " in token: " << token << "\n";
+  //std::cout << "[ERROR]Failed to parse symbol: " << rhs.back()->getName() << " in token: " << token << "\n";
   return 1;
 }
 
-int DataType::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int DataType::evaluate(const Token& token)
 {
   if (token.value == "dycha")
   {
-    sym_stack.push_back(new Dycha{});
+    rhs.push_back(new Dycha{});
   }
   else if (token.value == "przecinek")
   {
-    sym_stack.push_back(new Przecinek{});
+    rhs.push_back(new Przecinek{});
   }
   else if (token.value == "tekst")
   {
-    sym_stack.push_back(new Tekst{});
+    rhs.push_back(new Tekst{});
   }
   else if (token.value == "nic")
   {
-    sym_stack.push_back(new Nic{});
+    rhs.push_back(new Nic{});
   }
   else {
     return 1;
@@ -446,41 +456,41 @@ int DataType::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int FunctionDeclaration::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int FunctionDeclaration::evaluate(const Token& token)
 {
   if (token.value == "funkcja")
   {
-    sym_stack.push_back(new FuncType{});
-    sym_stack.push_back(new ParamList{});
-    sym_stack.push_back(new Identifier{});
-    sym_stack.push_back(new Funkcja{});
+    rhs.push_back(new FuncType{});
+    rhs.push_back(new ParamList{});
+    rhs.push_back(new Identifier{});
+    rhs.push_back(new Funkcja{});
     return 0;
   }
   return 1;
 }
 
-int ParamList::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ParamList::evaluate(const Token& token)
 {
   if (token.value == "(")
   {
-    sym_stack.push_back(new ClosingRound{});
-    sym_stack.push_back(new ParamDecls{});
-    sym_stack.push_back(new OpeningRound{});
+    rhs.push_back(new ClosingRound{});
+    rhs.push_back(new ParamDecls{});
+    rhs.push_back(new OpeningRound{});
     return 0;
   }
   return 1;
 }
 
-int ParamDecls::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ParamDecls::evaluate(const Token& token)
 {
   if (token.value == "dycha" || token.value == "przecinek" || token.value == "tekst" || token.value == "nic")
   {
-    sym_stack.push_back(new ParamDeclsNew{});
-    sym_stack.push_back(new VarDecl{});
+    rhs.push_back(new ParamDeclsNew{});
+    rhs.push_back(new VarDecl{});
   }
   else if (token.value == ")")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else {
     return 1;
@@ -488,17 +498,17 @@ int ParamDecls::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int ParamDeclsNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ParamDeclsNew::evaluate(const Token& token)
 {
   if (token.value == ")")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == ",")
   {
-    sym_stack.push_back(new ParamDeclsNew{});
-    sym_stack.push_back(new VarDecl{});
-    sym_stack.push_back(new Coma{});
+    rhs.push_back(new ParamDeclsNew{});
+    rhs.push_back(new VarDecl{});
+    rhs.push_back(new Coma{});
   }
   else {
     return 1;
@@ -506,42 +516,42 @@ int ParamDeclsNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token
   return 0;
 }
 
-int FuncType::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int FuncType::evaluate(const Token& token)
 {
   if (token.value == ":")
   {
-    sym_stack.push_back(new Colon{});
-    sym_stack.push_back(new DataType{});
-    sym_stack.push_back(new Colon{});
+    rhs.push_back(new Colon{});
+    rhs.push_back(new DataType{});
+    rhs.push_back(new Colon{});
     return 0;
   }
   return 1;
 }
 
-int Body::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Body::evaluate(const Token& token)
 {
   if (token.value == "{")
   {
-    sym_stack.push_back(new ClosingCurly{});
-    sym_stack.push_back(new Statements{});
-    sym_stack.push_back(new OpeningCurly{});
+    rhs.push_back(new ClosingCurly{});
+    rhs.push_back(new Statements{});
+    rhs.push_back(new OpeningCurly{});
     return 0;
   }
   return 1;
 }
 
-int Statements::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Statements::evaluate(const Token& token)
 {
   if (token.value == "dycha" || token.value == "przecinek" || token.value == "tekst" || token.value == "nic" ||
         token.type == TYPE::Id || token.value == "przestan" || token.value == "dalej"|| token.value == "zwroc" ||
         token.value == "wywolaj" || token.value == "dopoki" || token.value == "dla" || token.value == "jesli")
   {
-    sym_stack.push_back(new Statements{});
-    sym_stack.push_back(new Statement{});
+    rhs.push_back(new Statements{});
+    rhs.push_back(new Statement{});
   }
   else if (token.value == "}")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else {
     return 1;
@@ -549,72 +559,72 @@ int Statements::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int Statement::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Statement::evaluate(const Token& token)
 {
   if (token.value == "dycha" || token.value == "przecinek" || token.value == "tekst" || token.value == "nic")
   {
-    sym_stack.push_back(new Semicolon{});
-    sym_stack.push_back(new VarInit{});
-    sym_stack.push_back(new VarDecl{});
+    rhs.push_back(new Semicolon{});
+    rhs.push_back(new VarInit{});
+    rhs.push_back(new VarDecl{});
   }
   else if (token.type == TYPE::Id)
   {
-    sym_stack.push_back(new Semicolon{});
-    sym_stack.push_back(new VarInit{});
-    sym_stack.push_back(new Identifier{});
+    rhs.push_back(new Semicolon{});
+    rhs.push_back(new VarInit{});
+    rhs.push_back(new Identifier{});
   }
   else if (token.value == "}")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "przestan")
   {
-    sym_stack.push_back(new Semicolon{});
-    sym_stack.push_back(new Przestan{});
+    rhs.push_back(new Semicolon{});
+    rhs.push_back(new Przestan{});
   }
   else if (token.value == "dalej")
   {
-    sym_stack.push_back(new Semicolon{});
-    sym_stack.push_back(new Dalej{});
+    rhs.push_back(new Semicolon{});
+    rhs.push_back(new Dalej{});
   }
   else if (token.value == "zwroc")
   {
-    sym_stack.push_back(new Semicolon{});
-    sym_stack.push_back(new Expression{});
-    sym_stack.push_back(new Zwroc{});
+    rhs.push_back(new Semicolon{});
+    rhs.push_back(new Expression{});
+    rhs.push_back(new Zwroc{});
   }
   else if (token.value == "wywolaj")
   {
-    sym_stack.push_back(new Semicolon{});
-    sym_stack.push_back(new ArgList{});
-    sym_stack.push_back(new Identifier{});
-    sym_stack.push_back(new Wywolaj{});
+    rhs.push_back(new Semicolon{});
+    rhs.push_back(new ArgList{});
+    rhs.push_back(new Identifier{});
+    rhs.push_back(new Wywolaj{});
   }
   else if (token.value == "dopoki")
   {
-    sym_stack.push_back(new Body{});
-    sym_stack.push_back(new Colon{});
-    sym_stack.push_back(new Condition{});
-    sym_stack.push_back(new Dopoki{});
+    rhs.push_back(new Body{});
+    rhs.push_back(new Colon{});
+    rhs.push_back(new Condition{});
+    rhs.push_back(new Dopoki{});
   }
   else if (token.value == "dla")
   {
-    sym_stack.push_back(new Body{});
-    sym_stack.push_back(new Colon{});
-    sym_stack.push_back(new ClosingRound{});
-    sym_stack.push_back(new ForRange{});
-    sym_stack.push_back(new OpeningRound{});
-    sym_stack.push_back(new Zakres{});
-    sym_stack.push_back(new Identifier{});
-    sym_stack.push_back(new Dla{});
+    rhs.push_back(new Body{});
+    rhs.push_back(new Colon{});
+    rhs.push_back(new ClosingRound{});
+    rhs.push_back(new ForRange{});
+    rhs.push_back(new OpeningRound{});
+    rhs.push_back(new Zakres{});
+    rhs.push_back(new Identifier{});
+    rhs.push_back(new Dla{});
   }
   else if (token.value == "jesli")
   {
-    sym_stack.push_back(new ElseClause{});
-    sym_stack.push_back(new Body{});
-    sym_stack.push_back(new Colon{});
-    sym_stack.push_back(new Condition{});
-    sym_stack.push_back(new Jesli{});
+    rhs.push_back(new ElseClause{});
+    rhs.push_back(new Body{});
+    rhs.push_back(new Colon{});
+    rhs.push_back(new Condition{});
+    rhs.push_back(new Jesli{});
   }
   else {
     return 1;
@@ -622,16 +632,16 @@ int Statement::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int VarInit::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int VarInit::evaluate(const Token& token)
 {
   if (token.value == ";")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "=")
   {
-    sym_stack.push_back(new Expression{});
-    sym_stack.push_back(new Assign{});
+    rhs.push_back(new Expression{});
+    rhs.push_back(new Assign{});
   }
   else {
     return 1;
@@ -639,28 +649,28 @@ int VarInit::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int ForRange::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ForRange::evaluate(const Token& token)
 {
   if (token.value == "(" || token.type==TYPE::Int || token.type==TYPE::Float ||
        token.type==TYPE::Str || token.type==TYPE::Id || token.value == "wywolaj" || token.value == "-")
   {
-    sym_stack.push_back(new ForRangeNew{});
-    sym_stack.push_back(new Expression{});
+    rhs.push_back(new ForRangeNew{});
+    rhs.push_back(new Expression{});
     return 0;
   }
   return 1;
 }
 
-int ForRangeNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ForRangeNew::evaluate(const Token& token)
 {
   if (token.value == ")")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == ",")
   {
-    sym_stack.push_back(new Expression{});
-    sym_stack.push_back(new Coma{});
+    rhs.push_back(new Expression{});
+    rhs.push_back(new Coma{});
   }
   else {
     return 1;
@@ -668,28 +678,28 @@ int ForRangeNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int ArgList::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ArgList::evaluate(const Token& token)
 {
   if (token.value == "(")
   {
-    sym_stack.push_back(new ClosingRound{});
-    sym_stack.push_back(new FuncArgs{});
-    sym_stack.push_back(new OpeningRound{});
+    rhs.push_back(new ClosingRound{});
+    rhs.push_back(new FuncArgs{});
+    rhs.push_back(new OpeningRound{});
   }
   return 0;
 }
 
-int FuncArgs::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int FuncArgs::evaluate(const Token& token)
 {
   if (token.type == TYPE::Str || token.type == TYPE::Float || token.type == TYPE::Int ||
       token.type == TYPE::Id || token.value == "(" || token.value == "wywolaj")
   {
-    sym_stack.push_back(new FuncArgsNew{});
-    sym_stack.push_back(new Expression{});
+    rhs.push_back(new FuncArgsNew{});
+    rhs.push_back(new Expression{});
   }
   else if (token.value == ")")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else {
     return 1;
@@ -697,17 +707,17 @@ int FuncArgs::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int FuncArgsNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int FuncArgsNew::evaluate(const Token& token)
 {
   if (token.value == ")")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == ",")
   {
-    sym_stack.push_back(new FuncArgsNew{});
-    sym_stack.push_back(new Expression{});
-    sym_stack.push_back(new Coma{});
+    rhs.push_back(new FuncArgsNew{});
+    rhs.push_back(new Expression{});
+    rhs.push_back(new Coma{});
   }
   else {
     return 1;
@@ -715,19 +725,19 @@ int FuncArgsNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int ElseClause::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ElseClause::evaluate(const Token& token)
 {
   if (token.value == "dycha" || token.value == "przecinek" || token.value == "tekst" || token.value == "nic" ||
         token.type == TYPE::Id || token.value == "}" || token.value == "przestan" || token.value == "dalej" ||
         token.value == "zwroc" || token.value == "wywolaj" || token.value == "dopoki" || token.value == "dla" ||
         token.value == "jesli")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "inaczej")
   {
-    sym_stack.push_back(new Else{});
-    sym_stack.push_back(new Inaczej{});
+    rhs.push_back(new Else{});
+    rhs.push_back(new Inaczej{});
   }
   else {
     return 1;
@@ -735,19 +745,19 @@ int ElseClause::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int Else::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Else::evaluate(const Token& token)
 {
   if (token.value == "{")
   {
-    sym_stack.push_back(new Body{});
+    rhs.push_back(new Body{});
   }
   else if (token.value == "jesli")
   {
-    sym_stack.push_back(new ElseClause{});
-    sym_stack.push_back(new Body{});
-    sym_stack.push_back(new Colon{});
-    sym_stack.push_back(new Condition{});
-    sym_stack.push_back(new Jesli{});
+    rhs.push_back(new ElseClause{});
+    rhs.push_back(new Body{});
+    rhs.push_back(new Colon{});
+    rhs.push_back(new Condition{});
+    rhs.push_back(new Jesli{});
   }
   else {
     return 1;
@@ -755,30 +765,30 @@ int Else::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int Condition::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Condition::evaluate(const Token& token)
 {
   if (token.value == "(" || token.type==TYPE::Int || token.type==TYPE::Float ||
        token.type==TYPE::Str || token.type==TYPE::Id || token.value == "wywolaj")
   {
-    sym_stack.push_back(new ConditionNew{});
-    sym_stack.push_back(new Expression{});
+    rhs.push_back(new ConditionNew{});
+    rhs.push_back(new Expression{});
     return 0;
   }
   return 1;
 }
 
-int ConditionNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ConditionNew::evaluate(const Token& token)
 {
   if (token.value == ":")
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "==" || token.value == "!=" || token.value == ">" || token.value == "<" ||
             token.value == ">=" || token.value == "<=" || token.value == "&" || token.value == "|" )
   {
-    sym_stack.push_back(new ConditionNew{});
-    sym_stack.push_back(new Expression{});
-    sym_stack.push_back(new LogOp{});
+    rhs.push_back(new ConditionNew{});
+    rhs.push_back(new Expression{});
+    rhs.push_back(new LogOp{});
   }
   else {
     return 1;
@@ -786,65 +796,65 @@ int ConditionNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int LogOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int LogOp::evaluate(const Token& token)
 {
   if (token.value == "==")
-    sym_stack.push_back(new DoubleEqual{});
+    rhs.push_back(new DoubleEqual{});
   else if (token.value == "!=")
-    sym_stack.push_back(new NotEqual{});
+    rhs.push_back(new NotEqual{});
   else if (token.value == ">")
-    sym_stack.push_back(new More{});
+    rhs.push_back(new More{});
   else if (token.value == "<")
-    sym_stack.push_back(new Less{});
+    rhs.push_back(new Less{});
   else if (token.value == ">=")
-    sym_stack.push_back(new MoreEqual{});
+    rhs.push_back(new MoreEqual{});
   else if (token.value == "<=")
-    sym_stack.push_back(new LessEqual{});
+    rhs.push_back(new LessEqual{});
   else if (token.value == "&")
-    sym_stack.push_back(new AndOp{});
+    rhs.push_back(new AndOp{});
   else if (token.value == "|")
-    sym_stack.push_back(new OrOp{});
+    rhs.push_back(new OrOp{});
   else 
     return 1;
   return 0;
 }
 
-int AddOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int AddOp::evaluate(const Token& token)
 {
   if (token.value == "+")
-    sym_stack.push_back(new Plus{});
+    rhs.push_back(new Plus{});
   else if (token.value == "-")
-    sym_stack.push_back(new Minus{});
+    rhs.push_back(new Minus{});
   else 
     return 1;
   return 0;
 }
 
-int MulOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int MulOp::evaluate(const Token& token)
 {
   if (token.value == "*")
-    sym_stack.push_back(new Multiply{});
+    rhs.push_back(new Multiply{});
   else if (token.value == "/")
-    sym_stack.push_back(new Divide{});
+    rhs.push_back(new Divide{});
   else 
     return 1;
   return 0;
 }
 
-int Expression::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Expression::evaluate(const Token& token)
 {
   if (token.value == "(" || token.type==TYPE::Int || token.type==TYPE::Float ||
        token.type==TYPE::Str || token.type==TYPE::Id || token.value == "wywolaj")
   {
-    sym_stack.push_back(new ExpressionNew{});
-    sym_stack.push_back(new Term{});
+    rhs.push_back(new ExpressionNew{});
+    rhs.push_back(new Term{});
   }
   //needed to enable minus constant values
   else if (token.value == "-")
   {
-    sym_stack.push_back(new ExpressionNew{});
-    sym_stack.push_back(new Term{});
-    sym_stack.push_back(new AddOp{});
+    rhs.push_back(new ExpressionNew{});
+    rhs.push_back(new Term{});
+    rhs.push_back(new AddOp{});
   }
   else {
     return 1;
@@ -852,51 +862,51 @@ int Expression::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int ExpressionNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ExpressionNew::evaluate(const Token& token)
 {
   if (token.value == "==" || token.value == "!=" || token.value == ">" || token.value == "<" || 
       token.value == ">=" || token.value == "<=" || token.value == "&" || token.value == "|" ||
       token.value == ")" || token.value == "," || token.value == ":" || token.value == ";") 
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "+" || token.value == "-")
   {
-    sym_stack.push_back(new ExpressionNew{});
-    sym_stack.push_back(new Term{});
-    sym_stack.push_back(new AddOp{});
+    rhs.push_back(new ExpressionNew{});
+    rhs.push_back(new Term{});
+    rhs.push_back(new AddOp{});
   }
   else 
     return 1;
   return 0;
 }
 
-int Term::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Term::evaluate(const Token& token)
 {
   if (token.value == "(" || token.type==TYPE::Int || token.type==TYPE::Float ||
        token.type==TYPE::Str || token.type==TYPE::Id || token.value == "wywolaj")
   {
-    sym_stack.push_back(new TermNew{});
-    sym_stack.push_back(new Factor{});
+    rhs.push_back(new TermNew{});
+    rhs.push_back(new Factor{});
     return 0;
   }
   return 1;
 }
 
-int TermNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int TermNew::evaluate(const Token& token)
 {
   if (token.value == "==" || token.value == "!=" || token.value == ">" || token.value == "<" || 
       token.value == ">=" || token.value == "<=" || token.value == "&" || token.value == "|" ||
       token.value == ")" || token.value == "," || token.value == ":" || token.value == ";" || 
       token.value == "+" || token.value == "-") 
   {
-    sym_stack.push_back(new Epsilon{});
+    rhs.push_back(new Epsilon{});
   }
   else if (token.value == "*" || token.value == "/")
   {
-    sym_stack.push_back(new TermNew{});
-    sym_stack.push_back(new Factor{});
-    sym_stack.push_back(new MulOp{});
+    rhs.push_back(new TermNew{});
+    rhs.push_back(new Factor{});
+    rhs.push_back(new MulOp{});
   }
   else {
     return 1;
@@ -904,499 +914,332 @@ int TermNew::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
   return 0;
 }
 
-int Factor::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Factor::evaluate(const Token& token)
 {
   if (token.type == TYPE::Id)
   {
-    sym_stack.push_back(new Identifier{});
+    rhs.push_back(new Identifier{});
   }
   else if (token.type == TYPE::Int || token.type == TYPE::Float || token.type == TYPE::Str)
   {
-    sym_stack.push_back(new Constant{});
+    rhs.push_back(new Constant{});
   }
   else if (token.value == "(")
   {
-    sym_stack.push_back(new ClosingRound{});
-    sym_stack.push_back(new Expression{});
-    sym_stack.push_back(new OpeningRound{});
+    rhs.push_back(new ClosingRound{});
+    rhs.push_back(new Expression{});
+    rhs.push_back(new OpeningRound{});
   }
   else if (token.value == "wywolaj")
   {
-    sym_stack.push_back(new ArgList{});
-    sym_stack.push_back(new Identifier{});
-    sym_stack.push_back(new Wywolaj{});
+    rhs.push_back(new ArgList{});
+    rhs.push_back(new Identifier{});
+    rhs.push_back(new Wywolaj{});
   }
   return 0;
 }
 
 //*** TERMINALS ***
-int Zakres::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Zakres::evaluate(const Token& token)
 {
   if (token.value == "zakres")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Dycha::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Dycha::evaluate(const Token& token)
 {
   if (token.value == "dycha")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Przecinek::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Przecinek::evaluate(const Token& token)
 {
   if (token.value == "przecinek")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Tekst::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Tekst::evaluate(const Token& token)
 {
   if (token.value == "tekst")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Nic::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Nic::evaluate(const Token& token)
 {
   if (token.value == "nic")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Funkcja::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Funkcja::evaluate(const Token& token)
 {
   if (token.value == "funkcja")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Identifier::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Identifier::evaluate(const Token& token)
 {
   if (token.type == TYPE::Id)
   {
-    ////delete sym_stack.back();
-    //sym_stack.pop_back();
+    //
     return 2;
   }
   return 1;
 }
 
-int Constant::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Constant::evaluate(const Token& token)
 {
   if (token.type == TYPE::Int || token.type == TYPE::Float || token.type == TYPE::Str)
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int OpeningRound::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int OpeningRound::evaluate(const Token& token)
 {
   if (token.value == "(")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int ClosingRound::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ClosingRound::evaluate(const Token& token)
 {
   if (token.value == ")")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Coma::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Coma::evaluate(const Token& token)
 {
   if (token.value == ",")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Colon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Colon::evaluate(const Token& token)
 {
   if (token.value == ":")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Semicolon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Semicolon::evaluate(const Token& token)
 {
   if (token.value == ";")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int OpeningCurly::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int OpeningCurly::evaluate(const Token& token)
 {
   if (token.value == "{")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int ClosingCurly::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ClosingCurly::evaluate(const Token& token)
 {
   if (token.value == "}")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int OpeningSquare::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int OpeningSquare::evaluate(const Token& token)
 {
   if (token.value == "[")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int ClosingSquare::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int ClosingSquare::evaluate(const Token& token)
 {
   if (token.value == "]")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Przestan::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Przestan::evaluate(const Token& token)
 {
   if (token.value == "przestan")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Dalej::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Dalej::evaluate(const Token& token)
 {
   if (token.value == "dalej")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Zwroc::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Zwroc::evaluate(const Token& token)
 {
   if (token.value == "zwroc")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Wywolaj::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Wywolaj::evaluate(const Token& token)
 {
   if (token.value == "wywolaj")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Dopoki::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Dopoki::evaluate(const Token& token)
 {
   if (token.value == "dopoki")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Dla::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Dla::evaluate(const Token& token)
 {
   if (token.value == "dla")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Jesli::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Jesli::evaluate(const Token& token)
 {
   if (token.value == "jesli")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Assign::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Assign::evaluate(const Token& token)
 {
   if (token.value == "=")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Inaczej::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Inaczej::evaluate(const Token& token)
 {
   if (token.value == "inaczej")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int DoubleEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int DoubleEqual::evaluate(const Token& token)
 {
   if (token.value == "==")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int NotEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int NotEqual::evaluate(const Token& token)
 {
   if (token.value == "!=")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int More::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int More::evaluate(const Token& token)
 {
   if (token.value == ">")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Less::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Less::evaluate(const Token& token)
 {
   if (token.value == "<")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int MoreEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int MoreEqual::evaluate(const Token& token)
 {
   if (token.value == ">=")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int LessEqual::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int LessEqual::evaluate(const Token& token)
 {
   if (token.value == "<=")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int AndOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int AndOp::evaluate(const Token& token)
 {
   if (token.value == "&")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int OrOp::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int OrOp::evaluate(const Token& token)
 {
   if (token.value == "|")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Plus::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Plus::evaluate(const Token& token)
 {
   if (token.value == "+")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Minus::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Minus::evaluate(const Token& token)
 {
   if (token.value == "-")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Multiply::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Multiply::evaluate(const Token& token)
 {
   if (token.value == "*")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Divide::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Divide::evaluate(const Token& token)
 {
   if (token.value == "/")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int End::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int End::evaluate(const Token& token)
 {
   if (token.value == "$")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
 //todo -> do I even need this symbol???
-int Error::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Error::evaluate(const Token& token)
 {
   if (token.value == "zakres")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Epsilon::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Epsilon::evaluate(const Token& token)
 {
-  //delete sym_stack.back();
-  //sym_stack.pop_back();
   return 0;
 }
 
-int Globalne::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Globalne::evaluate(const Token& token)
 {
   if (token.value == "globalne")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
-int Dodaj::evaluate(std::vector<Symbol *> &sym_stack, const Token& token)
+int Dodaj::evaluate(const Token& token)
 {
   if (token.value == "dodaj")
-  {
-    //delete sym_stack.back();
-    //sym_stack.pop_back();
     return 2;
-  }
   return 1;
 }
 
