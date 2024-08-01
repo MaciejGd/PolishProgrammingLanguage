@@ -1,5 +1,10 @@
 funkcja main():nic:
 {
   jesli 2 > 3:
-  {}
+  {
+    dopoki (12 + 3) < 32 : 
+    {
+
+    }
+  }
 }

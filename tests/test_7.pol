@@ -1,0 +1,13 @@
+funkcja main():nic:
+{
+  dycha nowa = -1;
+}
+
+funkcja test_1 (dycha first_var, przecinek test_var):nic:
+{
+	dla nowa zakres (2,3):
+	{
+		test_var=test_var+1;
+	}
+	dycha oddawaj = "dawajid";
+}

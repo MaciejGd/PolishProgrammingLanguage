@@ -1,6 +1,7 @@
 #include "inc/lex.h"
 #include "inc/parser.h"
 #include "inc/grammar.h"
+#include "inc/transpiler.h"
 #include <string.h>
 #include <filesystem>
 
@@ -40,8 +41,8 @@ int runTests()
 			std::cout << "Return status code: 1\n\n";
 		}
 		else {
-			std::cout << "Successfully parsed file: " << entry.path() <<"\n";
-			std::cout << "Head node -> " << result->getName() << "\n\n";
+			printAST(entry.path().filename().c_str(), result);
+			std::cout << "Successfully parsed file: " << entry.path() <<"\n\n";
 			chopTree(result);
 		}
 	}
@@ -71,7 +72,10 @@ int main(int argc, char **argv)
 		Symbol* error_code;
 		if ((error_code = parse(token_list)))
 		{
+			std::string trans_file = argv[i];
+			trans_file = "./TRANSPIL/" + trans_file;
 			printAST(argv[i], error_code);
+			transpiler(trans_file.c_str(), error_code);
 			chopTree(error_code);
 			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
 			

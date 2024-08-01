@@ -1,0 +1,11 @@
+
+funkcja test(dycha num, dycha num2):dycha:
+{
+  dycha num3 = num + num2;
+  zwroc num3;
+}
+
+funkcja main():dycha:
+{
+  zwroc 0;
+}
