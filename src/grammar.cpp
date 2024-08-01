@@ -14,6 +14,11 @@ Symbol *Symbol::getRhsNode(size_t index) const
 {
   return rhs[index];
 }
+
+void Symbol::setValue(const std::string& val)
+{
+  value = val;
+}
 // Non terminal constructors:
 Include::Include()
 {

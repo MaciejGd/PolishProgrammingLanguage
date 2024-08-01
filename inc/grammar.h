@@ -104,11 +104,14 @@ class Symbol {
 protected:
   std::vector<Symbol*> rhs = {};
   std::string name;
+  std::string value;
 public:
   virtual int evaluate(const Token& token) = 0;
   const std::string getName() const;
   const size_t getRhsSize() const;
   Symbol* getRhsNode(size_t index) const; 
+  void setValue(const std::string& val);
+  const std::string getValue() const { return value; };
 };
 
 class VarDecl : public Symbol {

@@ -5,6 +5,7 @@
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
+//below code is needed for parsing Abstract Syntax Tree. I need to add function that slightly differs in terms of algorithm and serves a function of adding 
 int rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
 {
 	int result = head->evaluate(tokens[counter]);
@@ -15,6 +16,7 @@ int rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
 	//check if no children
 	if (result == 2)
 	{
+		head->setValue(tokens[counter].value);
 		counter++;
 		return 0;
 	}
@@ -68,6 +70,11 @@ void printRec(std::ostringstream& ss, Symbol* head, int incantation)
 	for (int i = head->getRhsSize()-1; i >= 0; i--)
 	{
 		printRec(ss, head->getRhsNode(i), incantation);
+	}
+	if (head->getValue()!="")
+	{	
+		ss << inc_string << "  ";
+		ss << "*** " << head->getValue() << " ***\n";
 	}
 	ss << inc_string;
 	ss << "}\n";
