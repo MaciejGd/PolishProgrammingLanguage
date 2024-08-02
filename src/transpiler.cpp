@@ -57,16 +57,17 @@ void Transpiler::m_transpiler_rec(std::ostringstream& ss, Symbol *head)
   if (node_val != "")
   {
     //set flag to true to start recording 
-    if (node_val=="funkcja")
+    if (m_handler && m_handler->isActive())
     {
-      m_function->activate();
+      m_handler->analyze(ss, node_val);
       return;
     }
-    if (m_function->isActive())
+    if (node_val=="funkcja")
     {
-      m_function->analyze(ss, node_val);
+      m_handler.reset(new FunctionHandler{});
       return;
-    }  
+    }
+    
     if (search(common_signs, node_val))
     {
       ss << node_val << " ";

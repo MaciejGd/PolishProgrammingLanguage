@@ -64,10 +64,9 @@ public:
 
 class Transpiler {
   //to bo replaced with a unique_ptr to a Handler object
-  std::unique_ptr<Handler> m_function;
+  std::unique_ptr<Handler> m_handler;
   void m_transpiler_rec(std::ostringstream& ss, Symbol* head);
 public:
-  Transpiler():m_function(new FunctionHandler()){};
   void transpiler(const char* file_name, Symbol* head);
 };
 
