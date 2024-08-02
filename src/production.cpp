@@ -1,7 +1,8 @@
 #include "../inc/production.h"
 
 //used for debugging purposes
-std::unordered_map<Symbol, string> symbols_map = {
+namespace Prod
+{std::unordered_map<Symbol, string> symbols_map = {
 	{INCLUDE, "INCLUDE"},
 	{GLOBAL, "GLOBAL"},
 	{GLOBALVAR, "GLOBALVAR"},
@@ -247,6 +248,9 @@ vector<vector<int>> parsing_table = {
 /*Factor*/             { 0, 0, 0, 0, 0,61,62,63, 0, 0, 0, 0, 0, 0, 0, 0, 0,64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
 };
 
+
+
+
 Symbol translateTokenToSymbol(const Token& token)
 {
 	switch(token.type)
@@ -275,3 +279,17 @@ bool isTerminal(Symbol symbol)
 	//symbols values in enum placed after zakres are terminal values
 	return (symbol >= ZAKRES);
 }
+}
+
+std::vector<std::string> common_signs = {"(",")",",",":",";","{","}","==","!=",">","<",">=","<=","&","|","+","-","*","/", "="};
+//dollar sign should be skipped!!!!
+std::unordered_map<std::string, std::string> keyword_map = {
+  std::pair{"dycha", "int"},
+  std::pair{"przecinek", "float"},
+  std::pair{"tekst", "std::string"},
+  std::pair{"nic", "void"},
+  std::pair{"przestan", "break"},
+  std::pair{"dalej", "continue"},
+  std::pair{"zwroc", "return"},
+  std::pair{"dodaj", "include"} 
+};

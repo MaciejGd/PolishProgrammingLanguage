@@ -3,6 +3,7 @@
 #include "lex.h"
 
 //values of enum in order in which it is placed in parsing table, changing places strictly forbidden
+namespace Prod{
 enum Symbol {
 	INCLUDE,
 	GLOBAL,
@@ -96,6 +97,13 @@ extern std::vector<std::string> terminals;
 //grammar as vector
 extern vector<Production> grammar;
 extern vector<vector<int>> parsing_table;
-//necessery funcions
+//helper funcions
 Symbol translateTokenToSymbol(const Token& token);
 bool isTerminal(Symbol symbol);
+}
+//trasnspiler needed containers
+extern std::vector<std::string> common_signs;
+extern std::unordered_map<std::string, std::string> keyword_map;
+
+
+

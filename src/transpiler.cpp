@@ -1,23 +1,5 @@
 #include "../inc/transpiler.h"
-#include <sstream>
 
-
-std::vector<std::string> common_signs = {"(",")",",",":",";","{","}","==","!=",">","<",">=","<=","&","|","+","-","*","/", "="};
-//dollar sign should be skipped!!!!
-std::unordered_map<std::string, std::string> keyword_map = {
-  std::pair{"dycha", "int"},
-  std::pair{"przecinek", "float"},
-  std::pair{"tekst", "std::string"},
-  std::pair{"nic", "void"},
-  std::pair{"przestan", "break"},
-  std::pair{"dalej", "continue"},
-  std::pair{"zwroc", "return"},
-  std::pair{"dodaj", "include"} 
-};
-//******* reference *******
-                                  /*   1  ,     2     ,   3   ,  4  ,    5    ,  6 ,   7   , 8 , 9 , 10, 11, 12, 13, 14,    15    ,   16  ,  17   ,    18   ,   19   , 20  ,   21  , 22,   23    , 24 , 25 , 26, 27, 28 , 29 , 30, 31, 32, 33, 34, 35,  36,   37    ,  38   ,   39     */
-//vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","-","*","/", "$", "zakres","dodaj","globalne"};
-//*************************
 void addNewLine(std::ostringstream &ss, const std::string &sign)
 {
   if (sign == ";" || sign == "{" || sign == "}")
@@ -26,31 +8,9 @@ void addNewLine(std::ostringstream &ss, const std::string &sign)
   }
 }
 
-void FunctionHandler::processRecord(std::ostringstream& ss) 
-{
-  std::string return_type = p_record.back();
-  p_record.pop_back();
-  p_record.push_front(return_type);
-  for (const auto& node_val : p_record)
-  {
-    if (search(common_signs, node_val))
-    {
-      ss << node_val << " ";
-      continue;
-    }
-    auto it = keyword_map.find(node_val);
-    if (it != keyword_map.end())
-    {
-      ss << keyword_map[node_val] << " ";
-      continue;
-    }
-    ss << node_val << " ";
-  }
-  ss << "\n";
-  p_record.clear();
-}
 
-void Transpiler::m_transpiler_rec(std::ostringstream& ss, Symbol *head)
+
+void Transpiler::m_transpiler_rec(Symbol *head)
 {
   //if node is down node with value
   std::string node_val = head->getValue();
@@ -89,14 +49,13 @@ void Transpiler::m_transpiler_rec(std::ostringstream& ss, Symbol *head)
   //else go down from right to left in rhs
   for (int i = head->getRhsSize() - 1; i >= 0; i--)
   {
-    m_transpiler_rec(ss, head->getRhsNode(i));
+    m_transpiler_rec(head->getRhsNode(i));
   }
 } 
 
 void Transpiler::transpiler(const char* file_name, Symbol* head)
 {
-  std::ostringstream ss;
-  m_transpiler_rec(ss, head);
+  m_transpiler_rec(head);
   //todo open a file and place a string stream
   std::fstream file(file_name, std::ios::out);
   if (file.fail())
@@ -105,27 +64,39 @@ void Transpiler::transpiler(const char* file_name, Symbol* head)
     return;
   }
   file << ss.str();
+  ss.clear();
   file.close();
 }
 
-void FunctionHandler::analyze(std::ostringstream& ss, const std::string& node_val)
+void Transpiler::chooseHandler(const std::string& node_val)
 {
-  std::cout << "[DEBUG] node_val: " << node_val << std::endl;
-  if (node_val != ":")
-  {
-    p_record.push_back(node_val);
-    return;
-  }
-  m_colons++;
-  std::cout << "Colons: " << m_colons << std::endl;
-  if (m_colons == 2)
-  {
-    processRecord(ss);
-    m_colons = 0;
-    p_active = 0;   
-  }
-  return;
+  // if (node_val == "funkcja")
+  // {
+  //   m_handler.reset(new FunctionHandler{});
+  // }
+  // else if (node_val == "dla")
+  // {
+  //   m_handler.reset(new ForHandler{});
+  //   ss << "for";
+  // }
+  // else if (node_val == "dopoki")
+  // {
+  //   m_handler.reset(new WhileHandler{});
+  //   ss << "while";
+  // }
+  // else if (node_val == "jesli")
+  // {
+  //   m_handler.reset(new IfHandler{});
+  //   ss << "if";
+  //   ss << "(";
+  // }
+  // else if (node_val == "inaczej") 
+  // {
+  //   m_handler.reset(new IfHandler);
+  // }
 }
+
+
 
 
 // std::unordered_map<string, Symbol> terminals_map = {
