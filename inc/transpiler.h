@@ -36,31 +36,32 @@ protected:
   bool p_active;
   std::deque<std::string> p_record;
 public:
-  virtual void processRecord(std::ostringstream& ss, const std::string& head) = 0;
+  Handler():p_active(true), p_record(std::deque<std::string>()){}
+  virtual void processRecord(std::ostringstream& ss) = 0;
+  virtual void analyze(std::ostringstream& ss, const std::string& head) = 0;
   //actially can provide implementation of this one
-  virtual void addToRecord();
-}
+  const bool isActive() const { return p_active; };
+  void activate() { p_active = true; };
+  void deactivate() { p_active = false; };
+  void addToRecord(const std::string& element) { p_record.push_back(element); };
+
+};
 
 
-class FunctionHandler {
-  bool m_active;
+class FunctionHandler : public Handler{
   int m_colons;
-  std::deque<std::string> m_record;
 public:
-  FunctionHandler(): m_active(false), m_colons(0), m_record(std::deque<std::string>()){};
+  FunctionHandler(): m_colons(0){};
   void increaseColons() { m_colons++; };
   void resetColons() { m_colons = 0; };
-  void activate() {  m_active = true; };
-  void deactivate() {  m_active = false; };
-  const bool isActive() const { return  m_active; };
   const int getColons() const { return m_colons; };
-  void addToRecord(std::string element) { m_record.push_back(element); };
   //potenatial of adding other implementation of the same function to another handler
-  void processRecord(std::ostringstream& ss);
-  void analyzeFunction(std::ostringstream& ss, const std::string& head);
+  void processRecord(std::ostringstream& ss) override;
+  void analyze(std::ostringstream& ss, const std::string& head) override;
 };
 
 class Transpiler {
+  //to bo replaced with a unique_ptr to a Handler object
   FunctionHandler m_function;
   void m_transpiler_rec(std::ostringstream& ss, Symbol* head);
 public:

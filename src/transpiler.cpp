@@ -28,10 +28,10 @@ void addNewLine(std::ostringstream &ss, const std::string &sign)
 
 void FunctionHandler::processRecord(std::ostringstream& ss) 
 {
-  std::string return_type = m_record.back();
-  m_record.pop_back();
-  m_record.push_front(return_type);
-  for (const auto& node_val : m_record)
+  std::string return_type = p_record.back();
+  p_record.pop_back();
+  p_record.push_front(return_type);
+  for (const auto& node_val : p_record)
   {
     if (search(common_signs, node_val))
     {
@@ -47,7 +47,7 @@ void FunctionHandler::processRecord(std::ostringstream& ss)
     ss << node_val << " ";
   }
   ss << "\n";
-  m_record.clear();
+  p_record.clear();
 }
 
 void Transpiler::m_transpiler_rec(std::ostringstream& ss, Symbol *head)
@@ -64,7 +64,7 @@ void Transpiler::m_transpiler_rec(std::ostringstream& ss, Symbol *head)
     }
     if (m_function.isActive())
     {
-      m_function.analyzeFunction(ss, node_val);
+      m_function.analyze(ss, node_val);
       return;
     }  
     if (search(common_signs, node_val))
@@ -107,12 +107,12 @@ void Transpiler::transpiler(const char* file_name, Symbol* head)
   file.close();
 }
 
-void FunctionHandler::analyzeFunction(std::ostringstream& ss, const std::string& node_val)
+void FunctionHandler::analyze(std::ostringstream& ss, const std::string& node_val)
 {
   std::cout << "[DEBUG] node_val: " << node_val << std::endl;
   if (node_val != ":")
   {
-    m_record.push_back(node_val);
+    p_record.push_back(node_val);
     return;
   }
   m_colons++;
@@ -121,7 +121,7 @@ void FunctionHandler::analyzeFunction(std::ostringstream& ss, const std::string&
   {
     processRecord(ss);
     m_colons = 0;
-    m_active = 0;   
+    p_active = 0;   
   }
   return;
 }
