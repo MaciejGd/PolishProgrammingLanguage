@@ -55,6 +55,7 @@ int main(int argc, char **argv)
 	//here should be a file name to scan token from
 	std::string path_file;
 	std::string suffix = ".pol";
+	Transpiler* trans = new Transpiler{};
 	//run all tests from tests directory if no argument has been passed
 	if (argc == 1)
 	{
@@ -74,8 +75,12 @@ int main(int argc, char **argv)
 		{
 			std::string trans_file = argv[i];
 			trans_file = "./TRANSPIL/" + trans_file;
+			size_t dot_place = trans_file.find_last_of('.');
+			trans_file = trans_file.substr(0, dot_place+1);
+			trans_file += "cpp";
+			std::cout << "[LOGS]trans_file value: " << trans_file << std::endl;
 			printAST(argv[i], error_code);
-			transpiler(trans_file.c_str(), error_code);
+			trans->transpiler(trans_file.c_str(), error_code);
 			chopTree(error_code);
 			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
 			
@@ -103,5 +108,6 @@ int main(int argc, char **argv)
 	//	vec[i].printToken();
 
 	//parse(vec);
+	delete trans;
 	return 0;
 }
