@@ -59,12 +59,12 @@ void Transpiler::m_transpiler_rec(std::ostringstream& ss, Symbol *head)
     //set flag to true to start recording 
     if (node_val=="funkcja")
     {
-      m_function.activate();
+      m_function->activate();
       return;
     }
-    if (m_function.isActive())
+    if (m_function->isActive())
     {
-      m_function.analyze(ss, node_val);
+      m_function->analyze(ss, node_val);
       return;
     }  
     if (search(common_signs, node_val))

@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <deque>
+#include <memory>
 
 #include "grammar.h"
 
@@ -44,8 +45,9 @@ public:
   void activate() { p_active = true; };
   void deactivate() { p_active = false; };
   void addToRecord(const std::string& element) { p_record.push_back(element); };
-
 };
+
+
 
 
 class FunctionHandler : public Handler{
@@ -62,10 +64,10 @@ public:
 
 class Transpiler {
   //to bo replaced with a unique_ptr to a Handler object
-  FunctionHandler m_function;
+  std::unique_ptr<Handler> m_function;
   void m_transpiler_rec(std::ostringstream& ss, Symbol* head);
 public:
-  Transpiler():m_function(FunctionHandler()){};
+  Transpiler():m_function(new FunctionHandler()){};
   void transpiler(const char* file_name, Symbol* head);
 };
 
