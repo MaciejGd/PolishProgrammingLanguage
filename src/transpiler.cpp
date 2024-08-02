@@ -15,16 +15,12 @@ void Transpiler::m_transpiler_rec(Symbol *head)
   //if node is down node with value
   std::string node_val = head->getValue();
   if (node_val != "")
-  {
+  { 
     //set flag to true to start recording 
+    chooseHandler(node_val);
     if (m_handler && m_handler->isActive())
     {
       m_handler->analyze(ss, node_val);
-      return;
-    }
-    if (node_val=="funkcja")
-    {
-      m_handler.reset(new FunctionHandler{});
       return;
     }
     
@@ -55,6 +51,7 @@ void Transpiler::m_transpiler_rec(Symbol *head)
 
 void Transpiler::transpiler(const char* file_name, Symbol* head)
 {
+  ss << init_code;
   m_transpiler_rec(head);
   //todo open a file and place a string stream
   std::fstream file(file_name, std::ios::out);
@@ -70,10 +67,10 @@ void Transpiler::transpiler(const char* file_name, Symbol* head)
 
 void Transpiler::chooseHandler(const std::string& node_val)
 {
-  // if (node_val == "funkcja")
-  // {
-  //   m_handler.reset(new FunctionHandler{});
-  // }
+  if (node_val == "funkcja")
+  {
+    m_handler.reset(new FunctionHandler{});
+  }
   // else if (node_val == "dla")
   // {
   //   m_handler.reset(new ForHandler{});
@@ -84,12 +81,12 @@ void Transpiler::chooseHandler(const std::string& node_val)
   //   m_handler.reset(new WhileHandler{});
   //   ss << "while";
   // }
-  // else if (node_val == "jesli")
-  // {
-  //   m_handler.reset(new IfHandler{});
-  //   ss << "if";
-  //   ss << "(";
-  // }
+  else if (node_val == "jesli")
+  {
+    m_handler.reset(new IfHandler{});
+    ss << "if ";
+    ss << "( ";
+  }
   // else if (node_val == "inaczej") 
   // {
   //   m_handler.reset(new IfHandler);

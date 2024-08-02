@@ -25,7 +25,8 @@
 void addNewLine(std::ostringstream& ss, const std::string& sign);
 
 class Transpiler {
-  //to bo replaced with a unique_ptr to a Handler object
+  //for testing purpose
+  std::string init_code = "#include <string>\n#include <iostream>\n#include <vector>\n";
   std::ostringstream ss;
   std::unique_ptr<Handler> m_handler;
   void m_transpiler_rec(Symbol* head);
