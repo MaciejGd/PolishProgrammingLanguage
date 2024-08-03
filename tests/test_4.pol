@@ -1,12 +1,23 @@
+
+
 funkcja nowa ():nic:
 {
-	dla nowa zakres (1,2):
+	dla nowa zakres (1,4):
 	{
-		nowa = nowa+1;
-		jesli 4 > 2:
+		jesli (nowa % 2) == 1:
 		{
-			nowa = 12;
+			wywolaj wypisz("nieparzysta\n");
+		}
+		inaczej:
+		{
+			wywolaj wypisz("parzysta\n");
 		}
 	}
 
+}
+
+funkcja main  ():dycha:
+{
+	wywolaj nowa();
+	zwroc 0;
 }

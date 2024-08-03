@@ -32,10 +32,12 @@ void Transpiler::m_transpiler_rec(Symbol *head)
       ss << keyword_map[node_val] << " ";
       return;
     }
-    if (node_val == "$")
+    //skipping "wywolaj" keyword and end of file symbol
+    if (node_val == "$" || node_val == "wywolaj")
     {
       return;
     }
+    
     ss << node_val << " ";
     addNewLine(ss, node_val);
   }
@@ -82,6 +84,11 @@ int Transpiler::chooseHandler(const std::string& node_val)
   if (node_val == "jesli" || node_val == "inaczej")
   {
     m_handler.reset(new IfHandler{});
+    return 1;
+  }
+  if (node_val == "wypisz")
+  {
+    m_handler.reset(new PrintHandler{});
     return 1;
   }
   // else if (node_val == "inaczej") 

@@ -37,11 +37,28 @@ void FunctionHandler::analyze(std::ostringstream& ss, const std::string& node_va
   }
 }
 
-// IfHandler::IfHandler()
-// {
-//   p_record.push_back("if ");
-//   p_record.push_back("( ");
-// }
+void FunctionCallHandler::processRecord(std::ostringstream& ss)
+{
+
+}
+
+void FunctionCallHandler::analyze(std::ostringstream& ss, const std::string& node_val)
+{
+  // if (node_val == "wywolaj")
+  // {
+  //   return;
+  // }
+  // if (node_val == "(")
+  // {
+  //   m_args++;
+  // }
+  // if (node_val == ")")
+  // {
+  //   m_args--;
+  // }
+  // if ()
+}
+
 
 void IfHandler::processRecord(std::ostringstream& ss)
 {
@@ -180,4 +197,37 @@ void WhileHandler::analyze(std::ostringstream& ss, const std::string& node_val)
     return;
   }
   p_record.push_back(node_val);
+}
+
+void PrintHandler::processRecord(std::ostringstream& ss) 
+{
+  ss << "std::cout << ";
+  for (const auto& node_val: p_record)
+  {
+    auto it = keyword_map.find(node_val);
+    if (it != keyword_map.end())
+    {
+      ss << keyword_map[node_val] << " ";
+      continue;
+    }
+    ss << node_val << " ";
+  }
+  p_record.clear();
+}
+
+void PrintHandler::analyze(std::ostringstream& ss, const std::string& head)
+{
+  if (head == "wypisz")
+  {
+    return;
+  }
+  if (head == "(")
+    return;
+  if (head == ")")
+  {
+    deactivate();
+    processRecord(ss);
+    return;
+  }
+  p_record.push_back(head);
 }

@@ -306,6 +306,10 @@ Divide::Divide()
 {
   name = "Divide";
 };
+Modulo::Modulo()
+{
+  name = "Modulo";
+};
 End::End()
 {
   name = "End";
@@ -842,6 +846,8 @@ int MulOp::evaluate(const Token& token)
     rhs.push_back(new Multiply{});
   else if (token.value == "/")
     rhs.push_back(new Divide{});
+  else if (token.value == "%")
+    rhs.push_back(new Modulo{});
   else 
     return 1;
   return 0;
@@ -908,7 +914,7 @@ int TermNew::evaluate(const Token& token)
   {
     rhs.push_back(new Epsilon{});
   }
-  else if (token.value == "*" || token.value == "/")
+  else if (token.value == "*" || token.value == "/" || token.value == "%")
   {
     rhs.push_back(new TermNew{});
     rhs.push_back(new Factor{});
@@ -1215,6 +1221,13 @@ int Divide::evaluate(const Token& token)
   return 1;
 }
 
+int Modulo::evaluate(const Token &token)
+{
+  if (token.value == "%")
+    return 2;
+  return 0;
+}
+
 int End::evaluate(const Token& token)
 {
   if (token.value == "$")
@@ -1248,6 +1261,4 @@ int Dodaj::evaluate(const Token& token)
     return 2;
   return 1;
 }
-
-
 

@@ -292,10 +292,15 @@ std::unordered_map<std::string, std::string> keyword_map = {
   std::pair{"przestan", "break"},
   std::pair{"dalej", "continue"},
   std::pair{"zwroc", "return"},
-  std::pair{"dodaj", "include"} 
+  std::pair{"dodaj", "include"},
+	std::pair{"na_tekst", "std::to_string"}
+	//functions added from standard lib:
+	//wypisz for std::cout 
+	//wpisz for std::cin
+	//for now on using wywolaj before a function call is totally irrelevant
 };
 
 //to call a function first skip a wywolaj keyword and then look into a map
-std::unordered_map<std::string, std::string> functions_map = {
-
-}
+// std::unordered_map<std::string, std::string> functions_map = {
+// 	std::pair{"wypluj","s"},
+// };

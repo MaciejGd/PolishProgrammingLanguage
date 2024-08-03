@@ -98,6 +98,7 @@ class Error;
 class Epsilon;
 class Globalne;
 class Dodaj;
+class Modulo;
 //end of terminals
 
 class Symbol {
@@ -539,6 +540,12 @@ public:
 class Divide : public Symbol {
 public:
   Divide();
+  int evaluate(const Token& token) override;
+};
+
+class Modulo : public Symbol {
+public:
+  Modulo();
   int evaluate(const Token& token) override;
 };
 

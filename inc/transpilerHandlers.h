@@ -30,14 +30,23 @@ public:
 
 class FunctionHandler : public Handler{
   int m_colons;
+  //are they really needed? i gues not
+  void m_increaseColons() { m_colons++; };
+  void m_resetColons() { m_colons = 0; };
+  const int m_getColons() const { return m_colons; };
 public:
   FunctionHandler(): m_colons(0){};
-  void increaseColons() { m_colons++; };
-  void resetColons() { m_colons = 0; };
-  const int getColons() const { return m_colons; };
   //potenatial of adding other implementation of the same function to another handler
   void processRecord(std::ostringstream& ss) override;
   void analyze(std::ostringstream& ss, const std::string& head) override;
+};
+
+class FunctionCallHandler : public Handler {
+  bool m_args;
+public:
+  FunctionCallHandler():m_args(false){};
+  void processRecord(std::ostringstream& ss) override;
+  void analyze(std::ostringstream& ss, const std::string& node_val) override;
 };
 
 class IfHandler : public Handler {
@@ -56,6 +65,12 @@ public:
 };
 
 class WhileHandler : public Handler {
+public:
+  void processRecord(std::ostringstream& ss) override;
+  void analyze(std::ostringstream& ss, const std::string& head) override;
+};
+
+class PrintHandler : public Handler {
 public:
   void processRecord(std::ostringstream& ss) override;
   void analyze(std::ostringstream& ss, const std::string& head) override;
