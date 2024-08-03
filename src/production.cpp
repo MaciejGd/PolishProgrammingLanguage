@@ -294,3 +294,8 @@ std::unordered_map<std::string, std::string> keyword_map = {
   std::pair{"zwroc", "return"},
   std::pair{"dodaj", "include"} 
 };
+
+//to call a function first skip a wywolaj keyword and then look into a map
+std::unordered_map<std::string, std::string> functions_map = {
+
+}

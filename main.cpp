@@ -8,7 +8,7 @@
 namespace fs = std::filesystem;
 
 //have to consider moving test functions to another file and then just link it
-int runTests()
+int runTests(Transpiler* trans)
 {
 	const char *test_path = "./tests/";
 	const char *suffix = ".pol";
@@ -41,8 +41,14 @@ int runTests()
 			std::cout << "Return status code: 1\n\n";
 		}
 		else {
+			std::string trans_file = "./TRANSPIL/" + entry.path().filename().string();
+			std::cout << "[LOG]" << trans_file << std::endl;
+			size_t dot_place = trans_file.find_last_of('.');
+			trans_file = trans_file.substr(0, dot_place+1);
+			trans_file += "cpp";
 			printAST(entry.path().filename().c_str(), result);
 			std::cout << "Successfully parsed file: " << entry.path() <<"\n\n";
+			trans->transpiler(trans_file.c_str(), result);
 			chopTree(result);
 		}
 	}
@@ -59,7 +65,7 @@ int main(int argc, char **argv)
 	//run all tests from tests directory if no argument has been passed
 	if (argc == 1)
 	{
-		runTests();
+		runTests(trans);
 		return 0;
 	}
 	else {

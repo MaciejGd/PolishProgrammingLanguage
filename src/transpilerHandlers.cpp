@@ -144,6 +144,8 @@ void ForHandler::analyze(std::ostringstream& ss, const std::string& node_val)
     m_keyword = false;
     return;
   }
+  if (node_val == "(" || node_val == ")")
+    return;
   p_record.push_back(node_val);
 }
 

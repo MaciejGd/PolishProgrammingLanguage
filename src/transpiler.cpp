@@ -58,7 +58,7 @@ void Transpiler::transpiler(const char* file_name, Symbol* head)
     return;
   }
   file << ss.str();
-  ss.clear();
+  ss.str(std::string());
   file.close();
 }
 

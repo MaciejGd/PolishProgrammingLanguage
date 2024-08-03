@@ -10,12 +10,12 @@ funkcja test_1 (dycha first_var, przecinek test_var):nic:
 		test_var=test_var+1;
 		jesli nowa > 4:
 		{
-			nowa = nowa - 1;
+			nowa = nowa - 1; dycha num = 12;
 		}
 	}
 	dopoki 2>3:
 	{
-		
+
 	}
 	dycha oddawaj = 12;
 }

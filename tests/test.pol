@@ -29,7 +29,7 @@ funkcja test_2 (dycha first_var, przecinek test_var):nic:
 	{
 		test_var = 123;
 	}
-	inaczej
+	inaczej:
 	{
 		test_var = 23;
 	}

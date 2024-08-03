@@ -1,6 +1,6 @@
 funkcja nowa(przecinek dwa, przecinek trzy, tekst nowy):tekst:
 {
-  tekst testing = -12;
+  tekst testing = "-12";
   dla nowa zakres (-nowa,nowa2):
   {
     test_var = 12;

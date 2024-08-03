@@ -80,8 +80,6 @@ void createToken(vector<string>& lexemes, vector<Token>& tokens)
 			lexeme_type = TYPE::Op;
 		else if (lexemes[i].at(0)=='"' && lexemes[i].at(lexemes[i].size()-1)=='"')
 		{
-			lexemes[i].erase(lexemes[i].end()-1);
-			lexemes[i].erase(lexemes[i].begin());
 			lexeme_type = TYPE::Str;
 		}
 		else 
