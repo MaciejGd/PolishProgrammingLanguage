@@ -7,11 +7,6 @@ void FunctionHandler::processRecord(std::ostringstream& ss)
   p_record.push_front(return_type);
   for (const auto& node_val : p_record)
   {
-    if (search(common_signs, node_val))
-    {
-      ss << node_val << " ";
-      continue;
-    }
     auto it = keyword_map.find(node_val);
     if (it != keyword_map.end())
     {
@@ -65,10 +60,18 @@ void IfHandler::processRecord(std::ostringstream& ss)
     }
     ss << node_val << " ";
   }
+  p_record.clear();
 }
 
 void IfHandler::analyze(std::ostringstream& ss, const std::string& node_val)
-{
+{  
+  if (node_val == ":")
+  {
+    if (p_record.size() > 1)
+      p_record.push_back(")");
+    processRecord(ss);
+    p_active = false;
+  }
   //analyze if
   if (node_val == "jesli")
   {
@@ -82,17 +85,10 @@ void IfHandler::analyze(std::ostringstream& ss, const std::string& node_val)
     p_record.push_back("else ");
     return;
   }
-  //if end of expression
-  if (node_val != ":")
-  {
-    p_record.push_back(node_val);
-    return;
-  }
-  //do not add closing bracket when it is simple else
-  if (p_record.size() > 1)
-    p_record.push_back(")");
-  processRecord(ss);
-  p_active = false;
+
+  p_record.push_back(node_val);
+  return;
+  
 }
 
 void ForHandler::processRecord(std::ostringstream& ss)
@@ -123,6 +119,7 @@ void ForHandler::processRecord(std::ostringstream& ss)
   // }
   ss << "for (int " << m_loop_iterator << " = (" << left_range << "); " << m_loop_iterator << " != (" << right_range << "); " << 
       m_loop_iterator << " += (((" << left_range << ") > (" << right_range << "))? -1 : 1))\n";
+  p_record.clear();
 }
 
 void ForHandler::analyze(std::ostringstream& ss, const std::string& node_val)
@@ -150,6 +147,39 @@ void ForHandler::analyze(std::ostringstream& ss, const std::string& node_val)
   {
     m_loop_iterator = node_val;
     m_keyword = false;
+    return;
+  }
+  p_record.push_back(node_val);
+}
+
+void WhileHandler::processRecord(std::ostringstream& ss)
+{
+  for (const auto& node_val: p_record)
+  {
+    auto it = keyword_map.find(node_val);
+    if (it != keyword_map.end())
+    {
+      ss << keyword_map[node_val] << " ";
+      continue;
+    }
+    ss << node_val << " ";
+  }
+  p_record.clear();
+}
+
+void WhileHandler::analyze(std::ostringstream& ss, const std::string& node_val)
+{
+  if (node_val == ":")
+  {
+    p_record.push_back(")");
+    p_active = false;
+    processRecord(ss);
+    return;
+  }
+  if (node_val == "dopoki")
+  {
+    p_record.push_back("while ");
+    p_record.push_back("(");
     return;
   }
   p_record.push_back(node_val);

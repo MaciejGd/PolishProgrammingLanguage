@@ -22,7 +22,10 @@ void Transpiler::m_transpiler_rec(Symbol *head)
     }
     //check if handler need to be set
     if (chooseHandler(node_val))
+    {
+      m_handler->analyze(ss, node_val);
       return;
+    }
       
     if (search(common_signs, node_val))
     {
@@ -70,24 +73,21 @@ int Transpiler::chooseHandler(const std::string& node_val)
   if (node_val == "funkcja")
   {
     m_handler.reset(new FunctionHandler{});
-    m_handler->analyze(ss, node_val);
     return 1;
   }
-  else if (node_val == "dla")
+  if (node_val == "dla")
   {
     m_handler.reset(new ForHandler{});
-    m_handler->analyze(ss, node_val);
     return 1;
   }
-  // else if (node_val == "dopoki")
-  // {
-  //   m_handler.reset(new WhileHandler{});
-  //   ss << "while";
-  // }
-  else if (node_val == "jesli" || node_val == "inaczej")
+  if (node_val == "dopoki")
+  {
+    m_handler.reset(new WhileHandler{});
+    return 1;
+  }
+  if (node_val == "jesli" || node_val == "inaczej")
   {
     m_handler.reset(new IfHandler{});
-    m_handler->analyze(ss, node_val);
     return 1;
   }
   // else if (node_val == "inaczej") 

@@ -8,6 +8,14 @@ funkcja test_1 (dycha first_var, przecinek test_var):nic:
 	dla nowa zakres (2+12):
 	{
 		test_var=test_var+1;
+		jesli nowa > 4:
+		{
+			nowa = nowa - 1;
+		}
+	}
+	dopoki 2>3:
+	{
+		
 	}
 	dycha oddawaj = 12;
 }
