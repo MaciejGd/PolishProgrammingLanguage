@@ -47,8 +47,10 @@ public:
 };
 
 class ForHandler : public Handler {
+  std::string m_loop_iterator;
+  bool m_keyword;
 public:
-  ForHandler();
+  ForHandler():m_keyword(false){};
   void processRecord(std::ostringstream& ss) override;
   void analyze(std::ostringstream& ss, const std::string& head) override;
 };
@@ -60,8 +62,4 @@ public:
   void analyze(std::ostringstream& ss, const std::string& head) override;
 };
 
-class ElseIfHandler {
-public:
-  ElseIfHandler();
-};
 #endif

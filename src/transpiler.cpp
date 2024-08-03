@@ -73,11 +73,12 @@ int Transpiler::chooseHandler(const std::string& node_val)
     m_handler->analyze(ss, node_val);
     return 1;
   }
-  // else if (node_val == "dla")
-  // {
-  //   m_handler.reset(new ForHandler{});
-  //   ss << "for";
-  // }
+  else if (node_val == "dla")
+  {
+    m_handler.reset(new ForHandler{});
+    m_handler->analyze(ss, node_val);
+    return 1;
+  }
   // else if (node_val == "dopoki")
   // {
   //   m_handler.reset(new WhileHandler{});

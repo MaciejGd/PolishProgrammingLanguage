@@ -1,0 +1,14 @@
+funkcja main ( dycha nowa, przecinek stara):dycha: {
+  dycha test;
+  jesli nowa > 1:
+  {
+    dycha test = 12;
+  }
+  inaczej jesli nowa < 2:
+  {
+    dycha test = 2;
+  }
+  inaczej :{
+    dycha test = 3;
+  }
+}
