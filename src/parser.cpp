@@ -23,6 +23,7 @@ int rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
 	//check if properly evaluated
 	else if (result == 1)
 	{
+		std::cout << "[ERROR]Problem in parsing symbol: [" << head->getName() << "] in token: " << tokens[counter].value << std::endl;
 		return 1;
 	}
 	for (int i = head->getRhsSize()-1; i >= 0; i--)
@@ -35,6 +36,7 @@ int rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
 		// std::cout << "************\n";
 		int result = rec_parse(head->getRhsNode(i), tokens, counter);
 		//check if parsing child node failed and return if so
+		//is it necessary?
 		if (result == 1)
 		{
 			return 1;			

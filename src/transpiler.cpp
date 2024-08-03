@@ -8,22 +8,22 @@ void addNewLine(std::ostringstream &ss, const std::string &sign)
   }
 }
 
-
-
 void Transpiler::m_transpiler_rec(Symbol *head)
 {
   //if node is down node with value
   std::string node_val = head->getValue();
   if (node_val != "")
   { 
-    //set flag to true to start recording 
-    chooseHandler(node_val);
+    //if handler is actually set to active, process it 
     if (m_handler && m_handler->isActive())
     {
       m_handler->analyze(ss, node_val);
       return;
     }
-    
+    //check if handler need to be set
+    if (chooseHandler(node_val))
+      return;
+      
     if (search(common_signs, node_val))
     {
       ss << node_val << " ";
@@ -65,11 +65,13 @@ void Transpiler::transpiler(const char* file_name, Symbol* head)
   file.close();
 }
 
-void Transpiler::chooseHandler(const std::string& node_val)
+int Transpiler::chooseHandler(const std::string& node_val)
 {
   if (node_val == "funkcja")
   {
     m_handler.reset(new FunctionHandler{});
+    m_handler->analyze(ss, node_val);
+    return 1;
   }
   // else if (node_val == "dla")
   // {
@@ -81,59 +83,15 @@ void Transpiler::chooseHandler(const std::string& node_val)
   //   m_handler.reset(new WhileHandler{});
   //   ss << "while";
   // }
-  else if (node_val == "jesli")
+  else if (node_val == "jesli" || node_val == "inaczej")
   {
     m_handler.reset(new IfHandler{});
-    ss << "if ";
-    ss << "( ";
+    m_handler->analyze(ss, node_val);
+    return 1;
   }
   // else if (node_val == "inaczej") 
   // {
   //   m_handler.reset(new IfHandler);
   // }
+  return 0;
 }
-
-
-
-
-// std::unordered_map<string, Symbol> terminals_map = {
-// 	{"zakres", ZAKRES},
-// 	{"dycha", DYCHA},
-// 	{"przecinek", PRZECINEK},
-// 	{"tekst", TEKST},
-// 	{"nic", NIC},
-// 	{"funkcja", FUNKCJA},
-// 	{"id", IDENTIFIER},
-// 	{"const", CONSTANT},
-// 	{"(", OPENING_ROUND},
-// 	{")", CLOSING_ROUND},
-// 	{",", COMA},
-// 	{":", COLON},
-// 	{";", SEMICOLON},
-// 	{"{", OPENING_CURLY},
-// 	{"}", CLOSING_CURLY},
-// 	{"przestan", PRZESTAN},
-// 	{"dalej", DALEJ},
-// 	{"zwroc", ZWROC},
-// 	{"wywolaj", WYWOLAJ},
-// 	{"dopoki", DOPOKI},
-// 	{"dla", DLA},
-// 	{"jesli", JESLI},
-// 	{"=", ASSIGN},
-// 	{"inaczej", INACZEJ},
-// 	{"==", DOUBLE_EQUAL},
-// 	{"!=", NOT_EQUAL},
-// 	{">", MORE},
-// 	{"<", LESS},
-// 	{">=", MORE_EQUAL},
-// 	{"<=", LESS_EQUAL},
-// 	{"&", AND_OP},
-// 	{"|", OR_OP},
-// 	{"+", PLUS},
-// 	{"-", MINUS},
-// 	{"*", MULTIPLY},
-// 	{"/", DIVIDE},
-// 	{"$", END},
-// 	{"dodaj", DODAJ},
-// 	{"globalne", GLOBALNE}
-// };

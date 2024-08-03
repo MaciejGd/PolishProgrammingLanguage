@@ -42,6 +42,12 @@ void FunctionHandler::analyze(std::ostringstream& ss, const std::string& node_va
   }
 }
 
+// IfHandler::IfHandler()
+// {
+//   p_record.push_back("if ");
+//   p_record.push_back("( ");
+// }
+
 void IfHandler::processRecord(std::ostringstream& ss)
 {
   for (const auto& node_val : p_record)
@@ -64,15 +70,32 @@ void IfHandler::processRecord(std::ostringstream& ss)
 void IfHandler::analyze(std::ostringstream& ss, const std::string& node_val)
 {
   if (node_val == "jesli")
+  {
+    p_record.push_back("if ");
+    p_record.push_back("( ");
     return;
+  }
+  if (node_val == "inaczej")
+  {
+    p_record.push_back("else ");
+    return;
+  }
+
   if (node_val != ":")
   {
     p_record.push_back(node_val);
     return;
   }
-  p_record.push_back(")");
+  //do not add closing bracket when it is simple else
+  if (p_record.size() > 1)
+    p_record.push_back(")");
   processRecord(ss);
   p_active = false;
 }
 
-
+// ElseIfHandler::ElseIfHandler()
+// {
+//   p_record.push_back("inaczej");
+//   p_record.push_back();
+//   p_record.push_back();
+// }

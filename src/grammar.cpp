@@ -752,9 +752,10 @@ int ElseClause::evaluate(const Token& token)
 
 int Else::evaluate(const Token& token)
 {
-  if (token.value == "{")
+  if (token.value == ":")
   {
     rhs.push_back(new Body{});
+    rhs.push_back(new Colon{});
   }
   else if (token.value == "jesli")
   {

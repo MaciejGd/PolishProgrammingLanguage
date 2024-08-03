@@ -48,14 +48,20 @@ public:
 
 class ForHandler : public Handler {
 public:
+  ForHandler();
   void processRecord(std::ostringstream& ss) override;
   void analyze(std::ostringstream& ss, const std::string& head) override;
 };
 
 class WhileHandler : public Handler {
 public:
+  WhileHandler();
   void processRecord(std::ostringstream& ss) override;
   void analyze(std::ostringstream& ss, const std::string& head) override;
 };
 
+class ElseIfHandler {
+public:
+  ElseIfHandler();
+};
 #endif

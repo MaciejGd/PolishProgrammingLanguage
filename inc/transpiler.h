@@ -32,7 +32,7 @@ class Transpiler {
   void m_transpiler_rec(Symbol* head);
 public:
   void transpiler(const char* file_name, Symbol* head);
-  void chooseHandler(const std::string& node_val);
+  int chooseHandler(const std::string& node_val);
 };
 
 
