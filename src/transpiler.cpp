@@ -26,13 +26,6 @@ void Transpiler::m_transpiler_rec(Symbol *head)
       m_handler->analyze(ss, node_val);
       return;
     }
-      
-    if (search(common_signs, node_val))
-    {
-      ss << node_val << " ";
-      addNewLine(ss, node_val);
-      return;
-    }
     auto it = keyword_map.find(node_val);
     if (it != keyword_map.end())
     {
@@ -44,6 +37,7 @@ void Transpiler::m_transpiler_rec(Symbol *head)
       return;
     }
     ss << node_val << " ";
+    addNewLine(ss, node_val);
   }
   //else go down from right to left in rhs
   for (int i = head->getRhsSize() - 1; i >= 0; i--)

@@ -281,7 +281,8 @@ bool isTerminal(Symbol symbol)
 }
 }
 
-std::vector<std::string> common_signs = {"(",")",",",":",";","{","}","==","!=",">","<",">=","<=","&","|","+","-","*","/", "="};
+//may be useful so will be kept for now, but it is not used in code at the moment
+// std::vector<std::string> common_signs = {"(",")",",",":",";","{","}","==","!=",">","<",">=","<=","&","|","+","-","*","/", "="};
 //dollar sign should be skipped!!!!
 std::unordered_map<std::string, std::string> keyword_map = {
   std::pair{"dycha", "int"},

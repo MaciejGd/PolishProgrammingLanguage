@@ -47,11 +47,6 @@ void IfHandler::processRecord(std::ostringstream& ss)
 {
   for (const auto& node_val : p_record)
   {
-    if (search(common_signs, node_val))
-    {
-      ss << node_val << " ";
-      continue;
-    }
     auto it = keyword_map.find(node_val);
     if (it != keyword_map.end())
     {
