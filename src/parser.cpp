@@ -5,7 +5,7 @@
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
-Parser::Parser(const std::vector<Token>& tokens):head(new Start{})
+Parser::Parser(const std::string& file_name, const std::vector<Token>& tokens):head(new Start{}), file_name(file_name)
 {
 	if (m_parse(tokens))
 	{
@@ -33,7 +33,7 @@ int Parser::m_rec_parse(Symbol* head, const std::vector<Token>& tokens, int &cou
 	//check if properly evaluated
 	else if (result == 1)
 	{
-		std::cout << "[ERROR]Problem in parsing symbol: [" << head->getName() << "] in token: " << tokens[counter].value << std::endl;
+		std::cout << "[ERROR][" << file_name << "]Problem in parsing symbol: [" << head->getName() << "] in token: " << tokens[counter].value << std::endl;
 		return 1;
 	}
 	for (int i = head->getRhsSize()-1; i >= 0; i--)
@@ -94,7 +94,7 @@ void printAST(const char* file_arg, const Symbol* head)
 	std::ofstream file(file_name);
 	if (file.fail())
 	{
-		std::cout << "[ERROR]Opening file " << file_name << " for printing AST failed!";
+		std::cout << "[ERROR][" << file_name << "]Opening file for printing AST failed!";
 		return;
 	}
 	file << ss.str();

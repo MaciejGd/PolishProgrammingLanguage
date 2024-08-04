@@ -2,6 +2,6 @@ funkcja main():tekst:
 {
 	jesli wywolaj nowa(12,2):
 	{
-		dycha nowa = 213;
+		dycha nowa = 213
 	}
 }

@@ -12,12 +12,14 @@ CompilerWrapper::CompilerWrapper(const std::vector<std::string>& command):exe_na
   for (const auto&x : files)
   {
     t.push_back(std::thread([this, x](){ m_processFile(x);}));
-    if (t.back().joinable())
-    {
-      std::cout << "[INFO]Started new thread for processing " << x << "file.\n";
-      t.back().join();
-    }
-  }  
+    std::cout << "[INFO]Started new thread for processing " << x << "file.\n";
+  }
+  //join created threads  
+  for (auto& x : t)
+  {
+    if (x.joinable())
+      x.join();
+  }
 }
 
 int CompilerWrapper::m_analyzeCommand(const std::vector<std::string>& command)
@@ -46,7 +48,7 @@ int CompilerWrapper::m_analyzeCommand(const std::vector<std::string>& command)
       //check if file extension is .pol
       if (arg.substr(it+1, arg.length()) != "pol")
       {
-        std::cout << "[ERROR]File: " << arg << " passed as argument does not have .pol extension. Check your spelling.\n";
+        std::cout << "[ERROR][" << arg << "] Passed argument does not have .pol extension. Check your spelling.\n";
         return 1;
       }
       files.push_back(arg);
@@ -72,19 +74,6 @@ int CompilerWrapper::m_analyzeCommand(const std::vector<std::string>& command)
 void CompilerWrapper::m_processFile(const std::string& file_name)
 {
   Lexer lexer(file_name);
-  Parser parser(lexer.getTokens());
+  Parser parser(file_name, lexer.getTokens());
   Transpiler transpiler(file_name, parser.getHead());
-}
-
-void CompilerWrapper::m_tokenizeFiles()
-{
-
-}
-void CompilerWrapper::m_parseFiles()
-{
-
-}
-void CompilerWrapper::m_transpilFiles()
-{
-
 }

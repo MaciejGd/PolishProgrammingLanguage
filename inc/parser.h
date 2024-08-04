@@ -7,11 +7,12 @@
 
 class Parser {
   Symbol* head;
+  std::string file_name;
   int m_rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter);
   int m_parse(const vector<Token>& tokens);
   void m_chopTree(Symbol *head);
 public:
-  Parser(const std::vector<Token>& tokens);
+  Parser(const std::string& file_name, const std::vector<Token>& tokens);
   ~Parser();
   const Symbol* getHead() const { return head; };
 };

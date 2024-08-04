@@ -424,7 +424,6 @@ int VarDecl::evaluate(const Token& token)
     rhs.push_back(new DataType{});
     return 0;
   }
-  //std::cout << "[ERROR]Failed to parse symbol: " << rhs.back()->getName() << " in token: " << token << "\n";
   return 1;
 }
 

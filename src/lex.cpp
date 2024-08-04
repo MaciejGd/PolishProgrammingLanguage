@@ -27,6 +27,7 @@ void Token::printToken() const
 
 
 Lexer::Lexer(std::string _file):file_name(_file){
+	std::cout << "[INFO]Starting process of tokenizing " << file_name << "\n"; 
 	m_tokensScan();
 }
 
@@ -38,7 +39,7 @@ void Lexer::m_tokensScan()
 	std::ifstream input_file(file_name);
 	if (input_file.fail())
 	{
-		std::cout << "Could not load input file: " << file_name << std::endl;
+		std::cout << "[ERROR][" << file_name << "]Could not load input file.\n";
 		//abort if file could not be load
 		exit(1);
 	}

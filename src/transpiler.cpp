@@ -73,7 +73,7 @@ void Transpiler::m_transpiler(const std::string& file_name, const Symbol* head)
   std::fstream file(file_name, std::ios::out);
   if (file.fail())
   {
-    std::cout << "[ERROR]Could not open a file: " << file_name << " in function transpiler in transpiler.cpp\n";
+    std::cout << "[ERROR][" << file_name << "]Could not open a file during transpiling.\n";
     return;
   }
   file << ss.str();

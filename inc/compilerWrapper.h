@@ -14,9 +14,9 @@ class CompilerWrapper {
   std::string exe_name;
   int m_analyzeCommand(const std::vector<std::string>& command);
   void m_processFile(const std::string& file_name);
-  void m_tokenizeFiles();
-  void m_parseFiles();
-  void m_transpilFiles();
+  // void m_tokenizeFiles();
+  // void m_parseFiles();
+  // void m_transpilFiles();
 public: 
   //cast chain of responsibility in here is it really that necessary????
   CompilerWrapper(const std::vector<std::string>& command);
