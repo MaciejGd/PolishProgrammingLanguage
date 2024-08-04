@@ -13,14 +13,6 @@
 #include "transpilerHandlers.h"
 #include "production.h"
 
-//to be done -> adding tabulation to transpilled cpp files
-#define TABULATION 2
-
-
-
-//simple helper function to search for an vector element
-
-
 //helper function for adding new line character after wanted strings
 void addNewLine(std::ostringstream& ss, const std::string& sign);
 
@@ -30,9 +22,10 @@ class Transpiler {
   std::ostringstream ss;
   std::unique_ptr<Handler> m_handler;
   void m_transpiler_rec(const Symbol* head);
+  void m_transpiler(const std::string& file_name, const Symbol* head);
+  int m_chooseHandler(const std::string& node_val);
 public:
-  void transpiler(const char* file_name, const Symbol* head);
-  int chooseHandler(const std::string& node_val);
+  Transpiler(const std::string& file_name, const Symbol* head);
 };
 
 

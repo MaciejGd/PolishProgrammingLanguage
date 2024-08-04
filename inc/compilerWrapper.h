@@ -1,13 +1,24 @@
 #include "lex.h"
 #include "parser.h"
 #include "transpiler.h"
+#include <vector>
+#include <string>
+#include <thread>
+
 
 //here, argument to a compiler wrapper would be input string (command used to invoke compiler)
 
-// class CompilerWrapper {
-//   Lexer lexer;
-//   std::vector<Token> tokens;
-// public: 
-//   //cast chain of responsibility in here is it really that necessary????
-//   CompilerWrapper(){};
-// };
+class CompilerWrapper {
+  std::vector<std::string> flags;
+  std::vector<std::string> files;
+  std::string exe_name;
+  int m_analyzeCommand(const std::vector<std::string>& command);
+  void m_processFile(const std::string& file_name);
+  void m_tokenizeFiles();
+  void m_parseFiles();
+  void m_transpilFiles();
+public: 
+  //cast chain of responsibility in here is it really that necessary????
+  CompilerWrapper(const std::vector<std::string>& command);
+
+};

@@ -8,6 +8,19 @@ void addNewLine(std::ostringstream &ss, const std::string &sign)
   }
 }
 
+Transpiler::Transpiler(const std::string& file_name, const Symbol* head)
+{
+  system("mkdir TRANSPILER");
+  //preparing .cpp file
+  std::string temp_file = file_name.substr(0,file_name.length()-4) + ".cpp";
+  auto it = temp_file.find_last_of('/');
+  if (it != temp_file.npos)
+  {
+    temp_file = temp_file.substr(it, temp_file.length()-1);
+  }
+  m_transpiler("./TRANSPILER/"+ temp_file, head);
+}
+
 void Transpiler::m_transpiler_rec(const Symbol *head)
 {
   //if node is down node with value
@@ -21,7 +34,7 @@ void Transpiler::m_transpiler_rec(const Symbol *head)
       return;
     }
     //check if handler need to be set
-    if (chooseHandler(node_val))
+    if (m_chooseHandler(node_val))
     {
       m_handler->analyze(ss, node_val);
       return;
@@ -48,7 +61,7 @@ void Transpiler::m_transpiler_rec(const Symbol *head)
   }
 } 
 
-void Transpiler::transpiler(const char* file_name, const Symbol* head)
+void Transpiler::m_transpiler(const std::string& file_name, const Symbol* head)
 {
   ss << init_code;
   m_transpiler_rec(head);
@@ -64,7 +77,7 @@ void Transpiler::transpiler(const char* file_name, const Symbol* head)
   file.close();
 }
 
-int Transpiler::chooseHandler(const std::string& node_val)
+int Transpiler::m_chooseHandler(const std::string& node_val)
 {
   if (node_val == "funkcja")
   {

@@ -2,6 +2,7 @@
 #include "inc/parser.h"
 #include "inc/grammar.h"
 #include "inc/transpiler.h"
+#include "inc/compilerWrapper.h"
 #include <string.h>
 #include <filesystem>
 
@@ -59,32 +60,40 @@ namespace fs = std::filesystem;
 int main(int argc, char **argv)
 {
 	//here should be a file name to scan token from
-	std::string path_file;
-	std::string suffix = ".pol";
-	Transpiler* trans = new Transpiler{};
-	if (argc == 1)
-	{
-		std::cout << "[ERROR]To few arguments, program quiting...\n";
-		return 1;
-	}
+	// std::string path_file;
+	// std::string suffix = ".pol";
+	// Transpiler* trans = new Transpiler{};
+	// if (argc == 1)
+	// {
+	// 	std::cout << "[ERROR]To few arguments, program quiting...\n";
+	// 	return 1;
+	// }
+	// for (int i = 1; i < argc; i++)
+	// {
+		
+	// 	std::string path_to_test = "./tests/" + std::string(argv[i]);
+	// 	Lexer lexer{path_to_test};
+	// 	std::vector<Token> token_list = lexer.getTokens();
+	// 	Parser parser(lexer.getTokens());
+	// 	const Symbol* error_code = parser.getHead();
+	// 	std::string trans_file = argv[i];
+	// 	trans_file = "./TRANSPIL/" + trans_file;
+	// 	size_t dot_place = trans_file.find_last_of('.');
+	// 	trans_file = trans_file.substr(0, dot_place+1);
+	// 	trans_file += "cpp";
+	// 	std::cout << "[LOGS]trans_file value: " << trans_file << std::endl;
+	// 	printAST(argv[i], error_code);
+	// 	trans->transpiler(trans_file.c_str(), error_code);
+	// 	std::cout << "File: " << argv[i]<< " parsed with no errors\n";
+	// }
+	// delete trans;
+
+	//WRAPPER INITIAL TESTING
+	std::vector<std::string> command;
 	for (int i = 1; i < argc; i++)
 	{
-		
-		std::string path_to_test = "./tests/" + std::string(argv[i]);
-		Lexer lexer{path_to_test};
-		std::vector<Token> token_list = lexer.getTokens();
-		Parser parser(lexer.getTokens());
-		const Symbol* error_code = parser.getHead();
-		std::string trans_file = argv[i];
-		trans_file = "./TRANSPIL/" + trans_file;
-		size_t dot_place = trans_file.find_last_of('.');
-		trans_file = trans_file.substr(0, dot_place+1);
-		trans_file += "cpp";
-		std::cout << "[LOGS]trans_file value: " << trans_file << std::endl;
-		printAST(argv[i], error_code);
-		trans->transpiler(trans_file.c_str(), error_code);
-		std::cout << "File: " << argv[i]<< " parsed with no errors\n";
+		command.push_back(argv[i]);
 	}
-	delete trans;
+	CompilerWrapper comp = CompilerWrapper(command);
 	return 0;
 }
