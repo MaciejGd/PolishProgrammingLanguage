@@ -2,12 +2,6 @@
 
 using std::string, std::vector, std::cout, std::cin, std::endl;
 
-//operators and separators list
-vector<char> operators = {'=','+','-','*','/','&','|','>','<', '!'};
-vector<char> separators = {';','[',']','{','}',':','(',')',','};
-//corresponding keywords in cpp: void, int, float, bool, const, break, continue, if, while, for, struct, return
-vector<string> keywords = {"funkcja" ,"nic","dycha", "przecinek", "tekst","wywolaj", "przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do", "zakres", "dodaj", "globalne"};
-
 string typeToString(TYPE type)
 {
 	switch(type)
@@ -31,65 +25,40 @@ void Token::printToken() const
 	cout << "[ " << typeToString(type) << " ," << value << " ]\n";
 }
 
-//function for checking if lexem is constant integer or float if return value is equal to 2 it is a float, if it returns 1 it is integer and when 0 it is not
-int isConstant(const string& lexem)
-{
-	bool dot = false;
-	for (int i = 0; i < lexem.length(); i++)
-	{
-		if (lexem.at(i)=='.')
-		{
-			if (!dot)
-				dot = true;
-			else
-				return 0;
-		}
-		//have to make some changes to a lexer to properly create token from a minus number
-		//this snippet brings more errors for now on 
-		// else if (lexem.at(0)=='-')
-		// 	continue;
-		else if (!std::isdigit(lexem.at(i)))
-			return 0;			
-	}
-	if (dot)
-		return 2;
-	return 1;
+
+Lexer::Lexer(std::string _file):file_name(_file){
+	m_tokensScan();
 }
 
-void createToken(vector<string>& lexemes, vector<Token>& tokens)
+void Lexer::m_tokensScan()
 {
-	TYPE lexeme_type;
-	//here need to add some logic responsible for proper processing of minus values
-	for (int i = 0; i < lexemes.size(); i++)
+	vector<string> words;
+	vector<string> lexemes;
+	//input file loading
+	std::ifstream input_file(file_name);
+	if (input_file.fail())
 	{
-		int is_constant_state = isConstant(lexemes[i]);
-		if (is_constant_state==1)
-			lexeme_type = TYPE::Int;
-		else if (is_constant_state==2)
-			lexeme_type = TYPE::Float; 
-		else if (vector_search(keywords, lexemes[i]))
-			lexeme_type = TYPE::Key;
-		else if (lexemes[i].length() == 1)
-		{
-			if (vector_search(separators, lexemes[i].at(0)))
-				lexeme_type = TYPE::Sep;
-			else if (vector_search(operators, lexemes[i].at(0)))
-				lexeme_type = TYPE::Op;
-		}
-		else if (lexemes[i] == "==" || lexemes[i] == "<=" || lexemes[i] == ">=" || lexemes[i] == "!=")
-			lexeme_type = TYPE::Op;
-		else if (lexemes[i].at(0)=='"' && lexemes[i].at(lexemes[i].size()-1)=='"')
-		{
-			lexeme_type = TYPE::Str;
-		}
-		else 
-		{lexeme_type = TYPE::Id;}
-		tokens.push_back(Token{lexeme_type, lexemes[i]});
+		std::cout << "Could not load input file: " << file_name << std::endl;
+		//abort if file could not be load
+		exit(1);
 	}
+	//variable to store line of text to analyze 
+	string line;
+	int line_counter = 0;
+	while (std::getline(input_file, line))
+	{
+		if (!line.empty())
+			m_divideToWords(line_counter, line, words);
+		line_counter++;		
+	}	
+	m_createTokens(words);
+	//pushing back end of file token after scanning all file -> necessary for parsing tre
+	tokens.push_back(Token(TYPE::Sep, "$"));	
 }
+
 //have to reconsider merging createToken with divideToWords functions
 //function to divide processed line to words to be turned to a tokens 
-void divideToWords(int line_counter, const string& line, vector<string> &words)
+void Lexer::m_divideToWords(int line_counter, const string& line, vector<string> &words)
 {
 	
 	string actual_word;
@@ -164,27 +133,61 @@ void divideToWords(int line_counter, const string& line, vector<string> &words)
 	}
 }
 
-vector<Token> tokensScan(const string& file_name)
+void Lexer::m_createTokens(const vector<string>& lexemes)
 {
-	vector<string> words;
-	vector<Token> tokens;
-	//input file loading
-	std::ifstream input_file(file_name);
-	if (input_file.fail())
+	TYPE lexeme_type;
+	//here need to add some logic responsible for proper processing of minus values
+	for (int i = 0; i < lexemes.size(); i++)
 	{
-		std::cout << "Could not load input file" << std::endl;
+		int is_constant_state = m_isConstant(lexemes[i]);
+		if (is_constant_state==1)
+			lexeme_type = TYPE::Int;
+		else if (is_constant_state==2)
+			lexeme_type = TYPE::Float; 
+		else if (vector_search(keywords, lexemes[i]))
+			lexeme_type = TYPE::Key;
+		else if (lexemes[i].length() == 1)
+		{
+			if (vector_search(separators, lexemes[i].at(0)))
+				lexeme_type = TYPE::Sep;
+			else if (vector_search(operators, lexemes[i].at(0)))
+				lexeme_type = TYPE::Op;
+		}
+		else if (lexemes[i] == "==" || lexemes[i] == "<=" || lexemes[i] == ">=" || lexemes[i] == "!=")
+			lexeme_type = TYPE::Op;
+		else if (lexemes[i].at(0)=='"' && lexemes[i].at(lexemes[i].size()-1)=='"')
+		{
+			lexeme_type = TYPE::Str;
+		}
+		else 
+		{lexeme_type = TYPE::Id;}
+		tokens.push_back(Token{lexeme_type, lexemes[i]});
 	}
-	//variable to store line of text to analyze 
-	string line;
-	int line_counter = 0;
-	while (std::getline(input_file, line))
-	{
-		if (!line.empty())
-			divideToWords(line_counter, line, words);
-		line_counter++;		
-	}	
-	createToken(words, tokens);
-	//pushing back end of file token after scanning all file -> necessary for parsing tre
-	tokens.push_back(Token(TYPE::Sep, "$"));	
-	return tokens;
 }
+
+
+//function for checking if lexem is constant integer or float if return value is equal to 2 it is a float, if it returns 1 it is integer and when 0 it is not
+int Lexer::m_isConstant(const string& lexem)
+{
+	bool dot = false;
+	for (int i = 0; i < lexem.length(); i++)
+	{
+		if (lexem.at(i)=='.')
+		{
+			if (!dot)
+				dot = true;
+			else
+				return 0;
+		}
+		else if (!std::isdigit(lexem.at(i)))
+			return 0;			
+	}
+	if (dot)
+		return 2;
+	return 1;
+}
+
+
+
+
+

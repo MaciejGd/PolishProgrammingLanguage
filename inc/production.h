@@ -1,6 +1,9 @@
 #pragma once
 #include <unordered_map>
-#include "lex.h"
+#include <vector>
+#include <string>
+
+//#include "lex.h"
 
 //values of enum in order in which it is placed in parsing table, changing places strictly forbidden
 namespace Prod{
@@ -91,18 +94,20 @@ struct Production
 };
 
 //symbols map for debugging
-extern std::unordered_map<Symbol, string> symbols_map;
+extern std::unordered_map<Symbol, std::string> symbols_map;
 extern std::unordered_map<std::string, Symbol> terminals_map;
 extern std::vector<std::string> terminals;
 //grammar as vector
-extern vector<Production> grammar;
-extern vector<vector<int>> parsing_table;
-//helper funcions
-Symbol translateTokenToSymbol(const Token& token);
-bool isTerminal(Symbol symbol);
+extern std::vector<Production> grammar;
+extern std::vector<std::vector<int>> parsing_table;
 }
-//trasnspiler needed containers
-extern std::vector<std::string> common_signs;
+
+//needed by lexer
+extern std::vector<char> operators;
+extern std::vector<char> separators;
+extern std::vector<std::string> keywords;
+
+//needed by trabnspiler
 extern std::unordered_map<std::string, std::string> keyword_map;
 
 

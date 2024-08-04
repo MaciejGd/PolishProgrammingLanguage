@@ -2,7 +2,7 @@
 
 //used for debugging purposes
 namespace Prod
-{std::unordered_map<Symbol, string> symbols_map = {
+{std::unordered_map<Symbol, std::string> symbols_map = {
 	{INCLUDE, "INCLUDE"},
 	{GLOBAL, "GLOBAL"},
 	{GLOBALVAR, "GLOBALVAR"},
@@ -82,7 +82,7 @@ namespace Prod
 };
 
 
-std::unordered_map<string, Symbol> terminals_map = {
+std::unordered_map<std::string, Symbol> terminals_map = {
 	{"zakres", ZAKRES},
 	{"dycha", DYCHA},
 	{"przecinek", PRZECINEK},
@@ -125,7 +125,7 @@ std::unordered_map<string, Symbol> terminals_map = {
 };
 //debug purposes
                                 /*   1  ,     2     ,   3   ,  4  ,    5    ,  6 ,   7   , 8 , 9 , 10, 11, 12, 13, 14,    15    ,   16  ,  17   ,    18   ,   19   , 20  ,   21  , 22,   23    , 24 , 25 , 26, 27, 28 , 30 , 31, 32, 33, 34, 35, 36,  37,   38    ,  40   ,   41     */
-vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","-","*","/", "$", "zakres","dodaj","globalne"};
+std::vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","-","*","/", "$", "zakres","dodaj","globalne"};
 
 std::vector<Production> grammar = {	
 /* 1*/{VARDECL, {DATATYPE, IDENTIFIER}},
@@ -204,13 +204,13 @@ std::vector<Production> grammar = {
 //for testing purposes 
 /*74*/{EXPRESSION, {ADDOP, TERM, EXPRESSIONNEW}}
 };
-
+}
 //debug purposes
                                   /*   1  ,     2     ,   3   ,  4  ,    5    ,  6 ,   7   , 8 , 9 , 10, 11, 12, 13, 14,    15    ,   16  ,  17   ,    18   ,   19   , 20  ,   21  , 22,   23    , 24 , 25 , 26, 27, 28 , 29 , 30, 31, 32, 33, 34, 35,  36,   37    ,  38   ,   39     */
 //vector<std::string> terminals = {"dycha","przecinek","tekst","nic","funkcja","id","const","(",")",",",":",";","{","}","przestan","dalej","zwroc","wywolaj","dopoki","dla","jesli","=","inaczej","==","!=",">","<",">=","<=","&","|","+","-","*","/", "$", "zakres","dodaj","globalne"};
 
 //here also added into an expression
-vector<vector<int>> parsing_table = {
+std::vector<std::vector<int>> parsing_table = {
 										/* { 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39}*/ 				
 	
 /*INCLUDE*/            { 0, 0, 0, 0,69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,68,69},
@@ -248,38 +248,13 @@ vector<vector<int>> parsing_table = {
 /*Factor*/             { 0, 0, 0, 0, 0,61,62,63, 0, 0, 0, 0, 0, 0, 0, 0, 0,64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
 };
 
-
-
-
-Symbol translateTokenToSymbol(const Token& token)
-{
-	switch(token.type)
-	{
-		case TYPE::Id:
-			return IDENTIFIER;
-			break;
-		case TYPE::Str:
-			return CONSTANT;
-			break;
-		case TYPE::Int:
-			return CONSTANT;
-			break;
-		case TYPE::Float:
-			return CONSTANT;
-			break;
-		default:
-			return terminals_map[token.value];
-			break;
-	}
-	return ERROR;
-}
-
-bool isTerminal(Symbol symbol)
-{
-	//symbols values in enum placed after zakres are terminal values
-	return (symbol >= ZAKRES);
-}
-}
+//tables needed for lexer
+std::vector<char> operators = {'=','+','-','*','/','&','|','>','<', '!'};
+std::vector<char> separators = {';','[',']','{','}',':','(',')',','};
+//corresponding keywords in cpp: void, int, float, bool, const, break, continue, if, while, for, struct, return
+std::vector<std::string> keywords = {"funkcja" ,"nic","dycha", "przecinek", "tekst","wywolaj", 
+		"przestań","dalej","jesli", "inaczej", "dopoki","dla", "liga", "zwroc", "do", 
+		"zakres", "dodaj", "globalne"};
 
 //may be useful so will be kept for now, but it is not used in code at the moment
 // std::vector<std::string> common_signs = {"(",")",",",":",";","{","}","==","!=",">","<",">=","<=","&","|","+","-","*","/", "="};

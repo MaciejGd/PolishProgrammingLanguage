@@ -28,12 +28,6 @@ int rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
 	}
 	for (int i = head->getRhsSize()-1; i >= 0; i--)
 	{
-		// std::cout << "************\n";
-		// std::cout << "i value: " << i << std::endl;
-		// std::cout << "Resolving Symbol: " << head->getName() << std::endl;
-		// std::cout << "Child node: " << head->getRhsNode(i)->getName() << std::endl;
-		// std::cout << "Token value: " << tokens[counter].value << std::endl;
-		// std::cout << "************\n";
 		int result = rec_parse(head->getRhsNode(i), tokens, counter);
 		//check if parsing child node failed and return if so
 		//is it necessary?
@@ -114,41 +108,3 @@ void chopTree(Symbol *head)
 	}
 	delete head;
 } 
-
-// int parse(const vector<Token>& tokens)
-// {
-// 	int counter = 0;
-// 	std::vector<Symbol*> sym_stack = {new End{}, new Start{}};
-// 	while (!sym_stack.empty())
-// 	{
-// 		Symbol* temp = sym_stack.back();
-// 		sym_stack.pop_back();
-// 		// std::cout << "***********\n";
-// 		// for (int i = 0; i < sym_stack.size(); i++)
-// 		// {
-// 		// 	std::cout << "STACK EL. " << i << " : " << sym_stack[i]->getName() << "\n";
-// 		// }
-// 		// std::cout << "***********\n";
-// 		// std::cout << "[LOG]Parsed symbol: " << temp->getName() << " " << "TOKEN: " << tokens[counter].value << "\n";
-// 		// std::cout << "***********\n";
-// 		// std::cout << "***********\n";
-// 		int return_code = temp->evaluate(sym_stack, tokens[counter]);
-// 		if (return_code == 1)
-// 		{
-// 			// std::cout << "***********\n";
-// 			// std::cout << "[LOG]Parsed symbol: " << temp->getName() << " " << "TOKEN: " << tokens[counter].value << "\n";
-// 			// std::cout << "***********\n";
-// 			// std::cout << "***********\n";
-// 			// std::cout << "[ERROR]Failed parsing symbol: " << temp->getName() << " in token: " << tokens[counter].value << " counter equal to " << counter << "\n";
-// 			// std::cout << "[ERROR]Context of failure: " << tokens[counter-1].value << " " << tokens[counter].value << " " << tokens[counter+1].value << std::endl;
-// 			return 1;
-// 		}
-// 		else if (return_code == 2)
-// 		{
-// 			counter++;
-// 		}
-// 		delete temp;
-// 	}
-// 	return 0;
-// }
-
