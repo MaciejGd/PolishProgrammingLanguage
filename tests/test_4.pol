@@ -11,7 +11,7 @@ globalne
 
 funkcja nowa ():nic:
 {
-	dla nowa zakres (1,4):
+	dla nowa zakres (0,4):
 	{
 		jesli (nowa % 2) == 1:
 		{

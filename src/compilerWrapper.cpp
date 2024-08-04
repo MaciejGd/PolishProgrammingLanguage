@@ -1,6 +1,6 @@
 #include "../inc/compilerWrapper.h"
 
-CompilerWrapper::CompilerWrapper(const std::vector<std::string>& command):exe_name("program")
+CompilerWrapper::CompilerWrapper(const std::vector<std::string>& command):exe_name("program"),clean_build(true)
 {
   if (m_analyzeCommand(command))
   {
@@ -20,6 +20,28 @@ CompilerWrapper::CompilerWrapper(const std::vector<std::string>& command):exe_na
     if (x.joinable())
       x.join();
   }
+  //after files processing ended successfully run compile on created files
+  //can actually wrap this into a separate function to make code more clear
+  std::vector<string> cpp_files;
+  for (const auto& file : files)
+  {
+    std::string temp_file = file.substr(0,file.length()-4) + ".cpp";
+    auto it = temp_file.find_last_of('/');
+    if (it != temp_file.npos)
+    {
+      temp_file = temp_file.substr(it, temp_file.length()-1);
+    }
+    cpp_files.push_back("./TRANSPILER/"+temp_file);
+    std::cout << "[INFO][" << cpp_files.back() << "]\n";
+  }
+  std::string files_to_compile = "";
+  for (const auto& file : cpp_files)
+  {
+    files_to_compile+=(" " + file);
+  }
+  system(("g++ --std=c++17 " + files_to_compile + " -o " + exe_name).c_str());
+  if(clean_build)
+    system("rm -r ./TRANSPILER/");
 }
 
 int CompilerWrapper::m_analyzeCommand(const std::vector<std::string>& command)

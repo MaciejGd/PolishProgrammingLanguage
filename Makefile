@@ -6,9 +6,9 @@ DEPS=$(wildcard inc/*.h)
 OBJ=$(patsubst src/%.cpp, obj/%.o, $(SRC))
 
 
-all: main
+all: pollang
 
-main: $(OBJ) obj/main.o
+pollang: $(OBJ) obj/main.o
 	@$(CC) $^ -o $@ $(CFLAGS)
 	@echo "Build done successfully"
 
