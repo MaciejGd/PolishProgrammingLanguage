@@ -9,28 +9,24 @@ globalne
 	tekst test2 = "eoeoeoe";
 }
 
-funkcja nowa ():dycha:
+funkcja nowa ():nic:
 {
-	dycha result = 2;
-	dycha add = 0;
 	dla nowa zakres (1,4):
 	{
 		jesli (nowa % 2) == 1:
 		{
-			result = result + add;
+			wywolaj wypisz("nieparzysta\n");
 		}
 		inaczej:
 		{
-			wywolaj wpisz(add);
+			wywolaj wypisz("parzysta\n");
 		}
 	}
-	zwroc result;
 
 }
 
 funkcja main  ():dycha:
 {
-	wywolaj wypisz(wywolaj nowa());
-	wywolaj wypisz("\n");
+	wywolaj nowa();
 	zwroc 0;
 }

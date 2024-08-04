@@ -5,15 +5,25 @@
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
+Parser::Parser(const std::vector<Token>& tokens):head(new Start{})
+{
+	if (m_parse(tokens))
+	{
+		std::cout << "[ERROR]Parsing error, exiting program\n";
+		m_chopTree(head);
+		exit(1); 
+	}
+}
+
+Parser::~Parser()
+{
+	m_chopTree(head);
+}
+
 //below code is needed for parsing Abstract Syntax Tree. I need to add function that slightly differs in terms of algorithm and serves a function of adding 
-int rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
+int Parser::m_rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
 {
 	int result = head->evaluate(tokens[counter]);
-	// std::cout << "************\n";
-	// for (size_t i = 0; i < head->getRhsSize(); i++)
-	// 	std::cout << head->getRhsNode(i)->getName() << std::endl;
-	// std::cout << "************\n";
-	//check if no children
 	if (result == 2)
 	{
 		head->setValue(tokens[counter].value);
@@ -28,30 +38,28 @@ int rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter)
 	}
 	for (int i = head->getRhsSize()-1; i >= 0; i--)
 	{
-		int result = rec_parse(head->getRhsNode(i), tokens, counter);
-		//check if parsing child node failed and return if so
-		//is it necessary?
+		result = m_rec_parse(head->getRhsNode(i), tokens, counter);
 		if (result == 1)
 		{
 			return 1;			
 		}
 	}
-	return 0;
+	return result;
 }
 
-Symbol* parse(const vector<Token>& tokens)
+int Parser::m_parse(const vector<Token>& tokens)
 {
-	Symbol* head = new Start{};
+	head = new Start{};
 	int counter = 0;
-	if (!rec_parse(head, tokens, counter))
+	if (!m_rec_parse(head, tokens, counter))
 	{
-		return head;
+		return 0;
 	}
-	return nullptr;
+	return 1;
 }
 
 //recursive function used in printing AST to a file
-void printRec(std::ostringstream& ss, Symbol* head, int incantation)
+void printRec(std::ostringstream& ss, const Symbol* head, int incantation)
 {
 	std::string inc_string(incantation, ' ');
 	if (!head)
@@ -76,7 +84,7 @@ void printRec(std::ostringstream& ss, Symbol* head, int incantation)
 	ss << "}\n";
 }
 //printing AST to a file in debug purposes
-void printAST(const char* file_arg, Symbol* head)
+void printAST(const char* file_arg, const Symbol* head)
 {
 	std::ostringstream ss;
 	printRec(ss, head, 0);
@@ -95,7 +103,7 @@ void printAST(const char* file_arg, Symbol* head)
 }
 
 
-void chopTree(Symbol *head)
+void Parser::m_chopTree(Symbol *head)
 {
 	if (head->getRhsSize()==0)
 	{
@@ -104,7 +112,7 @@ void chopTree(Symbol *head)
 	}
 	for (int i = 0; i < head->getRhsSize(); i++)
 	{
-		chopTree(head->getRhsNode(i));
+		m_chopTree(head->getRhsNode(i));
 	}
 	delete head;
 } 

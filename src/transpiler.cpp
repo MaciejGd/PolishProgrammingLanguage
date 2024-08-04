@@ -8,7 +8,7 @@ void addNewLine(std::ostringstream &ss, const std::string &sign)
   }
 }
 
-void Transpiler::m_transpiler_rec(Symbol *head)
+void Transpiler::m_transpiler_rec(const Symbol *head)
 {
   //if node is down node with value
   std::string node_val = head->getValue();
@@ -48,7 +48,7 @@ void Transpiler::m_transpiler_rec(Symbol *head)
   }
 } 
 
-void Transpiler::transpiler(const char* file_name, Symbol* head)
+void Transpiler::transpiler(const char* file_name, const Symbol* head)
 {
   ss << init_code;
   m_transpiler_rec(head);

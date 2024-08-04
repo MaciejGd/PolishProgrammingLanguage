@@ -29,9 +29,9 @@ class Transpiler {
   std::string init_code = "#include <string>\n#include <iostream>\n#include <vector>\n";
   std::ostringstream ss;
   std::unique_ptr<Handler> m_handler;
-  void m_transpiler_rec(Symbol* head);
+  void m_transpiler_rec(const Symbol* head);
 public:
-  void transpiler(const char* file_name, Symbol* head);
+  void transpiler(const char* file_name, const Symbol* head);
   int chooseHandler(const std::string& node_val);
 };
 

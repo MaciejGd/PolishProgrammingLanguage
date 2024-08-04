@@ -62,64 +62,29 @@ int main(int argc, char **argv)
 	std::string path_file;
 	std::string suffix = ".pol";
 	Transpiler* trans = new Transpiler{};
-	//run all tests from tests directory if no argument has been passed
-	// if (argc == 1)
-	// {
-	// 	runTests(trans);
-	// 	return 0;
-	// }
-	// else {
-	// 	std::string file = argv[1];
-	// 	path_file = "ref/" + file;
-	// }
+	if (argc == 1)
+	{
+		std::cout << "[ERROR]To few arguments, program quiting...\n";
+		return 1;
+	}
 	for (int i = 1; i < argc; i++)
 	{
 		
 		std::string path_to_test = "./tests/" + std::string(argv[i]);
 		Lexer lexer{path_to_test};
 		std::vector<Token> token_list = lexer.getTokens();
-		Symbol* error_code;
-		if ((error_code = parse(token_list)))
-		{
-			std::string trans_file = argv[i];
-			trans_file = "./TRANSPIL/" + trans_file;
-			size_t dot_place = trans_file.find_last_of('.');
-			trans_file = trans_file.substr(0, dot_place+1);
-			trans_file += "cpp";
-			std::cout << "[LOGS]trans_file value: " << trans_file << std::endl;
-			printAST(argv[i], error_code);
-			trans->transpiler(trans_file.c_str(), error_code);
-			chopTree(error_code);
-			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
-			// executing g++ on output file
-			// std::string command_str = "g++ " + trans_file + " -o ./TRANSPIL/";
-			// command_str = command_str+argv[i];
-			// system(command_str.c_str());
-			
-		}
-		else {
-			std::cout << "File: " << argv[i] << " could not be parsed!!! Error code: " << error_code << "\n";
-		}
+		Parser parser(lexer.getTokens());
+		const Symbol* error_code = parser.getHead();
+		std::string trans_file = argv[i];
+		trans_file = "./TRANSPIL/" + trans_file;
+		size_t dot_place = trans_file.find_last_of('.');
+		trans_file = trans_file.substr(0, dot_place+1);
+		trans_file += "cpp";
+		std::cout << "[LOGS]trans_file value: " << trans_file << std::endl;
+		printAST(argv[i], error_code);
+		trans->transpiler(trans_file.c_str(), error_code);
+		std::cout << "File: " << argv[i]<< " parsed with no errors\n";
 	}
-	//debug purpose all files checking at once
-	//check for path being regular file
-	//code to be used
-	//if (!fs::is_regular_file(path_file))
-	//{
-	//	std::cerr << "There is no such file path in the system, please provide .pol file" << "\n";
-	//	return 1;
-	//}
-	////file extension check
-	//else if (path_file.rfind(suffix)!=(path_file.length()-suffix.length()))
-	//{
-	//	std::cerr << "In order to compile, save your file with .pol extension" << "\n";
-	//	return 1;
-	//}
-	//std::vector<Token> vec = tokensScan(path_file);
-	//for (int i = 0; i < vec.size(); i++)
-	//	vec[i].printToken();
-
-	//parse(vec);
 	delete trans;
 	return 0;
 }
