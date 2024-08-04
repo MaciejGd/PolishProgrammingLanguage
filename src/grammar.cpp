@@ -331,20 +331,7 @@ Dodaj::Dodaj()
   name = "Dodaj";
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 //*** NON-TERMINALS ***
-
 int Include::evaluate(const Token& token)
 {
   if (token.value == "funkcja" || token.value == "globalne")

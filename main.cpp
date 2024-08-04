@@ -89,6 +89,10 @@ int main(int argc, char **argv)
 			trans->transpiler(trans_file.c_str(), error_code);
 			chopTree(error_code);
 			std::cout << "File: " << argv[i]<< " parsed with no errors\n";
+			// executing g++ on output file
+			// std::string command_str = "g++ " + trans_file + " -o ./TRANSPIL/";
+			// command_str = command_str+argv[i];
+			// system(command_str.c_str());
 			
 		}
 		else {

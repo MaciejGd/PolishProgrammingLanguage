@@ -1,4 +1,13 @@
+dodaj fstream
+dodaj sstream
 
+
+globalne 
+{
+	dycha test = 12;
+	przecinek test1 = 432.32;
+	tekst test2 = "eoeoeoe";
+}
 
 funkcja nowa ():nic:
 {

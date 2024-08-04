@@ -91,9 +91,15 @@ int Transpiler::chooseHandler(const std::string& node_val)
     m_handler.reset(new PrintHandler{});
     return 1;
   }
-  // else if (node_val == "inaczej") 
-  // {
-  //   m_handler.reset(new IfHandler);
-  // }
+  if (node_val == "globalne")
+  {
+    m_handler.reset(new GlobalHandler{});
+    return 1;
+  }
+  if (node_val == "dodaj")
+  {
+    m_handler.reset(new IncludeHandler{});
+    return 1;
+  }
   return 0;
 }

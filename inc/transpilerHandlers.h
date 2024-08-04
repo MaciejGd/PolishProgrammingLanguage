@@ -76,4 +76,16 @@ public:
   void analyze(std::ostringstream& ss, const std::string& head) override;
 };
 
+class GlobalHandler : public Handler {
+public:
+  void processRecord(std::ostringstream& ss) override;
+  void analyze(std::ostringstream& ss, const std::string& head) override;
+};
+
+class IncludeHandler : public Handler {
+public:
+  void processRecord(std::ostringstream& ss) override;
+  void analyze(std::ostringstream& ss, const std::string& head) override;
+};
+
 #endif
