@@ -201,6 +201,7 @@ void WhileHandler::analyze(std::ostringstream& ss, const std::string& node_val)
 
 void PrintHandler::processRecord(std::ostringstream& ss) 
 {
+  ss << "std::cout << ";
   for (const auto& node_val: p_record)
   {
     auto it = keyword_map.find(node_val);
@@ -221,15 +222,56 @@ void PrintHandler::analyze(std::ostringstream& ss, const std::string& head)
     return;
   }
   if (head == "(")
+  {
+    if (m_brackets)
+      p_record.push_back(head);
+    m_brackets++;
     return;
+  }
   if (head == ")")
+  {
+    m_brackets--;
+  }
+  if (!m_brackets)
   {
     deactivate();
     processRecord(ss);
     return;
   }
+  if (head == "wywolaj")
+    return;
   p_record.push_back(head);
 }
+
+void InputHandler::processRecord(std::ostringstream& ss) 
+{
+  ss << "std::cin >> ";
+  for (const auto& x: p_record)
+  {
+    ss << x;
+  }  
+  p_record.clear();
+}
+
+void InputHandler::analyze(std::ostringstream& ss, const std::string& head) 
+{
+  if (head == "wpisz")
+  {
+    return;
+  }
+  if (head == "(")
+  {
+    return;
+  }
+  if (head == ")")
+  {
+    deactivate();
+    processRecord(ss);
+  }
+  p_record.push_back(head);
+}
+
+
 //this one can be a function of Handler class i guess (will be inherited by the rest)
 void GlobalHandler::processRecord(std::ostringstream& ss)
 {

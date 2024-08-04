@@ -91,6 +91,11 @@ int Transpiler::chooseHandler(const std::string& node_val)
     m_handler.reset(new PrintHandler{});
     return 1;
   }
+  if (node_val == "wpisz")
+  {
+    m_handler.reset(new InputHandler{});
+    return 1;
+  }
   if (node_val == "globalne")
   {
     m_handler.reset(new GlobalHandler{});
@@ -101,5 +106,6 @@ int Transpiler::chooseHandler(const std::string& node_val)
     m_handler.reset(new IncludeHandler{});
     return 1;
   }
+  
   return 0;
 }

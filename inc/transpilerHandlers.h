@@ -71,7 +71,16 @@ public:
 };
 
 class PrintHandler : public Handler {
+  //variable needed for analyzing a function call in printing
+  int m_brackets;
 public:
+  PrintHandler():m_brackets(0){};
+  void processRecord(std::ostringstream& ss) override;
+  void analyze(std::ostringstream& ss, const std::string& head) override;
+};
+
+class InputHandler : public Handler {
+public: 
   void processRecord(std::ostringstream& ss) override;
   void analyze(std::ostringstream& ss, const std::string& head) override;
 };
