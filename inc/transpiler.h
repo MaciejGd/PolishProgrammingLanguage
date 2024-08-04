@@ -8,6 +8,8 @@
 #include <deque>
 #include <memory>
 #include <sstream>
+#include <mutex>
+#include <filesystem>
 
 #include "grammar.h"
 #include "transpilerHandlers.h"
@@ -21,6 +23,7 @@ class Transpiler {
   std::string init_code = "#include <string>\n#include <iostream>\n#include <vector>\n";
   std::ostringstream ss;
   std::unique_ptr<Handler> m_handler;
+  std::mutex m_mutex;
   void m_transpiler_rec(const Symbol* head);
   void m_transpiler(const std::string& file_name, const Symbol* head);
   int m_chooseHandler(const std::string& node_val);

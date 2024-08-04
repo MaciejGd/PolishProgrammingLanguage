@@ -7,7 +7,7 @@ CompilerWrapper::CompilerWrapper(const std::vector<std::string>& command):exe_na
     std::cout << "[ERROR]Aborting program execution with exit code 1\n";
     exit(1);
   };
-  std::cout << "[INFO]Processing command";
+  std::cout << "[INFO]Processing command\n";
   std::vector<std::thread> t;
   for (const auto&x : files)
   {
@@ -53,12 +53,12 @@ int CompilerWrapper::m_analyzeCommand(const std::vector<std::string>& command)
     }
     prev = arg;
   }
-  std::cout << "[LOG]Printing out flags vector:\n";
+  std::cout << "[INFO]Printing out flags vector:\n";
   for (const auto& x : flags)
   {
     std::cout << x << " ";
   }
-  std::cout << "\n[LOG]Printing out files vector:\n";
+  std::cout << "\n[INFO]Printing out files vector:\n";
   for (const auto& x : files)
   {
     std::cout << x << " ";

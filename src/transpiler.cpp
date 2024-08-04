@@ -10,7 +10,11 @@ void addNewLine(std::ostringstream &ss, const std::string &sign)
 
 Transpiler::Transpiler(const std::string& file_name, const Symbol* head)
 {
-  system("mkdir TRANSPILER");
+  //operation can be mutithreading so we have to ensure only one thread at the time will initialize dir creation
+  m_mutex.lock();
+  if (!std::filesystem::is_directory("./TRANSPILER/"))
+    system("mkdir TRANSPILER");
+  m_mutex.unlock();
   //preparing .cpp file
   std::string temp_file = file_name.substr(0,file_name.length()-4) + ".cpp";
   auto it = temp_file.find_last_of('/');
