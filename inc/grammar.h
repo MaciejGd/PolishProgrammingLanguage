@@ -2,22 +2,8 @@
 #define PARSER
 
 #include "lex.h"
+
 #include <memory>
-
-class Symbol;
-
-//Node of AST(Abstract Syntax Tree)
-//structure of node class and implementation needs further investigation
-// class AST_Node {
-//   Symbol* value;
-//   std::vector<Symbol*> children;
-// public:
-//   AST_Node();
-//   void addChild();
-//   //acessors
-//   const Symbol* getValue() const;
-//   const std::vector<std::shared_ptr<Symbol*>> getChildren() const;
-// };
 
 //non-terminals
 class Include;

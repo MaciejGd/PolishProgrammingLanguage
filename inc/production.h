@@ -2,7 +2,6 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
-#include <mutex>
 #include <algorithm>
 
 //macros for colour logging on linux systems
@@ -26,6 +25,3 @@ extern std::vector<char> separators;
 extern std::vector<std::string> keywords;
 //needed by trabnspiler
 extern std::unordered_map<std::string, std::string> keyword_map;
-
-
-

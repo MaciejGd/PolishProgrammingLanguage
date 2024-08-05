@@ -1,8 +1,6 @@
 #include "../inc/lex.h"
 
-using std::string, std::vector, std::cout, std::cin, std::endl;
-
-string typeToString(TYPE type)
+std::string typeToString(TYPE type)
 {
 	switch(type)
 	{
@@ -17,12 +15,12 @@ string typeToString(TYPE type)
 	}
 }
 
-Token::Token(TYPE _type, string val):type(_type), value(val)
+Token::Token(TYPE _type, std::string val):type(_type), value(val)
 {}
 
 void Token::printToken() const
 {
-	cout << "[ " << typeToString(type) << " ," << value << " ]\n";
+	std::cout << "[ " << typeToString(type) << " ," << value << " ]\n";
 }
 
 
@@ -33,8 +31,8 @@ Lexer::Lexer(std::string _file):file_name(_file){
 
 void Lexer::m_tokensScan()
 {
-	vector<string> words;
-	vector<string> lexemes;
+	std::vector<std::string> words;
+	std::vector<std::string> lexemes;
 	//input file loading
 	std::ifstream input_file(file_name);
 	if (input_file.fail())
@@ -44,7 +42,7 @@ void Lexer::m_tokensScan()
 		exit(1);
 	}
 	//variable to store line of text to analyze 
-	string line;
+	std::string line;
 	int line_counter = 0;
 	while (std::getline(input_file, line))
 	{
@@ -59,10 +57,10 @@ void Lexer::m_tokensScan()
 
 //have to reconsider merging createToken with divideToWords functions
 //function to divide processed line to words to be turned to a tokens 
-void Lexer::m_divideToWords(int line_counter, const string& line, vector<string> &words)
+void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vector<std::string> &words)
 {
 	
-	string actual_word;
+	std::string actual_word;
 	int i = 0;
 	//remove leading whitespaces from a line
 	while (line.at(i)==' ' || line.at(i)=='\t' || line.at(i)=='\v' || line.at(i)=='\r')
@@ -90,7 +88,7 @@ void Lexer::m_divideToWords(int line_counter, const string& line, vector<string>
 			if (!actual_word.empty())		words.push_back(actual_word);
 			actual_word = "";
 		}
-		//checking for mathematical, logical operators and separators using std::find for finding special sign in vector initialized earlier
+		//checking for mathematical, logical operators and separators using std::find for finding special sign in std::vector initialized earlier
 		else if (!string_const && (find(operators.begin(), operators.end(), char_at)!=operators.end() || find(separators.begin(), separators.end(), char_at)!=separators.end()))
 		{
 			if (!actual_word.empty()) 
@@ -129,12 +127,12 @@ void Lexer::m_divideToWords(int line_counter, const string& line, vector<string>
 		words.push_back(actual_word);
 	if (string_const)
 	{
-		cout << ERROR_LOG << "No closing quotation mark spotted in line" << ++line_counter << endl;
+		std::cout << ERROR_LOG << "No closing quotation mark spotted in line" << ++line_counter << std::endl;
 		exit(1);
 	}
 }
 
-void Lexer::m_createTokens(const vector<string>& lexemes)
+void Lexer::m_createTokens(const std::vector<std::string>& lexemes)
 {
 	TYPE lexeme_type;
 	//here need to add some logic responsible for proper processing of minus values
@@ -168,7 +166,7 @@ void Lexer::m_createTokens(const vector<string>& lexemes)
 
 
 //function for checking if lexem is constant integer or float if return value is equal to 2 it is a float, if it returns 1 it is integer and when 0 it is not
-int Lexer::m_isConstant(const string& lexem)
+int Lexer::m_isConstant(const std::string& lexem)
 {
 	bool dot = false;
 	for (int i = 0; i < lexem.length(); i++)

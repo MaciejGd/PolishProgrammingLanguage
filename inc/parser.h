@@ -1,5 +1,5 @@
 #pragma once
-#include <stack>
+#include <fstream>
 #include <sstream>
 #include "lex.h"
 
@@ -9,7 +9,7 @@ class Parser {
   Symbol* head;
   std::string file_name;
   int m_rec_parse(Symbol* head, const std::vector<Token>& tokens, int &counter);
-  int m_parse(const vector<Token>& tokens);
+  int m_parse(const std::vector<Token>& tokens);
   void m_chopTree(Symbol *head);
 public:
   Parser(const std::string& file_name, const std::vector<Token>& tokens);

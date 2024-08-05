@@ -8,6 +8,7 @@ CompilerWrapper::CompilerWrapper(const std::vector<std::string>& command):exe_na
     exit(1);
   };
   std::cout << INFO_LOG << "Processing command\n";
+  //create separate threads to handle each file passed as argument
   std::vector<std::thread> t;
   for (const auto&x : files)
   {
@@ -22,7 +23,7 @@ CompilerWrapper::CompilerWrapper(const std::vector<std::string>& command):exe_na
   }
   //after files processing ended successfully run compile on created files
   //can actually wrap this into a separate function to make code more clear
-  std::vector<string> cpp_files;
+  std::vector<std::string> cpp_files;
   for (const auto& file : files)
   {
     std::string temp_file = file.substr(0,file.length()-4) + ".cpp";
@@ -85,18 +86,6 @@ int CompilerWrapper::m_analyzeCommand(const std::vector<std::string>& command)
     }
     prev = arg;
   }
-  std::cout << INFO_LOG << "Printing out flags vector:\n";
-  for (const auto& x : flags)
-  {
-    std::cout << x << " ";
-  }
-  std::cout << "\n" << INFO_LOG << "Printing out files vector:\n";
-  for (const auto& x : files)
-  {
-    std::cout << x << " ";
-  }
-  std::cout << "\n";
-  std::cout << "Exe name: " << exe_name << "\n";
   //signal error when no files has been speicfied
   if (files.empty())
   {

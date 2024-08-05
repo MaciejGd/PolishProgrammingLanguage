@@ -1,12 +1,15 @@
-#include "lex.h"
-#include "parser.h"
-#include "transpiler.h"
+#pragma once 
 #include <vector>
 #include <string>
 #include <thread>
 #include <mutex>
 
-//here, argument to a compiler wrapper would be input string (command used to invoke compiler)
+#include "lex.h"
+#include "parser.h"
+#include "transpiler.h"
+
+
+//main wrapper for 
 
 class CompilerWrapper {
   std::vector<std::string> flags;
@@ -16,11 +19,7 @@ class CompilerWrapper {
   bool clean_build;
   int m_analyzeCommand(const std::vector<std::string>& command);
   void m_processFile(const std::string& file_name);
-  // void m_tokenizeFiles();
-  // void m_parseFiles();
-  // void m_transpilFiles();
 public: 
-  //cast chain of responsibility in here is it really that necessary????
   CompilerWrapper(const std::vector<std::string>& command);
 
 };

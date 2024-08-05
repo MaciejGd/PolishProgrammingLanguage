@@ -1,7 +1,4 @@
 #include "../inc/parser.h"
-#include "../inc/grammar.h"
-#include <fstream>
-#include <sstream>
 
 using std::string, std::vector, std::cout, std::cin, std::endl, std::find;
 
