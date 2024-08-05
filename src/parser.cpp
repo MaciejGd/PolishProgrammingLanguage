@@ -9,7 +9,7 @@ Parser::Parser(const std::string& file_name, const std::vector<Token>& tokens):h
 {
 	if (m_parse(tokens))
 	{
-		std::cout << "[ERROR]Parsing error, exiting program\n";
+		std::cout << ERROR_LOG << "Parsing error, exiting program\n";
 		m_chopTree(head);
 		exit(1); 
 	}
@@ -33,7 +33,7 @@ int Parser::m_rec_parse(Symbol* head, const std::vector<Token>& tokens, int &cou
 	//check if properly evaluated
 	else if (result == 1)
 	{
-		std::cout << "[ERROR][" << file_name << "]Problem in parsing symbol: [" << head->getName() << "] in token: " << tokens[counter].value << std::endl;
+		std::cout << ERROR_LOG << "[" << file_name << "]Problem in parsing symbol: [" << head->getName() << "] in token: " << tokens[counter].value << std::endl;
 		return 1;
 	}
 	for (int i = head->getRhsSize()-1; i >= 0; i--)
@@ -94,7 +94,7 @@ void printAST(const char* file_arg, const Symbol* head)
 	std::ofstream file(file_name);
 	if (file.fail())
 	{
-		std::cout << "[ERROR][" << file_name << "]Opening file for printing AST failed!";
+		std::cout << ERROR_LOG << "[" << file_name << "]Opening file for printing AST failed!";
 		return;
 	}
 	file << ss.str();

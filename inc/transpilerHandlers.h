@@ -6,13 +6,6 @@
 #include <sstream>
 #include "production.h"
 
-
-template<typename T>
-bool search(std::vector<T> vec, T value) {
-  return (std::find(vec.begin(), vec.end(), value)!=vec.end());
-}
-
-
 class Handler {
 protected:
   bool p_active;

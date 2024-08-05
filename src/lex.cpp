@@ -27,7 +27,7 @@ void Token::printToken() const
 
 
 Lexer::Lexer(std::string _file):file_name(_file){
-	std::cout << "[INFO]Starting process of tokenizing " << file_name << "\n"; 
+	std::cout << INFO_LOG << "Starting process of tokenizing " << file_name << "\n"; 
 	m_tokensScan();
 }
 
@@ -39,7 +39,7 @@ void Lexer::m_tokensScan()
 	std::ifstream input_file(file_name);
 	if (input_file.fail())
 	{
-		std::cout << "[ERROR][" << file_name << "]Could not load input file.\n";
+		std::cout << ERROR_LOG << "[" << file_name << "]Could not load input file.\n";
 		//abort if file could not be load
 		exit(1);
 	}
@@ -129,7 +129,7 @@ void Lexer::m_divideToWords(int line_counter, const string& line, vector<string>
 		words.push_back(actual_word);
 	if (string_const)
 	{
-		cout << "[ERROR]No closing quotation mark spotted in line" << ++line_counter << endl;
+		cout << ERROR_LOG << "No closing quotation mark spotted in line" << ++line_counter << endl;
 		exit(1);
 	}
 }
@@ -145,13 +145,13 @@ void Lexer::m_createTokens(const vector<string>& lexemes)
 			lexeme_type = TYPE::Int;
 		else if (is_constant_state==2)
 			lexeme_type = TYPE::Float; 
-		else if (vector_search(keywords, lexemes[i]))
+		else if (search(keywords, lexemes[i]))
 			lexeme_type = TYPE::Key;
 		else if (lexemes[i].length() == 1)
 		{
-			if (vector_search(separators, lexemes[i].at(0)))
+			if (search(separators, lexemes[i].at(0)))
 				lexeme_type = TYPE::Sep;
-			else if (vector_search(operators, lexemes[i].at(0)))
+			else if (search(operators, lexemes[i].at(0)))
 				lexeme_type = TYPE::Op;
 		}
 		else if (lexemes[i] == "==" || lexemes[i] == "<=" || lexemes[i] == ">=" || lexemes[i] == "!=")

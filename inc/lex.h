@@ -44,8 +44,4 @@ public:
 };
 
 //implemented in the code, need to move to production
-template<typename T>
-bool vector_search(const vector<T>& compare_set, T lexeme)
-{
-	return (find(compare_set.begin(), compare_set.end(), lexeme)!=compare_set.end());
-}
+

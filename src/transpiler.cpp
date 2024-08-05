@@ -12,8 +12,11 @@ Transpiler::Transpiler(const std::string& file_name, const Symbol* head)
 {
   //operation can be mutithreading so we have to ensure only one thread at the time will initialize dir creation
   m_mutex.lock();
-  if (!std::filesystem::is_directory("./TRANSPILER/"))
-    system("mkdir TRANSPILER");
+  if (!std::filesystem::is_directory("./.TRANSPILER/") && system("mkdir ./.TRANSPILER"))
+  {  
+    std::cout << ERROR_LOG << "Could not create transisional directory, quiting execution";
+    exit(1);
+  }
   m_mutex.unlock();
   //preparing .cpp file
   std::string temp_file = file_name.substr(0,file_name.length()-4) + ".cpp";
@@ -22,7 +25,7 @@ Transpiler::Transpiler(const std::string& file_name, const Symbol* head)
   {
     temp_file = temp_file.substr(it, temp_file.length()-1);
   }
-  m_transpiler("./TRANSPILER/"+ temp_file, head);
+  m_transpiler("./.TRANSPILER/"+ temp_file, head);
 }
 
 void Transpiler::m_transpiler_rec(const Symbol *head)
@@ -73,7 +76,7 @@ void Transpiler::m_transpiler(const std::string& file_name, const Symbol* head)
   std::fstream file(file_name, std::ios::out);
   if (file.fail())
   {
-    std::cout << "[ERROR][" << file_name << "]Could not open a file during transpiling.\n";
+    std::cout << ERROR_LOG << "[" << file_name << "]Could not open a file during transpiling.\n";
     return;
   }
   file << ss.str();
