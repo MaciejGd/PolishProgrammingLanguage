@@ -94,11 +94,12 @@ protected:
   std::string value;
 public:
   virtual int evaluate(const Token& token) = 0;
-  const std::string getName() const;
-  const size_t getRhsSize() const;
-  Symbol* getRhsNode(size_t index) const; 
-  void setValue(const std::string& val);
-  const std::string getValue() const { return value; };
+  inline void setValue(const std::string& val) { value = val; };
+  //getters
+  inline const std::string getName() const { return name; };
+  inline const size_t getRhsSize() const { return rhs.size(); };
+  inline Symbol* getRhsNode(size_t index) const { return rhs[index]; }; 
+  inline const std::string getValue() const { return value; };
 };
 
 class VarDecl : public Symbol {

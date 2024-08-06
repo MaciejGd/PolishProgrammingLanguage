@@ -1,24 +1,5 @@
 #include "../inc/grammar.h"
 
-const std::string Symbol::getName() const
-{
-  return name;
-}
-
-const size_t Symbol::getRhsSize() const
-{
-  return rhs.size();
-}
-
-Symbol *Symbol::getRhsNode(size_t index) const
-{
-  return rhs[index];
-}
-
-void Symbol::setValue(const std::string& val)
-{
-  value = val;
-}
 // Non terminal constructors:
 Include::Include()
 {

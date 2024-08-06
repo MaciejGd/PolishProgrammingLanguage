@@ -14,10 +14,10 @@ class Parser {
 public:
   Parser(const std::string& file_name, const std::vector<Token>& tokens);
   ~Parser();
-  const Symbol* getHead() const { return head; };
+  inline const Symbol* getHead() const { return head; };
 };
 
 //debug purposes -> to show ast in a file
-void printRec(std::ostringstream& ss, const Symbol* head, int incantation);
-void printAST( const char* file_arg, const Symbol* head);
+// void printRec(std::ostringstream& ss, const Symbol* head, int incantation);
+// void printAST( const char* file_arg, const Symbol* head);
 

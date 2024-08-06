@@ -56,48 +56,48 @@ int Parser::m_parse(const vector<Token>& tokens)
 }
 
 //recursive function used in printing AST to a file
-void printRec(std::ostringstream& ss, const Symbol* head, int incantation)
-{
-	std::string inc_string(incantation, ' ');
-	if (!head)
-		return;
+// void printRec(std::ostringstream& ss, const Symbol* head, int incantation)
+// {
+// 	std::string inc_string(incantation, ' ');
+// 	if (!head)
+// 		return;
 	
-	ss << inc_string;
-	ss << head->getName();
-	ss << ":\n" ;
-	ss << inc_string;
-	ss << "{\n";
-	incantation+=2;
-	for (int i = head->getRhsSize()-1; i >= 0; i--)
-	{
-		printRec(ss, head->getRhsNode(i), incantation);
-	}
-	if (head->getValue()!="")
-	{	
-		ss << inc_string << "  ";
-		ss << "*** " << head->getValue() << " ***\n";
-	}
-	ss << inc_string;
-	ss << "}\n";
-}
-//printing AST to a file in debug purposes
-void printAST(const char* file_arg, const Symbol* head)
-{
-	std::ostringstream ss;
-	printRec(ss, head, 0);
-	//std::cout << ss.str();
-	std::string file_name = file_arg;
-	file_name = "./AST/" + file_name + ".AST";
-	std::ofstream file(file_name);
-	if (file.fail())
-	{
-		std::cout << ERROR_LOG << "[" << file_name << "]Opening file for printing AST failed!";
-		return;
-	}
-	file << ss.str();
-	file.close();
-	//file handling (redirecting stringstream to a textfile)
-}
+// 	ss << inc_string;
+// 	ss << head->getName();
+// 	ss << ":\n" ;
+// 	ss << inc_string;
+// 	ss << "{\n";
+// 	incantation+=2;
+// 	for (int i = head->getRhsSize()-1; i >= 0; i--)
+// 	{
+// 		printRec(ss, head->getRhsNode(i), incantation);
+// 	}
+// 	if (head->getValue()!="")
+// 	{	
+// 		ss << inc_string << "  ";
+// 		ss << "*** " << head->getValue() << " ***\n";
+// 	}
+// 	ss << inc_string;
+// 	ss << "}\n";
+// }
+// //printing AST to a file in debug purposes
+// void printAST(const char* file_arg, const Symbol* head)
+// {
+// 	std::ostringstream ss;
+// 	printRec(ss, head, 0);
+// 	//std::cout << ss.str();
+// 	std::string file_name = file_arg;
+// 	file_name = "./AST/" + file_name + ".AST";
+// 	std::ofstream file(file_name);
+// 	if (file.fail())
+// 	{
+// 		std::cout << ERROR_LOG << "[" << file_name << "]Opening file for printing AST failed!";
+// 		return;
+// 	}
+// 	file << ss.str();
+// 	file.close();
+// 	//file handling (redirecting stringstream to a textfile)
+// }
 
 
 void Parser::m_chopTree(Symbol *head)

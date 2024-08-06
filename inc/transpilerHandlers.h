@@ -16,18 +16,18 @@ public:
   virtual void processRecord(std::ostringstream& ss) = 0;
   virtual void analyze(std::ostringstream& ss, const std::string& head) = 0;
   //actially can provide implementation of this one
-  const bool isActive() const { return p_active; };
-  void activate() { p_active = true; };
-  void deactivate() { p_active = false; };
-  void addToRecord(const std::string& element) { p_record.push_back(element); };
+  inline const bool isActive() const { return p_active; };
+  inline void activate() { p_active = true; };
+  inline void deactivate() { p_active = false; };
+  inline void addToRecord(const std::string& element) { p_record.push_back(element); };
 };
 
 class FunctionHandler : public Handler{
   int m_colons;
   //are they really needed? i gues not
-  void m_increaseColons() { m_colons++; };
-  void m_resetColons() { m_colons = 0; };
-  const int m_getColons() const { return m_colons; };
+  inline void m_increaseColons() { m_colons++; };
+  inline void m_resetColons() { m_colons = 0; };
+  inline const int m_getColons() const { return m_colons; };
 public:
   FunctionHandler(): m_colons(0){};
   //potenatial of adding other implementation of the same function to another handler
