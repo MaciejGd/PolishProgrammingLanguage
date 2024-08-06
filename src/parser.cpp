@@ -30,7 +30,7 @@ int Parser::m_rec_parse(Symbol* head, const std::vector<Token>& tokens, int &cou
 	//check if properly evaluated
 	else if (result == 1)
 	{
-		std::cout << ERROR_LOG << "[" << file_name << "]Problem in parsing symbol: [" << head->getName() << "] in token: " << tokens[counter].value << std::endl;
+		std::cout << ERROR_LOG << "[" << file_name << "]Problem in line: " << tokens[counter].line  << " parsing symbol: [" << head->getName() << "] in token: " << tokens[counter].value << std::endl;
 		return 1;
 	}
 	for (int i = head->getRhsSize()-1; i >= 0; i--)

@@ -15,15 +15,6 @@ std::string typeToString(TYPE type)
 	}
 }
 
-Token::Token(TYPE _type, std::string val):type(_type), value(val)
-{}
-
-void Token::printToken() const
-{
-	std::cout << "[ " << typeToString(type) << " ," << value << " ]\n";
-}
-
-
 Lexer::Lexer(std::string _file):file_name(_file){
 	std::cout << INFO_LOG << "Starting process of tokenizing " << file_name << "\n"; 
 	m_tokensScan();
@@ -31,35 +22,28 @@ Lexer::Lexer(std::string _file):file_name(_file){
 
 void Lexer::m_tokensScan()
 {
-	std::vector<std::string> words;
-	std::vector<std::string> lexemes;
 	//input file loading
 	std::ifstream input_file(file_name);
 	if (input_file.fail())
 	{
 		std::cout << ERROR_LOG << "[" << file_name << "]Could not load input file.\n";
-		//abort if file could not be load
 		exit(1);
 	}
-	//variable to store line of text to analyze 
+	//scan for tokens line by line
 	std::string line;
 	int line_counter = 0;
 	while (std::getline(input_file, line))
 	{
 		if (!line.empty())
-			m_divideToWords(line_counter, line, words);
+			m_divideToWords(line_counter, line);
 		line_counter++;		
 	}	
-	m_createTokens(words);
-	//pushing back end of file token after scanning all file -> necessary for parsing tre
-	tokens.push_back(Token(TYPE::Sep, "$"));	
+	//pushing back end of file token after scanning all file
+	tokens.push_back(Token(TYPE::Sep, "$", line_counter+1));	
 }
 
-//have to reconsider merging createToken with divideToWords functions
-//function to divide processed line to words to be turned to a tokens 
-void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vector<std::string> &words)
+void Lexer::m_divideToWords(int line_counter, const std::string& line)
 {
-	
 	std::string actual_word;
 	int i = 0;
 	//remove leading whitespaces from a line
@@ -78,21 +62,21 @@ void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vect
 		char char_at = line.at(i);
 		if (char_at=='#')	
 		{
-			if (!actual_word.empty()) words.push_back(actual_word);
+			if (!actual_word.empty()) tokens.push_back(m_createToken(line_counter, actual_word));
 			break;
 		}
 		else if (char_at=='\n')	break;
 		//checking for whitespaces
 		else if (!string_const && (char_at==' ' || char_at=='\t' || char_at=='\v' || char_at=='\r'))
 		{
-			if (!actual_word.empty())		words.push_back(actual_word);
+			if (!actual_word.empty())		tokens.push_back(m_createToken(line_counter, actual_word));
 			actual_word = "";
 		}
 		//checking for mathematical, logical operators and separators using std::find for finding special sign in std::vector initialized earlier
 		else if (!string_const && (find(operators.begin(), operators.end(), char_at)!=operators.end() || find(separators.begin(), separators.end(), char_at)!=separators.end()))
 		{
 			if (!actual_word.empty()) 
-				words.push_back(actual_word);
+				tokens.push_back(m_createToken(line_counter, actual_word));
 			actual_word = "";
 			actual_word+=char_at;	
 			if (char_at == '=' || char_at == '<' || char_at == '>' || char_at == '!')
@@ -100,7 +84,7 @@ void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vect
 				if (line.at(i+1)=='=')
 					actual_word+=line.at(++i);
 			}
-			words.push_back(actual_word);
+			tokens.push_back(m_createToken(line_counter, actual_word));
 			actual_word="";
 		}
 		else if (char_at=='"')
@@ -108,7 +92,7 @@ void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vect
 			if (!string_const)
 			{
 				if (!actual_word.empty()) 
-					words.push_back(actual_word);
+					tokens.push_back(m_createToken(line_counter, actual_word));
 				actual_word = "";
 				actual_word+=char_at;
 				string_const=true;
@@ -116,7 +100,7 @@ void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vect
 			else 
 			{
 				actual_word+=char_at;
-				words.push_back(actual_word);
+				tokens.push_back(m_createToken(line_counter, actual_word));
 				actual_word="";
 				string_const=false;
 			}
@@ -124,7 +108,7 @@ void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vect
 		else	actual_word+=char_at;
 	}
 	if (!actual_word.empty())
-		words.push_back(actual_word);
+		tokens.push_back(m_createToken(line_counter, actual_word));
 	if (string_const)
 	{
 		std::cout << ERROR_LOG << "No closing quotation mark spotted in line" << ++line_counter << std::endl;
@@ -132,38 +116,34 @@ void Lexer::m_divideToWords(int line_counter, const std::string& line, std::vect
 	}
 }
 
-void Lexer::m_createTokens(const std::vector<std::string>& lexemes)
+Token Lexer::m_createToken(int line_counter, const std::string& lexeme)
 {
 	TYPE lexeme_type;
 	//here need to add some logic responsible for proper processing of minus values
-	for (int i = 0; i < lexemes.size(); i++)
+	int is_constant_state = m_isConstant(lexeme);
+	if (is_constant_state==1)
+		lexeme_type = TYPE::Int;
+	else if (is_constant_state==2)
+		lexeme_type = TYPE::Float; 
+	else if (search(keywords, lexeme))
+		lexeme_type = TYPE::Key;
+	else if (lexeme.length() == 1)
 	{
-		int is_constant_state = m_isConstant(lexemes[i]);
-		if (is_constant_state==1)
-			lexeme_type = TYPE::Int;
-		else if (is_constant_state==2)
-			lexeme_type = TYPE::Float; 
-		else if (search(keywords, lexemes[i]))
-			lexeme_type = TYPE::Key;
-		else if (lexemes[i].length() == 1)
-		{
-			if (search(separators, lexemes[i].at(0)))
-				lexeme_type = TYPE::Sep;
-			else if (search(operators, lexemes[i].at(0)))
-				lexeme_type = TYPE::Op;
-		}
-		else if (lexemes[i] == "==" || lexemes[i] == "<=" || lexemes[i] == ">=" || lexemes[i] == "!=")
+		if (search(separators, lexeme.at(0)))
+			lexeme_type = TYPE::Sep;
+		else if (search(operators, lexeme.at(0)))
 			lexeme_type = TYPE::Op;
-		else if (lexemes[i].at(0)=='"' && lexemes[i].at(lexemes[i].size()-1)=='"')
-		{
-			lexeme_type = TYPE::Str;
-		}
-		else 
-		{lexeme_type = TYPE::Id;}
-		tokens.push_back(Token{lexeme_type, lexemes[i]});
 	}
+	else if (lexeme == "==" || lexeme == "<=" || lexeme == ">=" || lexeme == "!=")
+		lexeme_type = TYPE::Op;
+	else if (lexeme.at(0)=='"' && lexeme.at(lexeme.size()-1)=='"')
+	{
+		lexeme_type = TYPE::Str;
+	}
+	else 
+	{lexeme_type = TYPE::Id;}
+	return Token{lexeme_type, lexeme, line_counter};
 }
-
 
 //function for checking if lexem is constant integer or float if return value is equal to 2 it is a float, if it returns 1 it is integer and when 0 it is not
 int Lexer::m_isConstant(const std::string& lexem)
